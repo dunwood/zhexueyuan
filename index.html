@@ -1,344 +1,111 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>哲学园 - Philosophy Garden</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Times New Roman", Georgia, serif;
-            background-color: #f5f5f5;
-            color: #2c3e50;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            text-align: center;
-            padding: 4rem 0;
-            background-color: #34495e;
-            color: #ecf0f1;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .back-button {
-            position: absolute;
-            left: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ecf0f1;
-            text-decoration: none;
-            font-size: 1.2rem;
-            padding: 0.5rem 1rem;
-            border: 2px solid #ecf0f1;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .back-button:hover {
-            background-color: #ecf0f1;
-            color: #34495e;
-        }
-
-        .site-title {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            letter-spacing: 0.2rem;
-        }
-
-        .construction-notice {
-            font-size: 1.5rem;
-            color: #bdc3c7;
-            margin-top: 1rem;
-        }
-
-        .sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-        }
-
-        .section-card {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .section-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 0.5rem;
-        }
-
-        .section-description {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-
-        .article-list {
-            margin-top: 2rem;
-        }
-        
-        .article-item {
-            background: white;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .article-meta {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin: 0.5rem 0;
-        }
-        
-        .article-content {
-            line-height: 1.6;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #7f8c8d;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background-color: #34495e;
-            color: #ecf0f1;
-            margin-top: 3rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .site-title {
-                font-size: 2rem;
-            }
-            
-            .sections {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div id="app">
-        <!-- 主页 -->
-        <div id="home-page">
-            <header>
-                <h1 class="site-title">哲学园</h1>
-                <div class="construction-notice">欢迎光临哲学园，网站建设中，敬请期待</div>
-            </header>
-
-            <main class="container">
-                <div class="sections">
-                    <a href="#ancient-greek" class="section-card" onclick="showSection('ancient-greek')">
-                        <h2 class="section-title">古希腊哲学</h2>
-                        <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
-                    </a>
-
-                    <a href="#metaphysics" class="section-card" onclick="showSection('metaphysics')">
-                        <h2 class="section-title">形而上学</h2>
-                        <p class="section-description">探讨存在、实在、本质等终极哲学问题。</p>
-                    </a>
-
-                    <a href="#ethics" class="section-card" onclick="showSection('ethics')">
-                        <h2 class="section-title">伦理学</h2>
-                        <p class="section-description">研究道德、价值观及人类行为的哲学思考。</p>
-                    </a>
-
-                    <a href="#epistemology" class="section-card" onclick="showSection('epistemology')">
-                        <h2 class="section-title">认识论</h2>
-                        <p class="section-description">探索知识的本质、来源与局限性。</p>
-                    </a>
-
-                    <a href="#logic" class="section-card" onclick="showSection('logic')">
-                        <h2 class="section-title">逻辑学</h2>
-                        <p class="section-description">学习推理方法与思维规律。</p>
-                    </a>
-
-                    <a href="#aesthetics" class="section-card" onclick="showSection('aesthetics')">
-                        <h2 class="section-title">美学</h2>
-                        <p class="section-description">探讨艺术与美的本质。</p>
-                    </a>
-                </div>
-            </main>
-        </div>
-
-        <!-- 子页面 -->
-        <div id="section-page" style="display: none;">
-            <header>
-                <a href="#" class="back-button" onclick="showHome()">返回主页</a>
-                <h1 class="site-title" id="section-title"></h1>
-            </header>
-
-            <main class="container">
-                <div id="section-content" class="section-content">
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <footer>
-        <p>© 2024 哲学园 Philosophy Garden</p>
-    </footer>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哲学园</title>
     <script>
-        const GITHUB_INFO = {
-            owner: 'dunwood',
-            repo: 'zhexueyuan',
-        };
-
-        async function fetchArticles(category) {
-            try {
-                const response = await fetch(
-                    `https://api.github.com/repos/${GITHUB_INFO.owner}/${GITHUB_INFO.repo}/contents/articles/${category}`
-                );
-                const files = await response.json();
-                
-                const mdFiles = files.filter(file => file.name.endsWith('.md'));
-                
-                const articles = await Promise.all(
-                    mdFiles.map(async file => {
-                        const contentResponse = await fetch(file.download_url);
-                        const content = await contentResponse.text();
-                        return {
-                            title: getTitle(content),
-                            content: marked(content),
-                            date: getDate(content),
-                            author: getAuthor(content)
-                        };
-                    })
-                );
-                
-                return articles;
-            } catch (error) {
-                console.error('Error fetching articles:', error);
-                return [];
-            }
-        }
-
-        function getTitle(content) {
-            const match = content.match(/# (.*)/);
-            return match ? match[1] : 'Untitled';
-        }
-
-        function getDate(content) {
-            const match = content.match(/日期：(.*)/);
-            return match ? match[1] : '';
-        }
-
-        function getAuthor(content) {
-            const match = content.match(/作者：(.*)/);
-            return match ? match[1] : '';
-        }
-
         const sections = {
-            'ancient-greek': {
-                title: '古希腊哲学',
-                async getContent() {
-                    const articles = await fetchArticles('ancient-greek');
-                    return `
-                        <h2>古希腊哲学文章列表</h2>
-                        <div class="article-list">
-                            ${articles.length > 0 ? 
-                                articles.map(article => `
-                                    <div class="article-item">
-                                        <h3>${article.title}</h3>
-                                        <div class="article-meta">
-                                            ${article.author ? `作者：${article.author}` : ''}
-                                            ${article.date ? ` | 日期：${article.date}` : ''}
-                                        </div>
-                                        <div class="article-content">${article.content}</div>
-                                    </div>
-                                `).join('') : 
-                                '<p>暂无文章</p>'
-                            }
-                        </div>
-                    `;
-                }
+            'logic': {
+                title: '逻辑学',
+                articles: [
+                    { title: "逻辑学基础", file: "articles/logic/article1.html" },
+                    { title: "逻辑学与人工智能", file: "articles/logic/article2.html" }
+                ]
             },
             'metaphysics': {
                 title: '形而上学',
-                async getContent() {
-                    const articles = await fetchArticles('metaphysics');
-                    return `
-                        <h2>形而上学文章列表</h2>
-                        <div class="article-list">
-                            ${articles.length > 0 ? 
-                                articles.map(article => `
-                                    <div class="article-item">
-                                        <h3>${article.title}</h3>
-                                        <div class="article-meta">
-                                            ${article.author ? `作者：${article.author}` : ''}
-                                            ${article.date ? ` | 日期：${article.date}` : ''}
-                                        </div>
-                                        <div class="article-content">${article.content}</div>
-                                    </div>
-                                `).join('') : 
-                                '<p>暂无文章</p>'
-                            }
-                        </div>
-                    `;
-                }
+                articles: [
+                    { title: "形而上学简介", file: "articles/metaphysics/intro.html" },
+                    { title: "形而上学高级", file: "articles/metaphysics/advanced.html" }
+                ]
             },
-            // 其他版块重复类似代码...
+            'ethics': {
+                title: '伦理学',
+                articles: [
+                    { title: "伦理学的基本原则", file: "articles/ethics/principles.html" },
+                    { title: "现代伦理学争议", file: "articles/ethics/modern.html" }
+                ]
+            },
+            'aesthetics': {
+                title: '美学',
+                articles: [
+                    { title: "美的定义", file: "articles/aesthetics/definition.html" },
+                    { title: "美学与艺术", file: "articles/aesthetics/art.html" }
+                ]
+            }
         };
 
-        async function showSection(sectionId) {
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('section-page').style.display = 'block';
-            
+        async function fetchAndDisplayArticles(sectionId) {
             const section = sections[sectionId];
-            document.getElementById('section-title').textContent = section.title;
-            
-            document.getElementById('section-content').innerHTML = '<div class="loading">加载中...</div>';
-            
-            const content = await section.getContent();
-            document.getElementById('section-content').innerHTML = content;
+            let contentHTML = `<h2>${section.title}</h2><ul>`;
+
+            section.articles.forEach(article => {
+                contentHTML += `
+                    <li>
+                        <a href="#" onclick="loadArticle('${article.file}', '${article.title}')">
+                            ${article.title}
+                        </a>
+                    </li>`;
+            });
+
+            contentHTML += `</ul><a href="#" onclick="showHome()">返回主页</a>`;
+            document.getElementById('section-content').innerHTML = contentHTML;
+        }
+
+        async function loadArticle(filePath, title) {
+            try {
+                const response = await fetch(filePath);
+                const articleContent = await response.text();
+                document.getElementById('section-title').textContent = title;
+                document.getElementById('section-content').innerHTML = `
+                    ${articleContent}
+                    <a href="#" onclick="fetchAndDisplayArticles('${getCurrentSection()}')">返回文章列表</a>`;
+            } catch (error) {
+                console.error('文章加载失败：', error);
+                document.getElementById('section-content').innerHTML = `
+                    <p>无法加载文章内容，请稍后再试。</p>
+                    <a href="#" onclick="showHome()">返回主页</a>`;
+            }
         }
 
         function showHome() {
             document.getElementById('home-page').style.display = 'block';
             document.getElementById('section-page').style.display = 'none';
-            window.location.hash = '';
         }
 
-        window.onload = function() {
-            const hash = window.location.hash.slice(1);
-            if (hash && sections[hash]) {
-                showSection(hash);
-            }
-        };
+        function showSection(sectionId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('section-page').style.display = 'block';
+            fetchAndDisplayArticles(sectionId);
+            setCurrentSection(sectionId);
+        }
+
+        let currentSection = '';
+
+        function setCurrentSection(sectionId) {
+            currentSection = sectionId;
+        }
+
+        function getCurrentSection() {
+            return currentSection;
+        }
     </script>
+</head>
+<body>
+    <div id="home-page">
+        <h1>欢迎光临哲学园</h1>
+        <ul>
+            <li><a href="#" onclick="showSection('logic')">逻辑学</a></li>
+            <li><a href="#" onclick="showSection('metaphysics')">形而上学</a></li>
+            <li><a href="#" onclick="showSection('ethics')">伦理学</a></li>
+            <li><a href="#" onclick="showSection('aesthetics')">美学</a></li>
+        </ul>
+    </div>
+
+    <div id="section-page" style="display: none;">
+        <h1 id="section-title"></h1>
+        <div id="section-content"></div>
+    </div>
 </body>
 </html>
