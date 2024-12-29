@@ -149,7 +149,7 @@
                         <h2 class="section-title">古希腊哲学</h2>
                         <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
                     </a>
-
+                    <!-- 其他版块保持不变 -->
                     <a href="#metaphysics" class="section-card" onclick="showSection('metaphysics')">
                         <h2 class="section-title">形而上学</h2>
                         <p class="section-description">探讨存在、实在、本质等终极哲学问题。</p>
@@ -187,6 +187,7 @@
 
             <main class="container">
                 <div class="section-content" id="section-content">
+                    <!-- 内容将动态加载到这里 -->
                 </div>
             </main>
         </div>
@@ -275,12 +276,17 @@
 
         // 显示特定章节
         function showSection(sectionId) {
+            console.log(`Showing section: ${sectionId}`); // 调试信息
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('section-page').style.display = 'block';
             
             const section = sections[sectionId];
-            document.getElementById('section-title').textContent = section.title;
-            document.getElementById('section-content').innerHTML = section.content;
+            if (section) {
+                document.getElementById('section-title').textContent = section.title;
+                document.getElementById('section-content').innerHTML = section.content;
+            } else {
+                console.error(`Section not found: ${sectionId}`); // 调试信息
+            }
             
             // 更新 URL
             window.location.hash = sectionId;
@@ -288,6 +294,7 @@
 
         // 返回主页
         function showHome() {
+            console.log('Returning to home page'); // 调试信息
             document.getElementById('home-page').style.display = 'block';
             document.getElementById('section-page').style.display = 'none';
             window.location.hash = '';
@@ -295,6 +302,7 @@
 
         // 处理页面加载和刷新
         window.onload = function() {
+            console.log('Page loaded'); // 调试信息
             const hash = window.location.hash.slice(1);
             if (hash && sections[hash]) {
                 showSection(hash);
