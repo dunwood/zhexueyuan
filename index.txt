@@ -1,86 +1,305 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>哲学园</title>
+    <title>哲学园 - Philosophy Garden</title>
     <style>
-        /* 页面基础样式 */
-        body {
+        * {
             margin: 0;
             padding: 0;
-            font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; /* 黑体字体 */
-            background-color: #f4f4f4; /* 淡雅背景色 */
-            color: #003153; /* 普鲁士蓝，古希腊特色 */
+            box-sizing: border-box;
         }
 
-        /* 页面居中样式 */
+        body {
+            font-family: "Times New Roman", Georgia, serif;
+            background-color: #f5f5f5;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 2rem;
+        }
+
+        header {
             text-align: center;
+            padding: 4rem 0;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-bottom: 3rem;
+            position: relative;
         }
 
-        /* 标题样式 */
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #002244;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        /* 列表样式 */
-        .section-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .section-list li {
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #e0e6ed; /* 清新的背景色 */
-            border-radius: 8px;
+        .back-button {
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ecf0f1;
+            text-decoration: none;
             font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
 
-        .section-list li:hover {
-            background-color: #d6dde4; /* 鼠标悬浮效果 */
+        .back-button:hover {
+            background-color: #ecf0f1;
+            color: #34495e;
         }
 
-        /* 底部版权 */
+        .site-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.2rem;
+        }
+
+        .construction-notice {
+            font-size: 1.5rem;
+            color: #bdc3c7;
+            margin-top: 1rem;
+        }
+
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .section-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-description {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
         footer {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #888;
+            text-align: center;
+            padding: 2rem;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .site-title {
+                font-size: 2rem;
+            }
+            
+            .sections {
+                grid-template-columns: 1fr;
+            }
+
+            .back-button {
+                left: 1rem;
+                padding: 0.3rem 0.8rem;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 欢迎标语 -->
-        <h1>欢迎光临哲学园</h1>
-        <h2>网站建设中，敬请期待</h2>
+    <div id="app">
+        <!-- 主页 -->
+        <div id="home-page">
+            <header>
+                <h1 class="site-title">哲学园</h1>
+                <div class="construction-notice">欢迎光临哲学园，网站建设中，敬请期待</div>
+            </header>
 
-        <!-- 版块列表 -->
-        <ul class="section-list">
-            <li>哲学家传记</li>
-            <li>经典哲学著作解读</li>
-            <li>古希腊哲学思潮</li>
-            <li>现代哲学对话</li>
-            <li>哲学园活动公告</li>
-        </ul>
+            <main class="container">
+                <div class="sections">
+                    <a href="#ancient-greek" class="section-card" onclick="showSection('ancient-greek')">
+                        <h2 class="section-title">古希腊哲学</h2>
+                        <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
+                    </a>
 
-        <!-- 底部版权信息 -->
-        <footer>
-            © 2024 哲学园 | 探索哲学的奥秘
-        </footer>
+                    <a href="#metaphysics" class="section-card" onclick="showSection('metaphysics')">
+                        <h2 class="section-title">形而上学</h2>
+                        <p class="section-description">探讨存在、实在、本质等终极哲学问题。</p>
+                    </a>
+
+                    <a href="#ethics" class="section-card" onclick="showSection('ethics')">
+                        <h2 class="section-title">伦理学</h2>
+                        <p class="section-description">研究道德、价值观及人类行为的哲学思考。</p>
+                    </a>
+
+                    <a href="#epistemology" class="section-card" onclick="showSection('epistemology')">
+                        <h2 class="section-title">认识论</h2>
+                        <p class="section-description">探索知识的本质、来源与局限性。</p>
+                    </a>
+
+                    <a href="#logic" class="section-card" onclick="showSection('logic')">
+                        <h2 class="section-title">逻辑学</h2>
+                        <p class="section-description">学习推理方法与思维规律。</p>
+                    </a>
+
+                    <a href="#aesthetics" class="section-card" onclick="showSection('aesthetics')">
+                        <h2 class="section-title">美学</h2>
+                        <p class="section-description">探讨艺术与美的本质。</p>
+                    </a>
+                </div>
+            </main>
+        </div>
+
+        <!-- 子页面模板 -->
+        <div id="section-page" style="display: none;">
+            <header>
+                <a href="#" class="back-button" onclick="showHome()">返回主页</a>
+                <h1 class="site-title" id="section-title"></h1>
+            </header>
+
+            <main class="container">
+                <div class="section-content" id="section-content">
+                </div>
+            </main>
+        </div>
     </div>
+
+    <footer>
+        <p>© 2024 哲学园 Philosophy Garden</p>
+    </footer>
+
+    <script>
+        // 页面内容数据
+        const sections = {
+            'ancient-greek': {
+                title: '古希腊哲学',
+                content: `
+                    <h2>古希腊哲学简介</h2>
+                    <p>古希腊哲学是西方哲学的源头，对整个西方文明产生了深远的影响。主要代表人物包括：</p>
+                    <ul>
+                        <li>苏格拉底：以"苏格拉底方法"著称，强调"认识你自己"</li>
+                        <li>柏拉图：创立理念论，著有《理想国》等重要著作</li>
+                        <li>亚里士多德：百科全书式的哲学家，建立了逻辑学体系</li>
+                    </ul>
+                `
+            },
+            'metaphysics': {
+                title: '形而上学',
+                content: `
+                    <h2>形而上学研究</h2>
+                    <p>形而上学研究存在本身、实在的本质等根本性问题。主要探讨：</p>
+                    <ul>
+                        <li>存在的本质和意义</li>
+                        <li>实在与现象的关系</li>
+                        <li>本体论问题</li>
+                    </ul>
+                `
+            },
+            'ethics': {
+                title: '伦理学',
+                content: `
+                    <h2>伦理学探讨</h2>
+                    <p>伦理学关注道德价值和人类行为的准则。主要研究：</p>
+                    <ul>
+                        <li>道德的本质与起源</li>
+                        <li>善恶的标准</li>
+                        <li>道德判断的依据</li>
+                    </ul>
+                `
+            },
+            'epistemology': {
+                title: '认识论',
+                content: `
+                    <h2>认识论研究</h2>
+                    <p>认识论探讨人类知识的本质和限度。重点包括：</p>
+                    <ul>
+                        <li>知识的来源与本质</li>
+                        <li>真理的标准</li>
+                        <li>理性与经验的关系</li>
+                    </ul>
+                `
+            },
+            'logic': {
+                title: '逻辑学',
+                content: `
+                    <h2>逻辑学基础</h2>
+                    <p>逻辑学研究有效推理的规律和方法。主要内容：</p>
+                    <ul>
+                        <li>演绎推理与归纳推理</li>
+                        <li>逻辑公理与规则</li>
+                        <li>谬误分析</li>
+                    </ul>
+                `
+            },
+            'aesthetics': {
+                title: '美学',
+                content: `
+                    <h2>美学研究</h2>
+                    <p>美学探讨艺术与审美的本质。核心议题：</p>
+                    <ul>
+                        <li>美的本质与标准</li>
+                        <li>艺术创作的规律</li>
+                        <li>审美经验的特征</li>
+                    </ul>
+                `
+            }
+        };
+
+        // 显示特定章节
+        function showSection(sectionId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('section-page').style.display = 'block';
+            
+            const section = sections[sectionId];
+            document.getElementById('section-title').textContent = section.title;
+            document.getElementById('section-content').innerHTML = section.content;
+            
+            // 更新 URL
+            window.location.hash = sectionId;
+        }
+
+        // 返回主页
+        function showHome() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('section-page').style.display = 'none';
+            window.location.hash = '';
+        }
+
+        // 处理页面加载和刷新
+        window.onload = function() {
+            const hash = window.location.hash.slice(1);
+            if (hash && sections[hash]) {
+                showSection(hash);
+            }
+        };
+    </script>
 </body>
 </html>
