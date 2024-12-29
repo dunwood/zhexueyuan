@@ -4,6 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>哲学园</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        #section-content {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+    </style>
     <script>
         const sections = {
             'logic': {
@@ -93,19 +134,23 @@
     </script>
 </head>
 <body>
-    <div id="home-page">
+    <header>
         <h1>欢迎光临哲学园</h1>
-        <ul>
-            <li><a href="#" onclick="showSection('logic')">逻辑学</a></li>
-            <li><a href="#" onclick="showSection('metaphysics')">形而上学</a></li>
-            <li><a href="#" onclick="showSection('ethics')">伦理学</a></li>
-            <li><a href="#" onclick="showSection('aesthetics')">美学</a></li>
-        </ul>
-    </div>
+    </header>
+    <div class="container">
+        <div id="home-page">
+            <ul>
+                <li><a href="#" onclick="showSection('logic')">逻辑学</a></li>
+                <li><a href="#" onclick="showSection('metaphysics')">形而上学</a></li>
+                <li><a href="#" onclick="showSection('ethics')">伦理学</a></li>
+                <li><a href="#" onclick="showSection('aesthetics')">美学</a></li>
+            </ul>
+        </div>
 
-    <div id="section-page" style="display: none;">
-        <h1 id="section-title"></h1>
-        <div id="section-content"></div>
+        <div id="section-page" style="display: none;">
+            <h1 id="section-title"></h1>
+            <div id="section-content"></div>
+        </div>
     </div>
 </body>
 </html>
