@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哲学园</title>
+    <style>
+        /* 页面基础样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; /* 黑体 */
+            background-color: #f4f4f4; /* 淡雅背景色 */
+            color: #003153; /* 普鲁士蓝，古希腊特色 */
+        }
+
+        /* 页面居中样式 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #002244;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* 列表样式 */
+        .section-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .section-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e0e6ed; /* 清新的背景色 */
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+        .section-list li:hover {
+            background-color: #d6dde4; /* 鼠标悬浮效果 */
+        }
+
+        /* 底部版权 */
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 欢迎标语 -->
+        <h1>欢迎光临哲学园</h1>
+        <h2>网站建设中，敬请期待</h2>
+
+        <!-- 版块列表 -->
+        <ul class="section-list">
+            <li>哲学家传记</li>
+            <li>经典哲学著作解读</li>
+            <li>古希腊哲学思潮</li>
+            <li>现代哲学对话</li>
+            <li>哲学园活动公告</li>
+        </ul>
+
+        <!-- 底部版权信息 -->
+        <footer>
+            © 2024 哲学园 | 探索哲学的奥秘
+        </footer>
+    </div>
+</body>
+</html>
+
+
