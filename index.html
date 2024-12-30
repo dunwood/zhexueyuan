@@ -149,7 +149,7 @@
                         <h2 class="section-title">古希腊哲学</h2>
                         <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
                     </a>
-                    <!-- 其他版块保持不变 -->
+
                     <a href="#metaphysics" class="section-card" onclick="showSection('metaphysics')">
                         <h2 class="section-title">形而上学</h2>
                         <p class="section-description">探讨存在、实在、本质等终极哲学问题。</p>
@@ -187,7 +187,6 @@
 
             <main class="container">
                 <div class="section-content" id="section-content">
-                    <!-- 内容将动态加载到这里 -->
                 </div>
             </main>
         </div>
@@ -301,13 +300,13 @@
         }
 
         // 处理页面加载和刷新
-window.onload = function() {
-    console.log('Page loaded'); // 调试信息
-    const hash = window.location.hash.slice(1);
-    if (hash && sections[hash]) {
-        showSection(hash);
-    }
-};
+        window.onload = function() {
+            console.log('Page loaded'); // 调试信息
+            const hash = window.location.hash.slice(1);
+            if (hash && sections[hash]) {
+                showSection(hash);
+            }
+        };
     </script>
 </body>
 </html>
