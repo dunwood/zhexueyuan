@@ -301,13 +301,13 @@
         }
 
         // 处理页面加载和刷新
-        window.onload = function() {
-            console.log('Page loaded'); // 调试信息
-            const hash = window.location.hash.slice(1);
-            if (hash && sections[hash]) {
-                showSection(hash);
-            }
-        };
+window.onload = function() {
+    console.log('Page loaded'); // 调试信息
+    const hash = window.location.hash.slice(1);
+    if (hash && sections[hash]) {
+        showSection(hash);
+    }
+};
     </script>
 </body>
 </html>
