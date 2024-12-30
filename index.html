@@ -164,11 +164,35 @@
 
             <main class="container">
                 <div class="sections">
+                    <a href="#ancient-greek" class="section-card" onclick="showSection('ancient-greek')">
+                        <h2 class="section-title">古希腊哲学</h2>
+                        <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
+                    </a>
+
+                    <a href="#metaphysics" class="section-card" onclick="showSection('metaphysics')">
+                        <h2 class="section-title">形而上学</h2>
+                        <p class="section-description">探讨存在、实在、本质等终极哲学问题。</p>
+                    </a>
+
+                    <a href="#ethics" class="section-card" onclick="showSection('ethics')">
+                        <h2 class="section-title">伦理学</h2>
+                        <p class="section-description">研究道德、价值观及人类行为的哲学思考。</p>
+                    </a>
+
+                    <a href="#epistemology" class="section-card" onclick="showSection('epistemology')">
+                        <h2 class="section-title">认识论</h2>
+                        <p class="section-description">探索知识的本质、来源与局限性。</p>
+                    </a>
+
                     <a href="#logic" class="section-card" onclick="showSection('logic')">
                         <h2 class="section-title">逻辑学</h2>
                         <p class="section-description">学习推理方法与思维规律。</p>
                     </a>
-                    <!-- 其他版块保持不变 -->
+
+                    <a href="#aesthetics" class="section-card" onclick="showSection('aesthetics')">
+                        <h2 class="section-title">美学</h2>
+                        <p class="section-description">探讨艺术与美的本质。</p>
+                    </a>
                 </div>
             </main>
         </div>
@@ -190,7 +214,7 @@
         <!-- 文章详情页 -->
         <div id="article-page" style="display: none;">
             <header>
-                <a href="#" class="back-button" onclick="showSection('logic')">返回逻辑学</a>
+                <a href="#" class="back-button" id="back-to-section">返回</a>
                 <h1 class="site-title" id="article-title"></h1>
             </header>
 
@@ -210,11 +234,51 @@
     <script>
         // 文章数据
         const articles = {
+            'ancient-greek': [
+                {
+                    id: 'first-article',
+                    title: '第一篇古希腊哲学文章',
+                    filePath: 'articles/ancient-greek/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'metaphysics': [
+                {
+                    id: 'first-article',
+                    title: '第一篇形而上学文章',
+                    filePath: 'articles/metaphysics/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'ethics': [
+                {
+                    id: 'first-article',
+                    title: '第一篇伦理学文章',
+                    filePath: 'articles/ethics/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'epistemology': [
+                {
+                    id: 'first-article',
+                    title: '第一篇认识论文章',
+                    filePath: 'articles/epistemology/first-article.md'
+                },
+                // 添加更多文章
+            ],
             'logic': [
                 {
                     id: 'first-article',
                     title: '第一篇逻辑学文章',
-                    filePath: 'articles/logic/2024-12-30-first-article.md'
+                    filePath: 'articles/logic/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'aesthetics': [
+                {
+                    id: 'first-article',
+                    title: '第一篇美学文章',
+                    filePath: 'articles/aesthetics/first-article.md'
                 },
                 // 添加更多文章
             ]
@@ -228,10 +292,15 @@
 
             const section = articles[sectionId];
             if (section) {
-                document.getElementById('section-title').textContent = '逻辑学';
+                document.getElementById('section-title').textContent = sectionId === 'ancient-greek' ? '古希腊哲学' :
+                                                                      sectionId === 'metaphysics' ? '形而上学' :
+                                                                      sectionId === 'ethics' ? '伦理学' :
+                                                                      sectionId === 'epistemology' ? '认识论' :
+                                                                      sectionId === 'logic' ? '逻辑学' :
+                                                                      sectionId === 'aesthetics' ? '美学' : '';
                 const content = document.getElementById('section-content');
                 content.innerHTML = `
-                    <h2>逻辑学文章列表</h2>
+                    <h2>文章列表</h2>
                     <ul class="article-list">
                         ${section.map(article => `
                             <li>
@@ -254,6 +323,7 @@
             const article = articles[sectionId].find(a => a.id === articleId);
             if (article) {
                 document.getElementById('article-title').textContent = article.title;
+                document.getElementById('back-to-section').setAttribute('onclick', `showSection('${sectionId}')`);
                 fetch(article.filePath)
                     .then(response => response.text())
                     .then(markdown => {
@@ -273,11 +343,11 @@
         // 处理页面加载和刷新
         window.onload = function() {
             const hash = window.location.hash.slice(1);
-            if (hash === 'logic') {
-                showSection('logic');
+            if (hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics') {
+                showSection(hash);
             } else if (hash.startsWith('article-')) {
-                const articleId = hash.split('-')[1];
-                showArticle('logic', articleId);
+                const [sectionId, articleId] = hash.split('-').slice(1);
+                showArticle(sectionId, articleId);
             }
         };
     </script>
