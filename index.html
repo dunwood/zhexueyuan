@@ -164,10 +164,12 @@
 
             <main class="container">
                 <div class="sections">
-                     <a href="#ancient-greek" class="section-card" onclick="showSection('philosphy_all')">
-                        <h2 class="section-title">所有文章</h2>
-                        <p class="section-description">哲学是爱智慧， 爱智慧乃是对心灵的驯化。</p>
+                    <!-- 新增“所有哲学”部分 -->
+                    <a href="#all-philosophy" class="section-card" onclick="showSection('all-philosophy')">
+                        <h2 class="section-title">所有哲学</h2>
+                        <p class="section-description">哲学是爱智慧，爱智慧乃是对心灵的驯化。</p>
                     </a>
+
                     <a href="#ancient-greek" class="section-card" onclick="showSection('ancient-greek')">
                         <h2 class="section-title">古希腊哲学</h2>
                         <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
@@ -197,9 +199,11 @@
                         <h2 class="section-title">美学</h2>
                         <p class="section-description">探讨艺术与美的本质。</p>
                     </a>
-                     <a href="#ancient-greek" class="section-card" onclick="showSection('chan')">
+
+                    <!-- 新增“老蝉专栏”部分 -->
+                    <a href="#laochan-column" class="section-card" onclick="showSection('laochan-column')">
                         <h2 class="section-title">老蝉专栏</h2>
-                        <p class="section-description">一些突发怪想。</p>
+                        <p class="section-description">一些突发奇想。</p>
                     </a>
                 </div>
             </main>
@@ -242,19 +246,12 @@
     <script>
         // 文章数据
         const articles = {
-             'philosphy_all': [
-                {
-                    id: 'first-article',
-                    title: '第一篇哲学文章',
-                     filePath: 'articles/ancient-greek/欢迎来到哲学园.md'
-                },
-                // 添加更多文章
-            ],
+            'all-philosophy': [], // 所有哲学
             'ancient-greek': [
                 {
                     id: 'first-article',
                     title: '第一篇古希腊哲学文章',
-                     filePath: 'articles/ancient-greek/欢迎来到哲学园.md'
+                    filePath: 'articles/ancient-greek/欢迎来到哲学园.md'
                 },
                 // 添加更多文章
             ],
@@ -262,7 +259,7 @@
                 {
                     id: 'first-article',
                     title: '第一篇形而上学文章',
-                     filePath: 'articles/metaphysics/欢迎来到哲学园.md'
+                    filePath: 'articles/metaphysics/欢迎来到哲学园.md'
                 },
                 // 添加更多文章
             ],
@@ -270,7 +267,7 @@
                 {
                     id: 'first-article',
                     title: '第一篇伦理学文章',
-                     filePath: 'articles/ethics/欢迎来到哲学园.md'
+                    filePath: 'articles/ethics/欢迎来到哲学园.md'
                 },
                 // 添加更多文章
             ],
@@ -294,18 +291,11 @@
                 {
                     id: 'first-article',
                     title: '第一篇美学文章',
-                     filePath: 'articles/aesthetics/欢迎来到哲学园.md'
-                },
-                // 添加更多文章
-                 'chan': [
-                {
-                    id: 'first-article',
-                    title: '老蝉第一篇文章',
-                     filePath: 'articles/ancient-greek/欢迎来到哲学园.md'
+                    filePath: 'articles/aesthetics/欢迎来到哲学园.md'
                 },
                 // 添加更多文章
             ],
-            ]
+            'laochan-column': [] // 老蝉专栏
         };
 
         // 显示特定章节
@@ -316,12 +306,14 @@
 
             const section = articles[sectionId];
             if (section) {
-                document.getElementById('section-title').textContent = sectionId === 'ancient-greek' ? '古希腊哲学' :
+                document.getElementById('section-title').textContent = sectionId === 'all-philosophy' ? '所有哲学' :
+                                                                      sectionId === 'ancient-greek' ? '古希腊哲学' :
                                                                       sectionId === 'metaphysics' ? '形而上学' :
                                                                       sectionId === 'ethics' ? '伦理学' :
                                                                       sectionId === 'epistemology' ? '认识论' :
                                                                       sectionId === 'logic' ? '逻辑学' :
-                                                                      sectionId === 'aesthetics' ? '美学' : '';
+                                                                      sectionId === 'aesthetics' ? '美学' :
+                                                                      sectionId === 'laochan-column' ? '老蝉专栏' : '';
                 const content = document.getElementById('section-content');
                 content.innerHTML = `
                     <h2>文章列表</h2>
@@ -371,7 +363,7 @@
         // 处理页面加载和刷新
         window.onload = function() {
             const hash = window.location.hash.slice(1);
-            if (hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics') {
+            if (hash === 'all-philosophy' || hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics' || hash === 'laochan-column') {
                 showSection(hash);
             } else if (hash.startsWith('article-')) {
                 const [sectionId, articleId] = hash.split('-').slice(1);
