@@ -105,6 +105,25 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
+        .article-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .article-list li {
+            margin: 1rem 0;
+        }
+
+        .article-list a {
+            text-decoration: none;
+            color: #3498db;
+            font-size: 1.2rem;
+        }
+
+        .article-list a:hover {
+            text-decoration: underline;
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -187,6 +206,21 @@
 
             <main class="container">
                 <div class="section-content" id="section-content">
+                    <!-- 文章列表将动态加载到这里 -->
+                </div>
+            </main>
+        </div>
+
+        <!-- 文章详情页 -->
+        <div id="article-page" style="display: none;">
+            <header>
+                <a href="#" class="back-button" id="back-to-section">返回</a>
+                <h1 class="site-title" id="article-title"></h1>
+            </header>
+
+            <main class="container">
+                <div class="section-content" id="article-content">
+                    <!-- 文章内容将动态加载到这里 -->
                 </div>
             </main>
         </div>
@@ -195,119 +229,131 @@
     <footer>
         <p>© 2024 哲学园 Philosophy Garden</p>
     </footer>
-<script>
-    // 页面内容数据
-    const sections = {
-        'ancient-greek': {
-            title: '古希腊哲学',
-            content: `
-                <h2>古希腊哲学简介</h2>
-                <p>古希腊哲学是西方哲学的源头，对整个西方文明产生了深远的影响。主要代表人物包括：</p>
-                <ul>
-                    <li>苏格拉底：以"苏格拉底方法"著称，强调"认识你自己"</li>
-                    <li>柏拉图：创立理念论，著有《理想国》等重要著作</li>
-                    <li>亚里士多德：百科全书式的哲学家，建立了逻辑学体系</li>
-                </ul>
-              <iframe src="articles/logic/2024-12-30-first-article.md" style="width:100%; height:500px; border:none;"></iframe>
-        },
-            'metaphysics': {
-                title: '形而上学',
-                content: `
-                    <h2>形而上学研究</h2>
-                    <p>形而上学研究存在本身、实在的本质等根本性问题。主要探讨：</p>
-                    <ul>
-                        <li>存在的本质和意义</li>
-                        <li>实在与现象的关系</li>
-                        <li>本体论问题</li>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // 文章数据
+        const articles = {
+            'ancient-greek': [
+                {
+                    id: 'first-article',
+                    title: '第一篇古希腊哲学文章',
+                    filePath: 'articles/ancient-greek/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'metaphysics': [
+                {
+                    id: 'first-article',
+                    title: '第一篇形而上学文章',
+                    filePath: 'articles/metaphysics/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'ethics': [
+                {
+                    id: 'first-article',
+                    title: '第一篇伦理学文章',
+                    filePath: 'articles/ethics/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'epistemology': [
+                {
+                    id: 'first-article',
+                    title: '第一篇认识论文章',
+                    filePath: 'articles/epistemology/first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'logic': [
+                {
+                    id: 'first-article',
+                    title: '第一篇逻辑学文章',
+                    filePath: 'articles/logic/2024-12-30-first-article.md'
+                },
+                // 添加更多文章
+            ],
+            'aesthetics': [
+                {
+                    id: 'first-article',
+                    title: '第一篇美学文章',
+                    filePath: 'articles/aesthetics/first-article.md'
+                },
+                // 添加更多文章
+            ]
+        };
+
+        // 显示特定章节
+        function showSection(sectionId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('section-page').style.display = 'block';
+            document.getElementById('article-page').style.display = 'none';
+
+            const section = articles[sectionId];
+            if (section) {
+                document.getElementById('section-title').textContent = sectionId === 'ancient-greek' ? '古希腊哲学' :
+                                                                      sectionId === 'metaphysics' ? '形而上学' :
+                                                                      sectionId === 'ethics' ? '伦理学' :
+                                                                      sectionId === 'epistemology' ? '认识论' :
+                                                                      sectionId === 'logic' ? '逻辑学' :
+                                                                      sectionId === 'aesthetics' ? '美学' : '';
+                const content = document.getElementById('section-content');
+                content.innerHTML = `
+                    <h2>文章列表</h2>
+                    <ul class="article-list">
+                        ${section.map(article => `
+                            <li>
+                                <a href="#${article.id}" onclick="showArticle('${sectionId}', '${article.id}')">
+                                    ${article.title}
+                                </a>
+                            </li>
+                        `).join('')}
                     </ul>
-                  <iframe src="articles/logic/2024-12-30-first-article.md" style="width:100%; height:500px; border:none;"></iframe>
-            },
-            'ethics': {
-                title: '伦理学',
-                content: `
-                    <h2>伦理学探讨</h2>
-                    <p>伦理学关注道德价值和人类行为的准则。主要研究：</p>
-                    <ul>
-                        <li>道德的本质与起源</li>
-                        <li>善恶的标准</li>
-                        <li>道德判断的依据</li>
-                    </ul>
-                 <iframe src="articles/logic/2024-12-30-first-article.md" style="width:100%; height:500px; border:none;"></iframe>
-            },
-            'epistemology': {
-                title: '认识论',
-                content: `
-                    <h2>认识论研究</h2>
-                    <p>认识论探讨人类知识的本质和限度。重点包括：</p>
-                    <ul>
-                        <li>知识的来源与本质</li>
-                        <li>真理的标准</li>
-                        <li>理性与经验的关系</li>
-                    </ul>
-                  <iframe src="articles/logic/2024-12-30-first-article.md" style="width:100%; height:500px; border:none;"></iframe>
-            },
-       
-    'logic': {
-        title: '逻辑学',
-        content: `
-            <h2>逻辑学基础</h2>
-            <p>逻辑学研究有效推理的规律和方法。主要内容：</p>
-            <ul>
-                <li>演绎推理与归纳推理</li>
-                <li>逻辑公理与规则</li>
-                <li>谬误分析</li>
-            </ul>
-            <iframe src="articles/logic/2024-12-30-first-article.md" style="width:100%; height:500px; border:none;"></iframe>
-        `
-    }；
-    // 其他版块数据保持不变
-            'aesthetics': {
-                title: '美学',
-                content: `
-                    <h2>美学研究</h2>
-                    <p>美学探讨艺术与审美的本质。核心议题：</p>
-                    <ul>
-                        <li>美的本质与标准</li>
-                        <li>艺术创作的规律</li>
-                        <li>审美经验的特征</li>
-                    </ul>
-                `
+                `;
             }
-    };
-    console.log('Sections data loaded:', sections); // 调试信息
-
-    // 显示特定章节
-    function showSection(sectionId) {
-        console.log(`Showing section: ${sectionId}`); // 调试信息
-        document.getElementById('home-page').style.display = 'none';
-        document.getElementById('section-page').style.display = 'block';
-        
-        const section = sections[sectionId];
-        if (section) {
-            document.getElementById('section-title').textContent = section.title;
-            document.getElementById('section-content').innerHTML = section.content;
-        } else {
-            console.error(`Section not found: ${sectionId}`); // 调试信息
         }
-        
-        // 更新 URL
-        window.location.hash = sectionId;
-    }
 
-    // 返回主页
-    function showHome() {
-        console.log('Returning to home page'); // 调试信息
-        document.getElementById('home-page').style.display = 'block';
-        document.getElementById('section-page').style.display = 'none';
-        window.location.hash = '';
-    }
+        // 显示文章详情
+        function showArticle(sectionId, articleId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('section-page').style.display = 'none';
+            document.getElementById('article-page').style.display = 'block';
 
-    // 处理页面加载和刷新
-    window.onload = function() {
-        console.log('Page loaded'); // 调试信息
-        const hash = window.location.hash.slice(1);
-        if (hash && sections[hash]) {
-            showSection(hash);
+            const article = articles[sectionId].find(a => a.id === articleId);
+            if (article) {
+                document.getElementById('article-title').textContent = article.title;
+                document.getElementById('back-to-section').setAttribute('onclick', `showSection('${sectionId}')`);
+                fetch(article.filePath)
+                    .then(response => response.text())
+                    .then(markdown => {
+                        document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                    })
+                    .catch(error => {
+                        console.error('加载文章失败:', error);
+                        document.getElementById('article-content').innerHTML = `<p>无法加载文章，请稍后重试。</p>`;
+                    });
+            }
         }
-    };
-</script>
+
+        // 返回主页
+        function showHome() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('section-page').style.display = 'none';
+            document.getElementById('article-page').style.display = 'none';
+            window.location.hash = '';
+        }
+
+        // 处理页面加载和刷新
+        window.onload = function() {
+            const hash = window.location.hash.slice(1);
+            if (hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics') {
+                showSection(hash);
+            } else if (hash.startsWith('article-')) {
+                const [sectionId, articleId] = hash.split('-').slice(1);
+                showArticle(sectionId, articleId);
+            }
+        };
+    </script>
+</body>
+</html>
