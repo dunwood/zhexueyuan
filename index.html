@@ -200,6 +200,12 @@
                         <p class="section-description">探讨艺术与美的本质。</p>
                     </a>
 
+                    <!-- 新增“数理科哲”部分 -->
+                    <a href="#math-science-philosophy" class="section-card" onclick="showSection('math-science-philosophy')">
+                        <h2 class="section-title">数理科哲</h2>
+                        <p class="section-description">数学、科学和哲学从来都是一家人。</p>
+                    </a>
+
                     <!-- 新增“老蝉专栏”部分 -->
                     <a href="#laochan-column" class="section-card" onclick="showSection('laochan-column')">
                         <h2 class="section-title">老蝉专栏</h2>
@@ -246,56 +252,69 @@
     <script>
         // 文章数据
         const articles = {
-            'all-philosophy': [], // 所有哲学
+            'all-philosophy': [
+                {
+                    id: 'first-article',
+                    title: '第一篇所有哲学文章',
+                    filePath: 'articles/all-philosophy/欢迎来到哲学园.md'
+                }
+            ],
             'ancient-greek': [
                 {
                     id: 'first-article',
                     title: '第一篇古希腊哲学文章',
                     filePath: 'articles/ancient-greek/欢迎来到哲学园.md'
-                },
-                // 添加更多文章
+                }
             ],
             'metaphysics': [
                 {
                     id: 'first-article',
                     title: '第一篇形而上学文章',
                     filePath: 'articles/metaphysics/欢迎来到哲学园.md'
-                },
-                // 添加更多文章
+                }
             ],
             'ethics': [
                 {
                     id: 'first-article',
                     title: '第一篇伦理学文章',
                     filePath: 'articles/ethics/欢迎来到哲学园.md'
-                },
-                // 添加更多文章
+                }
             ],
             'epistemology': [
                 {
                     id: 'first-article',
                     title: '第一篇认识论文章',
                     filePath: 'articles/epistemology/欢迎来到哲学园.md'
-                },
-                // 添加更多文章
+                }
             ],
             'logic': [
                 {
                     id: 'first-article',
                     title: '第一篇逻辑学文章',
                     filePath: 'articles/logic/2024-12-30-first-article.md'
-                },
-                // 添加更多文章
+                }
             ],
             'aesthetics': [
                 {
                     id: 'first-article',
                     title: '第一篇美学文章',
                     filePath: 'articles/aesthetics/欢迎来到哲学园.md'
-                },
-                // 添加更多文章
+                }
             ],
-            'laochan-column': [] // 老蝉专栏
+            'math-science-philosophy': [
+                {
+                    id: 'first-article',
+                    title: '第一篇数理科哲文章',
+                    filePath: 'articles/math-science-philosophy/欢迎来到哲学园.md'
+                }
+            ],
+            'laochan-column': [
+                {
+                    id: 'first-article',
+                    title: '第一篇老蝉专栏文章',
+                    filePath: 'articles/laochan-column/欢迎来到哲学园.md'
+                }
+            ]
         };
 
         // 显示特定章节
@@ -313,6 +332,7 @@
                                                                       sectionId === 'epistemology' ? '认识论' :
                                                                       sectionId === 'logic' ? '逻辑学' :
                                                                       sectionId === 'aesthetics' ? '美学' :
+                                                                      sectionId === 'math-science-philosophy' ? '数理科哲' :
                                                                       sectionId === 'laochan-column' ? '老蝉专栏' : '';
                 const content = document.getElementById('section-content');
                 content.innerHTML = `
@@ -363,7 +383,7 @@
         // 处理页面加载和刷新
         window.onload = function() {
             const hash = window.location.hash.slice(1);
-            if (hash === 'all-philosophy' || hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics' || hash === 'laochan-column') {
+            if (hash === 'all-philosophy' || hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics' || hash === 'math-science-philosophy' || hash === 'laochan-column') {
                 showSection(hash);
             } else if (hash.startsWith('article-')) {
                 const [sectionId, articleId] = hash.split('-').slice(1);
