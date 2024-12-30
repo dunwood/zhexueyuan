@@ -4,7 +4,153 @@
     <meta charset="UTF-8">
     <title>哲学园 - Philosophy Garden</title>
     <style>
-        /* 样式部分保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", Georgia, serif;
+            background-color: #f5f5f5;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ecf0f1;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #ecf0f1;
+            color: #34495e;
+        }
+
+        .site-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.2rem;
+        }
+
+        .construction-notice {
+            font-size: 1.5rem;
+            color: #bdc3c7;
+            margin-top: 1rem;
+        }
+
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .section-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-description {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .article-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .article-list li {
+            margin: 1rem 0;
+        }
+
+        .article-list a {
+            text-decoration: none;
+            color: #3498db;
+            font-size: 1.2rem;
+        }
+
+        .article-list a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .site-title {
+                font-size: 2rem;
+            }
+            
+            .sections {
+                grid-template-columns: 1fr;
+            }
+
+            .back-button {
+                left: 1rem;
+                padding: 0.3rem 0.8rem;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
