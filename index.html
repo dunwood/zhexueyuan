@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>哲学园 - Philosophy Garden</title>
+    <!-- 添加MathJax支持 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- 保留原有样式 -->
     <style>
+        /* 你的原有CSS样式 */
         * {
             margin: 0;
             padding: 0;
@@ -401,7 +406,7 @@
                     title: '欢迎来到哲学园',
                     filePath: 'articles/laochan-column/欢迎来到哲学园.md'
                 },
-		{
+                {
                     id: 'modern-life',
                     title: '欢迎来到哲学园',
                     filePath: 'articles/laochan-column/欢迎来到哲学园.md'
@@ -456,6 +461,10 @@
                     .then(response => response.text())
                     .then(markdown => {
                         document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                        // 重新渲染MathJax公式
+                        if (window.MathJax) {
+                            window.MathJax.typesetPromise();
+                        }
                     })
                     .catch(error => {
                         console.error('加载文章失败:', error);
