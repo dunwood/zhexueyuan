@@ -346,3 +346,4 @@ A \wedge B \ \text{在} \ \mathbf{E} \ \text{中验证，当且仅当} \ A \ \te
 [14] **G. Kreisel.** *A remark on free choice sequences and the topological completeness proofs.* *The journal of symbolic logic,* vol. 23 (1958), pp. 369–388.  
 
 [15] **W. Van O. Quine.** *Mathematical logic.* Harvard University Press, Cambridge, Mass., 1940; second ed., revised, 1951, xii + 346 pp.  
+ 
