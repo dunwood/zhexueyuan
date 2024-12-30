@@ -182,6 +182,10 @@
                     .then(response => response.text())
                     .then(markdown => {
                         document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                    })
+                    .catch(error => {
+                        console.error('加载文章失败:', error);
+                        document.getElementById('article-content').innerHTML = `<p>无法加载文章，请稍后重试。</p>`;
                     });
             }
         }
