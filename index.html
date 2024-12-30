@@ -164,7 +164,6 @@
 
             <main class="container">
                 <div class="sections">
-                    <!-- 新增“所有哲学”部分 -->
                     <a href="#all-philosophy" class="section-card" onclick="showSection('all-philosophy')">
                         <h2 class="section-title">所有哲学</h2>
                         <p class="section-description">哲学是爱智慧，爱智慧乃是对心灵的驯化。</p>
@@ -200,13 +199,11 @@
                         <p class="section-description">探讨艺术与美的本质。</p>
                     </a>
 
-                    <!-- 新增“数理科哲”部分 -->
                     <a href="#math-science-philosophy" class="section-card" onclick="showSection('math-science-philosophy')">
                         <h2 class="section-title">数理科哲</h2>
                         <p class="section-description">数学、科学和哲学从来都是一家人。</p>
                     </a>
 
-                    <!-- 新增“老蝉专栏”部分 -->
                     <a href="#laochan-column" class="section-card" onclick="showSection('laochan-column')">
                         <h2 class="section-title">老蝉专栏</h2>
                         <p class="section-description">一些突发奇想。</p>
@@ -254,65 +251,155 @@
         const articles = {
             'all-philosophy': [
                 {
-                    id: 'first-article',
-                    title: '第一篇所有哲学文章',
+                    id: 'introduction',
+                    title: '欢迎来到哲学园',
                     filePath: 'articles/all-philosophy/欢迎来到哲学园.md'
+                },
+                {
+                    id: 'what-is-philosophy',
+                    title: '什么是哲学',
+                    filePath: 'articles/all-philosophy/什么是哲学.md'
+                },
+                {
+                    id: 'philosophy-history',
+                    title: '哲学简史',
+                    filePath: 'articles/all-philosophy/哲学简史.md'
                 }
             ],
             'ancient-greek': [
                 {
-                    id: 'first-article',
-                    title: '第一篇古希腊哲学文章',
-                    filePath: 'articles/ancient-greek/欢迎来到哲学园.md'
+                    id: 'presocratic',
+                    title: '前苏格拉底哲学',
+                    filePath: 'articles/ancient-greek/前苏格拉底哲学.md'
+                },
+                {
+                    id: 'socrates',
+                    title: '苏格拉底的智慧',
+                    filePath: 'articles/ancient-greek/苏格拉底的智慧.md'
+                },
+                {
+                    id: 'plato',
+                    title: '柏拉图的理念论',
+                    filePath: 'articles/ancient-greek/柏拉图的理念论.md'
                 }
             ],
             'metaphysics': [
                 {
-                    id: 'first-article',
-                    title: '第一篇形而上学文章',
-                    filePath: 'articles/metaphysics/欢迎来到哲学园.md'
+                    id: 'being',
+                    title: '存在的意义',
+                    filePath: 'articles/metaphysics/存在的意义.md'
+                },
+                {
+                    id: 'substance',
+                    title: '实体论',
+                    filePath: 'articles/metaphysics/实体论.md'
+                },
+                {
+                    id: 'causation',
+                    title: '因果性探究',
+                    filePath: 'articles/metaphysics/因果性探究.md'
                 }
             ],
             'ethics': [
                 {
-                    id: 'first-article',
-                    title: '第一篇伦理学文章',
-                    filePath: 'articles/ethics/欢迎来到哲学园.md'
+                    id: 'virtue',
+                    title: '美德伦理学',
+                    filePath: 'articles/ethics/美德伦理学.md'
+                },
+                {
+                    id: 'duty',
+                    title: '义务论伦理',
+                    filePath: 'articles/ethics/义务论伦理.md'
+                },
+                {
+                    id: 'utilitarianism',
+                    title: '功利主义思考',
+                    filePath: 'articles/ethics/功利主义思考.md'
                 }
             ],
             'epistemology': [
                 {
-                    id: 'first-article',
-                    title: '第一篇认识论文章',
-                    filePath: 'articles/epistemology/欢迎来到哲学园.md'
+                    id: 'knowledge',
+                    title: '知识的本质',
+                    filePath: 'articles/epistemology/知识的本质.md'
+                },
+                {
+                    id: 'truth',
+                    title: '真理理论',
+                    filePath: 'articles/epistemology/真理理论.md'
+                },
+                {
+                    id: 'skepticism',
+                    title: '怀疑主义的价值',
+                    filePath: 'articles/epistemology/怀疑主义的价值.md'
                 }
             ],
             'logic': [
                 {
-                    id: 'first-article',
+                    id: 'modal-logic',
                     title: '模态逻辑的语义考量',
-                    filePath: 'articles/logic/2024-12-30-first-article.md'
+                    filePath: 'articles/logic/模态逻辑的语义考量.md'
+                },
+                {
+                    id: 'predicate-logic',
+                    title: '谓词逻辑基础',
+                    filePath: 'articles/logic/谓词逻辑基础.md'
+                },
+                {
+                    id: 'informal-fallacies',
+                    title: '非形式谬误分析',
+                    filePath: 'articles/logic/非形式谬误分析.md'
                 }
             ],
             'aesthetics': [
                 {
-                    id: 'first-article',
-                    title: '第一篇美学文章',
-                    filePath: 'articles/aesthetics/欢迎来到哲学园.md'
+                    id: 'beauty',
+                    title: '美的本质',
+                    filePath: 'articles/aesthetics/美的本质.md'
+                },
+                {
+                    id: 'art-theory',
+                    title: '艺术理论探索',
+                    filePath: 'articles/aesthetics/艺术理论探索.md'
+                },
+                {
+                    id: 'aesthetic-experience',
+                    title: '审美经验研究',
+                    filePath: 'articles/aesthetics/审美经验研究.md'
                 }
             ],
             'math-science-philosophy': [
                 {
-                    id: 'first-article',
-                    title: '第一篇数理科哲文章',
-                    filePath: 'articles/math-science-philosophy/欢迎来到哲学园.md'
+                    id: 'math-foundation',
+                    title: '数学基础探究',
+                    filePath: 'articles/math-science-philosophy/数学基础探究.md'
+                },
+                {
+                    id: 'quantum-philosophy',
+                    title: '量子力学的哲学思考',
+                    filePath: 'articles/math-science-philosophy/量子力学的哲学思考.md'
+                },
+                {
+                    id: 'scientific-method',
+                    title: '科学方法论',
+                    filePath: 'articles/math-science-philosophy/科学方法论.md'
                 }
             ],
             'laochan-column': [
                 {
-                    id: 'first-article',
-                    title: '第一篇老蝉专栏文章',
-                    filePath: 'articles/laochan-column/欢迎来到哲学园.md'
+                    id: 'thoughts-on-ai',
+                    title: '人工智能的哲学思考',
+                    filePath: 'articles/laochan-column/人工智能的哲学思考.md'
+                },
+                {
+                    id: 'eastern-wisdom',
+                    title: '东方智慧启示录',
+                    filePath: 'articles/laochan-column/东方智慧启示录.md'
+                },
+                {
+                    id: 'modern-life',
+                    title: '现代生活的哲学观察',
+                    filePath: 'articles/laochan-column/现代生活的哲学观察.md'
                 }
             ]
         };
