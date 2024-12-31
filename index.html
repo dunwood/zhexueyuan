@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>哲学园 - Philosophy Garden</title>
+    <!-- 配置 MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']], // 行内公式
+                displayMath: [['$$', '$$']] // 行间公式
+            }
+        };
+    </script>
     <!-- 加载 MathJax -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <!-- 保留原有样式 -->
     <style>
