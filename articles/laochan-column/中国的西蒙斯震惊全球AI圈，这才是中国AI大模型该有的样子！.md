@@ -1,5 +1,5 @@
 <div style="text-align:center">
-    <span style="font-size:14px; color:black">
+    <span style="font-size:16px; color:black">
 最近几天，杭州“深度求索”公司的DeepSeek火遍全球AI圈，低训练成本和高性能是其亮点。<br>
 
 老蝉这几天正好用大模型0基础建哲学园网站（zhexueyuan.com），使用了三个大模型：ChatGPT、Claude、DeepSeek，在给出的程序中存在一些问题，最后都由DeepSeek解决，对话体验也非常好，特别是速度超级快（老蝉在多伦多上网），几乎秒回（可能使用的人还不多吧），而ChatGPT是三个大模型中速度最慢的。<br>
