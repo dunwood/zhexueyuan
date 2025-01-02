@@ -10,7 +10,7 @@
 希望DeepSeek再创高峰，持续发展。中国的未来不是模仿抄袭，而是创新创造！<br><br>
 以下文章是梁文锋为《征服市场的人：西蒙斯传》写的序言<br><br>
  <span style="font-size:20px; color:black">
-  创造理解市场的模型
+  <b>创造理解市场的模型</b>
   </span>
   <br><br>
 梁文锋<br>
