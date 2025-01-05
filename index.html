@@ -221,11 +221,6 @@
                         <h2 class="section-title">老蝉专栏</h2>
                         <p class="section-description">一些突发奇想。</p>
                     </a>
-                    
-                      <a href="#laochan-column" class="section-card" onclick="showSection('video')">
-                        <h2 class="section-title">视频</h2>
-                        <p class="section-description"></p>
-                    </a>
                 </div>
             </main>
         </div>
@@ -408,11 +403,26 @@
                     filePath: 'articles/math-science-philosophy/科学方法论.md'
                 }
             ],
-            'video': [
+            'laochan-column': [
                  {
                     id: 'GPT-3 YEARS',
                     title: 'GPT：将在三年内取代搜索引擎',
                     filePath: 'articles/laochan-column/GPT：将在三年内取代搜索引擎.md'
+                },
+                 {
+                    id: 'DeepSeek',
+                    title: '中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！',
+                    filePath: 'articles/laochan-column/中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！.md'
+                },
+                 {
+                    id: '2024-chan',
+                    title: '2024年终总结',
+                    filePath: 'articles/laochan-column/2024年终总结.md'
+                },
+                {
+                    id: 'thoughts-on-ai',
+                    title: '我为什么支持川普',
+                    filePath: 'articles/laochan-column/我为什么支持川普.md'
                 },
                 {
                     id: 'eastern-wisdom',
@@ -420,11 +430,6 @@
                     filePath: 'articles/laochan-column/川普强势回归，开启美国“商人”治国新纪元.md'
                 }
             ]
-
-              <a href="#laochan-column" class="section-card" onclick="showSection('laochan-column')">
-                        <h2 class="section-title">老蝉专栏</h2>
-                        <p class="section-description">一些突发奇想。</p>
-                    </a>
         };
 
         // 显示特定章节
@@ -443,8 +448,7 @@
                                                                       sectionId === 'logic' ? '逻辑学' :
                                                                       sectionId === 'aesthetics' ? '美学' :
                                                                       sectionId === 'math-science-philosophy' ? '数理科哲' :
-                                                                      sectionId === 'laochan-column' ? '老蝉专栏' : 
-                                                                    sectionId === 'video' ? '视频' :'';
+                                                                      sectionId === 'laochan-column' ? '老蝉专栏' : '';
                 const content = document.getElementById('section-content');
                 content.innerHTML = `
                     <h2>文章列表</h2>
