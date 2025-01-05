@@ -224,7 +224,7 @@
                     
                       <a href="#laochan-column" class="section-card" onclick="showSection('video')">
                         <h2 class="section-title">视频</h2>
-                        <p class="section-description">。</p>
+                        <p class="section-description"></p>
                     </a>
                 </div>
             </main>
@@ -443,7 +443,8 @@
                                                                       sectionId === 'logic' ? '逻辑学' :
                                                                       sectionId === 'aesthetics' ? '美学' :
                                                                       sectionId === 'math-science-philosophy' ? '数理科哲' :
-                                                                      sectionId === 'laochan-column' ? '老蝉专栏' : '';
+                                                                      sectionId === 'laochan-column' ? '老蝉专栏' : 
+                                                                    sectionId === 'video' ? '视频' :'';
                 const content = document.getElementById('section-content');
                 content.innerHTML = `
                     <h2>文章列表</h2>
