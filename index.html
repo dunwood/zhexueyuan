@@ -292,7 +292,8 @@
                     title: '川普强势回归，开启美国“商人”治国新纪元',
                     filePath: 'articles/laochan-column/川普强势回归，开启美国“商人”治国新纪元.md'
                 }
-            ]
+            ],
+            
             'ancient-greek': [
                 {
                     id: 'presocratic',
@@ -416,8 +417,8 @@
                     title: '科学方法论',
                     filePath: 'articles/math-science-philosophy/科学方法论.md'
                 }
-            ]，
-         'all-philosophy': [
+            ],
+            'all-philosophy': [
                 {
                     id: 'introduction',
                     title: '美国Z世代大学生政治认同两极化及其原因',
@@ -434,6 +435,7 @@
                     filePath: 'articles/all-philosophy/哲学简史.md'
                 }
             ]
+           
         };
 
         // 显示特定章节
@@ -444,7 +446,7 @@
 
             const section = articles[sectionId];
             if (section) {
-                document.getElementById('section-title').textContent = sectionId === 'all-philosophy' ? '所有哲学' :
+                document.getElementById('section-title').textContent = sectionId === 'laochan-column' ? '老蝉专栏' :
                                                                       sectionId === 'ancient-greek' ? '古希腊哲学' :
                                                                       sectionId === 'metaphysics' ? '形而上学' :
                                                                       sectionId === 'ethics' ? '伦理学' :
@@ -452,7 +454,7 @@
                                                                       sectionId === 'logic' ? '逻辑学' :
                                                                       sectionId === 'aesthetics' ? '美学' :
                                                                       sectionId === 'math-science-philosophy' ? '数理科哲' :
-                                                                      sectionId === 'laochan-column' ? '老蝉专栏' : '';
+                                                                      sectionId === 'all-philosophy' ? '所有哲学' : '';
                 const content = document.getElementById('section-content');
                 content.innerHTML = `
                     <h2>文章列表</h2>
@@ -516,4 +518,3 @@
     </script>
 </body>
 </html>
-
