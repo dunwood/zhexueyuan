@@ -1,518 +1,625 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <title>哲学园 - Philosophy Garden</title>
-    <!-- 配置 MathJax -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$']], // 行内公式
-                displayMath: [['$$', '$$']] // 行间公式
-            }
-        };
-    </script>
-    <!-- 加载 MathJax -->
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <!-- 保留原有样式 -->
-    <style>
-        /* 你的原有CSS样式 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: "Times New Roman", Georgia, serif;
-            background-color: #f5f5f5;
-            color: #2c3e50;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            text-align: center;
-            padding: 4rem 0;
-            background-color: #34495e;
-            color: #ecf0f1;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .back-button {
-            position: absolute;
-            left: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ecf0f1;
-            text-decoration: none;
-            font-size: 1.2rem;
-            padding: 0.5rem 1rem;
-            border: 2px solid #ecf0f1;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .back-button:hover {
-            background-color: #ecf0f1;
-            color: #34495e;
-        }
-
-        .site-title {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            letter-spacing: 0.2rem;
-        }
-
-        .construction-notice {
-            font-size: 1.5rem;
-            color: #bdc3c7;
-            margin-top: 1rem;
-        }
-
-        .sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-        }
-
-        .section-card {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-        }
-
-        .section-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 0.5rem;
-        }
-
-        .section-description {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-
-        .section-content {
-            padding: 2rem;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .article-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .article-list li {
-            margin: 1rem 0;
-        }
-
-        .article-list a {
-            text-decoration: none;
-            color: #3498db;
-            font-size: 1.2rem;
-        }
-
-        .article-list a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background-color: #34495e;
-            color: #ecf0f1;
-            margin-top: 3rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            .site-title {
-                font-size: 2rem;
-            }
-            
-            .sections {
-                grid-template-columns: 1fr;
-            }
-
-            .back-button {
-                left: 1rem;
-                padding: 0.3rem 0.8rem;
-                font-size: 1rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div id="app">
-        <!-- 主页 -->
-        <div id="home-page">
-            <header>
-                <h1 class="site-title">哲学园</h1>
-                <div class="construction-notice">欢迎光临哲学园，网站建设中，敬请期待</div>
-            </header>
-
-            <main class="container">
-                <div class="sections">
-                     <a href="#laochan-column" class="section-card" onclick="showSection('laochan-column')">
-                        <h2 class="section-title">老蝉专栏</h2>
-                        <p class="section-description">一些突发奇想。</p>
-                    </a>
-
-                    <a href="#ancient-greek" class="section-card" onclick="showSection('ancient-greek')">
-                        <h2 class="section-title">古希腊哲学</h2>
-                        <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
-                    </a>
-
-                    <a href="#metaphysics" class="section-card" onclick="showSection('metaphysics')">
-                        <h2 class="section-title">形而上学</h2>
-                        <p class="section-description">探讨存在、实在、本质等终极哲学问题。</p>
-                    </a>
-
-                    <a href="#ethics" class="section-card" onclick="showSection('ethics')">
-                        <h2 class="section-title">伦理学</h2>
-                        <p class="section-description">研究道德、价值观及人类行为的哲学思考。</p>
-                    </a>
-
-                    <a href="#epistemology" class="section-card" onclick="showSection('epistemology')">
-                        <h2 class="section-title">认识论</h2>
-                        <p class="section-description">探索知识的本质、来源与局限性。</p>
-                    </a>
-
-                    <a href="#logic" class="section-card" onclick="showSection('logic')">
-                        <h2 class="section-title">逻辑学</h2>
-                        <p class="section-description">学习推理方法与思维规律。</p>
-                    </a>
-
-                    <a href="#aesthetics" class="section-card" onclick="showSection('aesthetics')">
-                        <h2 class="section-title">美学</h2>
-                        <p class="section-description">探讨艺术与美的本质。</p>
-                    </a>
-
-                    <a href="#math-science-philosophy" class="section-card" onclick="showSection('math-science-philosophy')">
-                        <h2 class="section-title">数理科哲</h2>
-                        <p class="section-description">数学、科学和哲学从来都是一家人。</p>
-                        
-                    </a><a href="#all-philosophy" class="section-card" onclick="showSection('all-philosophy')">
-                        <h2 class="section-title">所有哲学</h2>
-                        <p class="section-description">哲学是爱智慧，爱智慧乃是对心灵的驯化。</p>
-                    </a>
-                </div>
-            </main>
-        </div>
-
-        <!-- 子页面模板 -->
-        <div id="section-page" style="display: none;">
-            <header>
-                <a href="#" class="back-button" onclick="showHome()">返回主页</a>
-                <h1 class="site-title" id="section-title"></h1>
-            </header>
-
-            <main class="container">
-                <div class="section-content" id="section-content">
-                    <!-- 文章列表将动态加载到这里 -->
-                </div>
-            </main>
-        </div>
-
-        <!-- 文章详情页 -->
-        <div id="article-page" style="display: none;">
-            <header>
-                <a href="#" class="back-button" id="back-to-section">返回</a>
-                <h1 class="site-title" id="article-title"></h1>
-            </header>
-
-            <main class="container">
-                <div class="section-content" id="article-content">
-                    <!-- 文章内容将动态加载到这里 -->
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <footer>
-        <p>© 2024 哲学园 Philosophy Garden</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        // 文章数据
-        const articles = {
-            'all-philosophy': [
-                {
-                    id: 'introduction',
-                    title: '美国Z世代大学生政治认同两极化及其原因',
-                    filePath: 'articles/all-philosophy/美国Z世代大学生政治认同两极化及其原因.md'
-                },
-                {
-                    id: 'what-is-philosophy',
-                    title: '什么是哲学',
-                    filePath: 'articles/all-philosophy/什么是哲学.md'
-                },
-                {
-                    id: 'philosophy-history',
-                    title: '哲学简史',
-                    filePath: 'articles/all-philosophy/哲学简史.md'
-                }
-            ],
-            'ancient-greek': [
-                {
-                    id: 'presocratic',
-                    title: '前苏格拉底哲学',
-                    filePath: 'articles/ancient-greek/前苏格拉底哲学.md'
-                },
-                {
-                    id: 'socrates',
-                    title: '苏格拉底的智慧',
-                    filePath: 'articles/ancient-greek/苏格拉底的智慧.md'
-                },
-                {
-                    id: 'plato',
-                    title: '柏拉图的理念论',
-                    filePath: 'articles/ancient-greek/柏拉图的理念论.md'
-                }
-            ],
-            'metaphysics': [
-                {
-                    id: 'being',
-                    title: '存在的意义',
-                    filePath: 'articles/metaphysics/存在的意义.md'
-                },
-                {
-                    id: 'substance',
-                    title: '实体论',
-                    filePath: 'articles/metaphysics/实体论.md'
-                },
-                {
-                    id: 'causation',
-                    title: '因果性探究',
-                    filePath: 'articles/metaphysics/因果性探究.md'
-                }
-            ],
-            'ethics': [
-                {
-                    id: 'virtue',
-                    title: '美德伦理学',
-                    filePath: 'articles/ethics/美德伦理学.md'
-                },
-                {
-                    id: 'duty',
-                    title: '义务论伦理',
-                    filePath: 'articles/ethics/义务论伦理.md'
-                },
-                {
-                    id: 'utilitarianism',
-                    title: '功利主义思考',
-                    filePath: 'articles/ethics/功利主义思考.md'
-                }
-            ],
-            'epistemology': [
-                {
-                    id: 'knowledge',
-                    title: '知识的本质',
-                    filePath: 'articles/epistemology/知识的本质.md'
-                },
-                {
-                    id: 'truth',
-                    title: '真理理论',
-                    filePath: 'articles/epistemology/真理理论.md'
-                },
-                {
-                    id: 'skepticism',
-                    title: '怀疑主义的价值',
-                    filePath: 'articles/epistemology/怀疑主义的价值.md'
-                }
-            ],
-            'logic': [
-                {
-                    id: 'modal-logic',
-                    title: '模态逻辑的语义考量',
-                    filePath: 'articles/logic/模态逻辑的语义考量.md'
-                },
-                {
-                    id: 'predicate-logic',
-                    title: '谓词逻辑基础',
-                    filePath: 'articles/logic/谓词逻辑基础.md'
-                },
-                {
-                    id: 'informal-fallacies',
-                    title: '非形式谬误分析',
-                    filePath: 'articles/logic/非形式谬误分析.md'
-                }
-            ],
-            'aesthetics': [
-                {
-                    id: 'beauty',
-                    title: '美的本质',
-                    filePath: 'articles/aesthetics/美的本质.md'
-                },
-                {
-                    id: 'art-theory',
-                    title: '艺术理论探索',
-                    filePath: 'articles/aesthetics/艺术理论探索.md'
-                },
-                {
-                    id: 'aesthetic-experience',
-                    title: '审美经验研究',
-                    filePath: 'articles/aesthetics/审美经验研究.md'
-                }
-            ],
-            'math-science-philosophy': [
-                  {
-                    id: 'tao',
-                    title: '陶哲轩：做数学一定要是天才吗？',
-                    filePath: 'articles/math-science-philosophy/陶哲轩：做数学一定要是天才吗？.md'
-                },
-                {
-                    id: 'math-foundation',
-                    title: '什么是康托尔连续统问题？',
-                    filePath: 'articles/math-science-philosophy/什么是康托尔连续统问题？.md'
-                },
-                {
-                    id: 'quantum-philosophy',
-                    title: '量子力学的哲学思考',
-                    filePath: 'articles/math-science-philosophy/量子力学的哲学思考.md'
-                },
-                {
-                    id: 'scientific-method',
-                    title: '科学方法论',
-                    filePath: 'articles/math-science-philosophy/科学方法论.md'
-                }
-            ],
-            'laochan-column': [
-                {
-                    id: 'DeepSeek2',
-                    title: '我真为 DeepSeek 感到担忧和惋惜！',
-                    filePath: 'articles/laochan-column/我真为 DeepSeek 感到担忧和惋惜！.md'
-                },
-                 {
-                    id: 'GPT-3 YEARS',
-                    title: 'GPT：将在三年内取代搜索引擎',
-                    filePath: 'articles/laochan-column/GPT：将在三年内取代搜索引擎.md'
-                },
-                 {
-                    id: 'DeepSeek',
-                    title: '中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！',
-                    filePath: 'articles/laochan-column/中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！.md'
-                },
-                 {
-                    id: '2024-chan',
-                    title: '2024年终总结',
-                    filePath: 'articles/laochan-column/2024年终总结.md'
-                },
-                {
-                    id: 'thoughts-on-ai',
-                    title: '我为什么支持川普',
-                    filePath: 'articles/laochan-column/我为什么支持川普.md'
-                },
-                {
-                    id: 'eastern-wisdom',
-                    title: '川普强势回归，开启美国“商人”治国新纪元',
-                    filePath: 'articles/laochan-column/川普强势回归，开启美国“商人”治国新纪元.md'
-                }
-            ]
-        };
-
-        // 显示特定章节
-        function showSection(sectionId) {
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('section-page').style.display = 'block';
-            document.getElementById('article-page').style.display = 'none';
-
-            const section = articles[sectionId];
-            if (section) {
-                document.getElementById('section-title').textContent = sectionId === 'all-philosophy' ? '所有哲学' :
-                                                                      sectionId === 'ancient-greek' ? '古希腊哲学' :
-                                                                      sectionId === 'metaphysics' ? '形而上学' :
-                                                                      sectionId === 'ethics' ? '伦理学' :
-                                                                      sectionId === 'epistemology' ? '认识论' :
-                                                                      sectionId === 'logic' ? '逻辑学' :
-                                                                      sectionId === 'aesthetics' ? '美学' :
-                                                                      sectionId === 'math-science-philosophy' ? '数理科哲' :
-                                                                      sectionId === 'laochan-column' ? '老蝉专栏' : '';
-                const content = document.getElementById('section-content');
-                content.innerHTML = `
-                    <h2>文章列表</h2>
-                    <ul class="article-list">
-                        ${section.map(article => `
-                            <li>
-                                <a href="#${article.id}" onclick="showArticle('${sectionId}', '${article.id}')">
-                                    ${article.title}
-                                </a>
-                            </li>
-                        `).join('')}
-                    </ul>
-                `;
-            }
-        }
-
-        // 显示文章详情
-        function showArticle(sectionId, articleId) {
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('section-page').style.display = 'none';
-            document.getElementById('article-page').style.display = 'block';
-
-            const article = articles[sectionId].find(a => a.id === articleId);
-            if (article) {
-                document.getElementById('article-title').textContent = article.title;
-                document.getElementById('back-to-section').setAttribute('onclick', `showSection('${sectionId}')`);
-                fetch(article.filePath)
-                    .then(response => response.text())
-                    .then(markdown => {
-                        document.getElementById('article-content').innerHTML = marked.parse(markdown);
-                        // 重新渲染MathJax公式
-                        if (window.MathJax) {
-                            window.MathJax.typesetPromise();
-                        }
-                    })
-                    .catch(error => {
-                        console.error('加载文章失败:', error);
-                        document.getElementById('article-content').innerHTML = `<p>无法加载文章，请稍后重试。</p>`;
-                    });
-            }
-        }
-
-        // 返回主页
-        function showHome() {
-            document.getElementById('home-page').style.display = 'block';
-            document.getElementById('section-page').style.display = 'none';
-            document.getElementById('article-page').style.display = 'none';
-            window.location.hash = '';
-        }
-
-        // 处理页面加载和刷新
-        window.onload = function() {
-            const hash = window.location.hash.slice(1);
-            if (hash === 'all-philosophy' || hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics' || hash === 'math-science-philosophy' || hash === 'laochan-column') {
-                showSection(hash);
-            } else if (hash.startsWith('article-')) {
-                const [sectionId, articleId] = hash.split('-').slice(1);
-                showArticle(sectionId, articleId);
-            }
-        };
-    </script>
-</body>
-</html>
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/index.html b/index.html
+index 8ca4f1c307fda817afe3380712afb32fe61020af..bbe94cb38a608ea53eb5e3a853d74c3a2e66b951 100644
+--- a/index.html
++++ b/index.html
+@@ -101,63 +101,82 @@
+         .section-title {
+             font-size: 1.8rem;
+             margin-bottom: 1rem;
+             color: #2c3e50;
+             border-bottom: 2px solid #3498db;
+             padding-bottom: 0.5rem;
+         }
+ 
+         .section-description {
+             color: #7f8c8d;
+             font-size: 1.1rem;
+         }
+ 
+         .section-content {
+             padding: 2rem;
+             background: #fff;
+             border-radius: 5px;
+             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+         }
+ 
+         .article-list {
+             list-style-type: none;
+             padding: 0;
+         }
+ 
+-        .article-list li {
+-            margin: 1rem 0;
+-        }
+-
+-        .article-list a {
+-            text-decoration: none;
+-            color: #3498db;
+-            font-size: 1.2rem;
+-        }
+-
+-        .article-list a:hover {
+-            text-decoration: underline;
+-        }
++        .article-list li {
++            margin: 1rem 0;
++        }
++
++        .article-list a {
++            text-decoration: none;
++            color: #3498db;
++            font-size: 1.2rem;
++        }
++
++        .article-list a:hover {
++            text-decoration: underline;
++        }
++
++        .article-meta {
++            margin-top: 0.3rem;
++            color: #7f8c8d;
++            font-size: 0.9rem;
++        }
++
++        .article-meta-detail {
++            margin-bottom: 1.5rem;
++            color: #7f8c8d;
++            font-size: 1rem;
++        }
++
++        .article-meta-detail span {
++            display: inline-block;
++            padding: 0.2rem 0.6rem;
++            background-color: #ecf0f1;
++            border-radius: 12px;
++        }
+ 
+         footer {
+             text-align: center;
+             padding: 2rem;
+             background-color: #34495e;
+             color: #ecf0f1;
+             margin-top: 3rem;
+         }
+ 
+         @media (max-width: 768px) {
+             .container {
+                 padding: 1rem;
+             }
+             
+             .site-title {
+                 font-size: 2rem;
+             }
+             
+             .sections {
+                 grid-template-columns: 1fr;
+             }
+ 
+             .back-button {
+                 left: 1rem;
+                 padding: 0.3rem 0.8rem;
+@@ -240,279 +259,324 @@
+ 
+         <!-- 文章详情页 -->
+         <div id="article-page" style="display: none;">
+             <header>
+                 <a href="#" class="back-button" id="back-to-section">返回</a>
+                 <h1 class="site-title" id="article-title"></h1>
+             </header>
+ 
+             <main class="container">
+                 <div class="section-content" id="article-content">
+                     <!-- 文章内容将动态加载到这里 -->
+                 </div>
+             </main>
+         </div>
+     </div>
+ 
+     <footer>
+         <p>© 2024 哲学园 Philosophy Garden</p>
+     </footer>
+ 
+     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+     <script>
+         // 文章数据
+         const articles = {
+             'all-philosophy': [
+-                {
+-                    id: 'introduction',
+-                    title: '美国Z世代大学生政治认同两极化及其原因',
+-                    filePath: 'articles/all-philosophy/美国Z世代大学生政治认同两极化及其原因.md'
+-                },
+-                {
+-                    id: 'what-is-philosophy',
+-                    title: '什么是哲学',
+-                    filePath: 'articles/all-philosophy/什么是哲学.md'
+-                },
+-                {
+-                    id: 'philosophy-history',
+-                    title: '哲学简史',
+-                    filePath: 'articles/all-philosophy/哲学简史.md'
+-                }
+-            ],
++                {
++                    id: 'introduction',
++                    title: '美国Z世代大学生政治认同两极化及其原因',
++                    filePath: 'articles/all-philosophy/美国Z世代大学生政治认同两极化及其原因.md',
++                    date: '2024-11-20'
++                },
++                {
++                    id: 'what-is-philosophy',
++                    title: '什么是哲学',
++                    filePath: 'articles/all-philosophy/什么是哲学.md',
++                    date: '2024-03-15'
++                },
++                {
++                    id: 'philosophy-history',
++                    title: '哲学简史',
++                    filePath: 'articles/all-philosophy/哲学简史.md',
++                    date: '2024-04-02'
++                }
++            ],
+             'ancient-greek': [
+-                {
+-                    id: 'presocratic',
+-                    title: '前苏格拉底哲学',
+-                    filePath: 'articles/ancient-greek/前苏格拉底哲学.md'
+-                },
+-                {
+-                    id: 'socrates',
+-                    title: '苏格拉底的智慧',
+-                    filePath: 'articles/ancient-greek/苏格拉底的智慧.md'
+-                },
+-                {
+-                    id: 'plato',
+-                    title: '柏拉图的理念论',
+-                    filePath: 'articles/ancient-greek/柏拉图的理念论.md'
+-                }
+-            ],
++                {
++                    id: 'presocratic',
++                    title: '前苏格拉底哲学',
++                    filePath: 'articles/ancient-greek/前苏格拉底哲学.md',
++                    date: '2024-02-10'
++                },
++                {
++                    id: 'socrates',
++                    title: '苏格拉底的智慧',
++                    filePath: 'articles/ancient-greek/苏格拉底的智慧.md',
++                    date: '2024-02-24'
++                },
++                {
++                    id: 'plato',
++                    title: '柏拉图的理念论',
++                    filePath: 'articles/ancient-greek/柏拉图的理念论.md',
++                    date: '2024-03-02'
++                }
++            ],
+             'metaphysics': [
+-                {
+-                    id: 'being',
+-                    title: '存在的意义',
+-                    filePath: 'articles/metaphysics/存在的意义.md'
+-                },
+-                {
+-                    id: 'substance',
+-                    title: '实体论',
+-                    filePath: 'articles/metaphysics/实体论.md'
+-                },
+-                {
+-                    id: 'causation',
+-                    title: '因果性探究',
+-                    filePath: 'articles/metaphysics/因果性探究.md'
+-                }
+-            ],
++                {
++                    id: 'being',
++                    title: '存在的意义',
++                    filePath: 'articles/metaphysics/存在的意义.md',
++                    date: '2024-01-18'
++                },
++                {
++                    id: 'substance',
++                    title: '实体论',
++                    filePath: 'articles/metaphysics/实体论.md',
++                    date: '2024-01-26'
++                },
++                {
++                    id: 'causation',
++                    title: '因果性探究',
++                    filePath: 'articles/metaphysics/因果性探究.md',
++                    date: '2024-02-05'
++                }
++            ],
+             'ethics': [
+-                {
+-                    id: 'virtue',
+-                    title: '美德伦理学',
+-                    filePath: 'articles/ethics/美德伦理学.md'
+-                },
+-                {
+-                    id: 'duty',
+-                    title: '义务论伦理',
+-                    filePath: 'articles/ethics/义务论伦理.md'
+-                },
+-                {
+-                    id: 'utilitarianism',
+-                    title: '功利主义思考',
+-                    filePath: 'articles/ethics/功利主义思考.md'
+-                }
+-            ],
++                {
++                    id: 'virtue',
++                    title: '美德伦理学',
++                    filePath: 'articles/ethics/美德伦理学.md',
++                    date: '2024-03-08'
++                },
++                {
++                    id: 'duty',
++                    title: '义务论伦理',
++                    filePath: 'articles/ethics/义务论伦理.md',
++                    date: '2024-03-18'
++                },
++                {
++                    id: 'utilitarianism',
++                    title: '功利主义思考',
++                    filePath: 'articles/ethics/功利主义思考.md',
++                    date: '2024-04-08'
++                }
++            ],
+             'epistemology': [
+-                {
+-                    id: 'knowledge',
+-                    title: '知识的本质',
+-                    filePath: 'articles/epistemology/知识的本质.md'
+-                },
+-                {
+-                    id: 'truth',
+-                    title: '真理理论',
+-                    filePath: 'articles/epistemology/真理理论.md'
+-                },
+-                {
+-                    id: 'skepticism',
+-                    title: '怀疑主义的价值',
+-                    filePath: 'articles/epistemology/怀疑主义的价值.md'
+-                }
+-            ],
++                {
++                    id: 'knowledge',
++                    title: '知识的本质',
++                    filePath: 'articles/epistemology/知识的本质.md',
++                    date: '2024-04-22'
++                },
++                {
++                    id: 'truth',
++                    title: '真理理论',
++                    filePath: 'articles/epistemology/真理理论.md',
++                    date: '2024-05-05'
++                },
++                {
++                    id: 'skepticism',
++                    title: '怀疑主义的价值',
++                    filePath: 'articles/epistemology/怀疑主义的价值.md',
++                    date: '2024-05-19'
++                }
++            ],
+             'logic': [
+-                {
+-                    id: 'modal-logic',
+-                    title: '模态逻辑的语义考量',
+-                    filePath: 'articles/logic/模态逻辑的语义考量.md'
+-                },
+-                {
+-                    id: 'predicate-logic',
+-                    title: '谓词逻辑基础',
+-                    filePath: 'articles/logic/谓词逻辑基础.md'
+-                },
+-                {
+-                    id: 'informal-fallacies',
+-                    title: '非形式谬误分析',
+-                    filePath: 'articles/logic/非形式谬误分析.md'
+-                }
+-            ],
++                {
++                    id: 'modal-logic',
++                    title: '模态逻辑的语义考量',
++                    filePath: 'articles/logic/模态逻辑的语义考量.md',
++                    date: '2024-06-03'
++                },
++                {
++                    id: 'predicate-logic',
++                    title: '谓词逻辑基础',
++                    filePath: 'articles/logic/谓词逻辑基础.md',
++                    date: '2024-06-17'
++                },
++                {
++                    id: 'informal-fallacies',
++                    title: '非形式谬误分析',
++                    filePath: 'articles/logic/非形式谬误分析.md',
++                    date: '2024-07-01'
++                }
++            ],
+             'aesthetics': [
+-                {
+-                    id: 'beauty',
+-                    title: '美的本质',
+-                    filePath: 'articles/aesthetics/美的本质.md'
+-                },
+-                {
+-                    id: 'art-theory',
+-                    title: '艺术理论探索',
+-                    filePath: 'articles/aesthetics/艺术理论探索.md'
+-                },
+-                {
+-                    id: 'aesthetic-experience',
+-                    title: '审美经验研究',
+-                    filePath: 'articles/aesthetics/审美经验研究.md'
+-                }
+-            ],
+-            'math-science-philosophy': [
+-                  {
+-                    id: 'tao',
+-                    title: '陶哲轩：做数学一定要是天才吗？',
+-                    filePath: 'articles/math-science-philosophy/陶哲轩：做数学一定要是天才吗？.md'
+-                },
+-                {
+-                    id: 'math-foundation',
+-                    title: '什么是康托尔连续统问题？',
+-                    filePath: 'articles/math-science-philosophy/什么是康托尔连续统问题？.md'
+-                },
+-                {
+-                    id: 'quantum-philosophy',
+-                    title: '量子力学的哲学思考',
+-                    filePath: 'articles/math-science-philosophy/量子力学的哲学思考.md'
+-                },
+-                {
+-                    id: 'scientific-method',
+-                    title: '科学方法论',
+-                    filePath: 'articles/math-science-philosophy/科学方法论.md'
+-                }
+-            ],
+-            'laochan-column': [
+-                {
+-                    id: 'DeepSeek2',
+-                    title: '我真为 DeepSeek 感到担忧和惋惜！',
+-                    filePath: 'articles/laochan-column/我真为 DeepSeek 感到担忧和惋惜！.md'
+-                },
+-                 {
+-                    id: 'GPT-3 YEARS',
+-                    title: 'GPT：将在三年内取代搜索引擎',
+-                    filePath: 'articles/laochan-column/GPT：将在三年内取代搜索引擎.md'
+-                },
+-                 {
+-                    id: 'DeepSeek',
+-                    title: '中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！',
+-                    filePath: 'articles/laochan-column/中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！.md'
+-                },
+-                 {
+-                    id: '2024-chan',
+-                    title: '2024年终总结',
+-                    filePath: 'articles/laochan-column/2024年终总结.md'
+-                },
+-                {
+-                    id: 'thoughts-on-ai',
+-                    title: '我为什么支持川普',
+-                    filePath: 'articles/laochan-column/我为什么支持川普.md'
+-                },
+-                {
+-                    id: 'eastern-wisdom',
+-                    title: '川普强势回归，开启美国“商人”治国新纪元',
+-                    filePath: 'articles/laochan-column/川普强势回归，开启美国“商人”治国新纪元.md'
+-                }
+-            ]
+-        };
++                {
++                    id: 'beauty',
++                    title: '美的本质',
++                    filePath: 'articles/aesthetics/美的本质.md',
++                    date: '2024-07-12'
++                },
++                {
++                    id: 'art-theory',
++                    title: '艺术理论探索',
++                    filePath: 'articles/aesthetics/艺术理论探索.md',
++                    date: '2024-07-26'
++                },
++                {
++                    id: 'aesthetic-experience',
++                    title: '审美经验研究',
++                    filePath: 'articles/aesthetics/审美经验研究.md',
++                    date: '2024-08-09'
++                }
++            ],
++            'math-science-philosophy': [
++                  {
++                    id: 'tao',
++                    title: '陶哲轩：做数学一定要是天才吗？',
++                    filePath: 'articles/math-science-philosophy/陶哲轩：做数学一定要是天才吗？.md',
++                    date: '2024-08-23'
++                },
++                {
++                    id: 'math-foundation',
++                    title: '什么是康托尔连续统问题？',
++                    filePath: 'articles/math-science-philosophy/什么是康托尔连续统问题？.md',
++                    date: '2024-09-06'
++                },
++                {
++                    id: 'quantum-philosophy',
++                    title: '量子力学的哲学思考',
++                    filePath: 'articles/math-science-philosophy/量子力学的哲学思考.md',
++                    date: '2024-09-20'
++                },
++                {
++                    id: 'scientific-method',
++                    title: '科学方法论',
++                    filePath: 'articles/math-science-philosophy/科学方法论.md',
++                    date: '2024-10-04'
++                }
++            ],
++            'laochan-column': [
++                {
++                    id: 'DeepSeek2',
++                    title: '我真为 DeepSeek 感到担忧和惋惜！',
++                    filePath: 'articles/laochan-column/我真为 DeepSeek 感到担忧和惋惜！.md',
++                    date: '2024-10-18'
++                },
++                 {
++                    id: 'GPT-3 YEARS',
++                    title: 'GPT：将在三年内取代搜索引擎',
++                    filePath: 'articles/laochan-column/GPT：将在三年内取代搜索引擎.md',
++                    date: '2024-10-30'
++                },
++                 {
++                    id: 'DeepSeek',
++                    title: '中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！',
++                    filePath: 'articles/laochan-column/中国的西蒙斯震惊全球AI圈，这才是中国AI大模型该有的样子！.md',
++                    date: '2024-11-08'
++                },
++                 {
++                    id: '2024-chan',
++                    title: '2024年终总结',
++                    filePath: 'articles/laochan-column/2024年终总结.md',
++                    date: '2024-12-31'
++                },
++                {
++                    id: 'thoughts-on-ai',
++                    title: '我为什么支持川普',
++                    filePath: 'articles/laochan-column/我为什么支持川普.md',
++                    date: '2025-01-10'
++                },
++                {
++                    id: 'eastern-wisdom',
++                    title: '川普强势回归，开启美国“商人”治国新纪元',
++                    filePath: 'articles/laochan-column/川普强势回归，开启美国“商人”治国新纪元.md',
++                    date: '2025-01-18'
++                }
++            ]
++        };
+ 
+         // 显示特定章节
+         function showSection(sectionId) {
+             document.getElementById('home-page').style.display = 'none';
+             document.getElementById('section-page').style.display = 'block';
+             document.getElementById('article-page').style.display = 'none';
+ 
+             const section = articles[sectionId];
+             if (section) {
+                 document.getElementById('section-title').textContent = sectionId === 'all-philosophy' ? '所有哲学' :
+                                                                       sectionId === 'ancient-greek' ? '古希腊哲学' :
+                                                                       sectionId === 'metaphysics' ? '形而上学' :
+                                                                       sectionId === 'ethics' ? '伦理学' :
+                                                                       sectionId === 'epistemology' ? '认识论' :
+                                                                       sectionId === 'logic' ? '逻辑学' :
+                                                                       sectionId === 'aesthetics' ? '美学' :
+                                                                       sectionId === 'math-science-philosophy' ? '数理科哲' :
+                                                                       sectionId === 'laochan-column' ? '老蝉专栏' : '';
+                 const content = document.getElementById('section-content');
+                 content.innerHTML = `
+                     <h2>文章列表</h2>
+                     <ul class="article-list">
+-                        ${section.map(article => `
+-                            <li>
+-                                <a href="#${article.id}" onclick="showArticle('${sectionId}', '${article.id}')">
+-                                    ${article.title}
+-                                </a>
+-                            </li>
+-                        `).join('')}
+-                    </ul>
+-                `;
+-            }
++                        ${section.map(article => `
++                            <li>
++                                <a href="#${article.id}" onclick="showArticle('${sectionId}', '${article.id}')">
++                                    ${article.title}
++                                </a>
++                                ${article.date ? `<div class="article-meta">发布于 ${article.date}</div>` : ''}
++                            </li>
++                        `).join('')}
++                    </ul>
++                `;
++            }
+         }
+ 
+         // 显示文章详情
+         function showArticle(sectionId, articleId) {
+             document.getElementById('home-page').style.display = 'none';
+             document.getElementById('section-page').style.display = 'none';
+             document.getElementById('article-page').style.display = 'block';
+ 
+-            const article = articles[sectionId].find(a => a.id === articleId);
+-            if (article) {
+-                document.getElementById('article-title').textContent = article.title;
+-                document.getElementById('back-to-section').setAttribute('onclick', `showSection('${sectionId}')`);
+-                fetch(article.filePath)
+-                    .then(response => response.text())
+-                    .then(markdown => {
+-                        document.getElementById('article-content').innerHTML = marked.parse(markdown);
+-                        // 重新渲染MathJax公式
+-                        if (window.MathJax) {
+-                            window.MathJax.typesetPromise();
+-                        }
+-                    })
+-                    .catch(error => {
+-                        console.error('加载文章失败:', error);
+-                        document.getElementById('article-content').innerHTML = `<p>无法加载文章，请稍后重试。</p>`;
+-                    });
+-            }
+-        }
++            const article = articles[sectionId].find(a => a.id === articleId);
++            if (article) {
++                document.getElementById('article-title').textContent = article.title;
++                document.getElementById('back-to-section').setAttribute('onclick', `showSection('${sectionId}')`);
++                const articleContent = document.getElementById('article-content');
++                articleContent.innerHTML = `
++                    <div class="article-meta-detail">
++                        <span>发布于 ${article.date || '发布日期待定'}</span>
++                    </div>
++                    <div id="article-body">加载中...</div>
++                `;
++                fetch(article.filePath)
++                    .then(response => response.text())
++                    .then(markdown => {
++                        const articleBody = document.getElementById('article-body');
++                        if (articleBody) {
++                            articleBody.innerHTML = marked.parse(markdown);
++                        }
++                        // 重新渲染MathJax公式
++                        if (window.MathJax) {
++                            window.MathJax.typesetPromise();
++                        }
++                    })
++                    .catch(error => {
++                        console.error('加载文章失败:', error);
++                        const articleBody = document.getElementById('article-body');
++                        if (articleBody) {
++                            articleBody.innerHTML = '<p>无法加载文章，请稍后重试。</p>';
++                        }
++                    });
++            }
++        }
+ 
+         // 返回主页
+         function showHome() {
+             document.getElementById('home-page').style.display = 'block';
+             document.getElementById('section-page').style.display = 'none';
+             document.getElementById('article-page').style.display = 'none';
+             window.location.hash = '';
+         }
+ 
+         // 处理页面加载和刷新
+         window.onload = function() {
+             const hash = window.location.hash.slice(1);
+             if (hash === 'all-philosophy' || hash === 'ancient-greek' || hash === 'metaphysics' || hash === 'ethics' || hash === 'epistemology' || hash === 'logic' || hash === 'aesthetics' || hash === 'math-science-philosophy' || hash === 'laochan-column') {
+                 showSection(hash);
+             } else if (hash.startsWith('article-')) {
+                 const [sectionId, articleId] = hash.split('-').slice(1);
+                 showArticle(sectionId, articleId);
+             }
+         };
+     </script>
+ </body>
+ </html>
+ 
+EOF
+)
