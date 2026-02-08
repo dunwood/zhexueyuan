@@ -1,7 +1,6 @@
 name: 哲学园全自动更新
 
 on:
-  # 1. 允许手动触发：你可以在网页上填链接点运行
   workflow_dispatch:
     inputs:
       article_url:
@@ -11,10 +10,6 @@ on:
         description: '分类(默认laochan-column)'
         default: 'laochan-column'
         required: true
-
-  # 2. 定时触发：每天更新一次
-  schedule:
-    - cron: '0 12 * * *' # 这里的 12 指的是 UTC 时间，等于北京时间晚上 8 点
 
 jobs:
   build:
@@ -28,17 +23,19 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 安装依赖
+      - name: 安装运行环境
+        # 这一步解决了 exit code 2 报错，安装脚本必需的插件
         run: pip install requests beautifulsoup4
 
       - name: 执行抓取脚本
-        # 这里会读取你手动输入的链接，如果没有输入（定时触发），则需要一个存放待抓取链接的文本文件（可选）
+        # 这里的脚本会读取你在网页上输入的链接并生成文件夹
         run: python sync.py "${{ github.event.inputs.article_url }}" "${{ github.event.inputs.category_id }}"
 
-      - name: 提交并推送到仓库
+      - name: 自动保存改动到仓库
+        # 这一步利用你刚刚开启的 Write 权限，把新文章存回 GitHub
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "自动更新文章: ${{ github.event.inputs.article_url }}" || echo "无变动"
+          git commit -m "自动同步新文章" || echo "无变动"
           git push
