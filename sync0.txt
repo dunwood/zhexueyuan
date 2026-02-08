@@ -1,0 +1,109 @@
+import requests
+from bs4 import BeautifulSoup
+import os
+import re
+from datetime import datetime
+
+# --- 规范化路径配置 ---
+BASE_DIR = "articles" 
+IMAGE_SUBDIR = "images" 
+INDEX_FILE = "index.html" 
+
+def download_and_sync():
+    print("=== 哲学园一键同步 (全能抓取优化版) ===")
+    
+    if not os.path.exists(INDEX_FILE):
+        print(f"❌ 错误：在脚本旁边没找到 {INDEX_FILE}")
+        return
+
+    url = input("请输入微信文章链接: ").strip()
+    if not url: return
+    
+    print("\n请选择文章分类: [1]老蝉专栏 [2]古希腊 [3]形而上学 [4]伦理学 [5]认识论 [6]逻辑学 [7]美学 [8]数理科哲")
+    cat_map = {"1":"laochan-column", "2":"ancient-greek", "3":"metaphysics", "4":"ethics", "5":"epistemology", "6":"logic", "7":"aesthetics", "8":"math-science-philosophy"}
+    category_id = cat_map.get(input("请输入编号 (默认'1'): ").strip(), "laochan-column")
+
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+
+    try:
+        res = requests.get(url, headers=headers)
+        res.encoding = 'utf-8'
+        soup = BeautifulSoup(res.text, 'html.parser')
+
+        # 1. 提取标题
+        title_tag = soup.find('h1', class_='rich_media_title')
+        title = title_tag.get_text().strip() if title_tag else "未命名"
+        safe_title = re.sub(r'[\\/:*?\"<>|]', '', title)
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        
+        img_folder_name = safe_title 
+        local_img_dir = os.path.join(BASE_DIR, IMAGE_SUBDIR, img_folder_name)
+        os.makedirs(local_img_dir, exist_ok=True)
+
+        # 2. 深度抓取正文 (核心修改点)
+        main_area = soup.find('div', id='js_content')
+        if not main_area:
+            print("❌ 无法抓取正文，请检查链接是否正确。")
+            return
+
+        md_content = f"# {title}\n\n---\n\n"
+        img_count = 0
+        
+        # 遍历 js_content 下的所有直接子元素
+        # 这样可以确保按顺序抓取，且不会漏掉任何嵌套在 div 或 h 标签里的内容
+        for element in main_area.find_all(recursive=False):
+            # 处理图片
+            images = element.find_all('img')
+            for img in images:
+                src = img.get('data-src') or img.get('src')
+                if src and 'wx_fmt=gif' not in src:
+                    try:
+                        img_res = requests.get(src, headers={'Referer': 'https://mp.weixin.qq.com/'}, timeout=10)
+                        if len(img_res.content) > 5000:
+                            img_count += 1
+                            img_name = f"{img_count}.jpg"
+                            with open(os.path.join(local_img_dir, img_name), 'wb') as f:
+                                f.write(img_res.content)
+                            md_img_path = f"articles/images/{img_folder_name}/{img_name}"
+                            md_content += f"![图片]({md_img_path})\n\n"
+                    except: continue
+            
+            # 处理文本 (提取该元素及其所有子元素的文本)
+            text = element.get_text(strip=True)
+            if text:
+                # 微信排版中，很多小标题其实也是段落，这里统一处理
+                md_content += f"{text}\n\n"
+
+        # 3. 保存 MD 文件
+        md_file_dir = os.path.join(BASE_DIR, category_id)
+        os.makedirs(md_file_dir, exist_ok=True)
+        md_file_name = f"{safe_title}.md"
+        with open(os.path.join(md_file_dir, md_file_name), 'w', encoding='utf-8') as f:
+            f.write(md_content)
+
+        # 4. 更新 index.html
+        with open(INDEX_FILE, 'r', encoding='utf-8') as f:
+            index_content = f.read()
+
+        if f"'{title}'" in index_content or f'"{title}"' in index_content:
+            print(f"\n⚠️ 提示：首页已存在文章《{title}》，不再重复写入链接。")
+        else:
+            md_path_for_index = f"articles/{category_id}/{md_file_name}"
+            article_id = f"art_{datetime.now().strftime('%H%M%S')}"
+            new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_for_index}', date: '{date_str}' }},"
+            pattern = rf"(['\"]{category_id}['\"]:\s*\[)"
+            if re.search(pattern, index_content):
+                index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
+                with open(INDEX_FILE, 'w', encoding='utf-8') as f:
+                    f.write(index_content)
+                print(f"\n✅ 成功：首页 index.html 已更新。")
+
+        print(f"\n--- 抓取完成 ---")
+        print(f"图片保存至：articles/images/{img_folder_name}/")
+
+    except Exception as e:
+        print(f"❌ 程序出错: {e}")
+
+if __name__ == "__main__":
+    download_and_sync()
+    input("\n处理完成，按回车退出...")

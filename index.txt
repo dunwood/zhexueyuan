@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>哲学园 - Philosophy Garden</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", Georgia, serif;
+            background-color: #f5f5f5;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-bottom: 3rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .category-card h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .page {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #3498db;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        .article-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .article-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .article-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .article-date {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        #article-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+            border-radius: 4px;
+        }
+
+        #article-content h1 { margin-bottom: 1.5rem; text-align: center; }
+        #article-content p { margin-bottom: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <header onclick="showHome()">
+        <h1>哲学园</h1>
+        <p>Philosophy Garden - 思索、探寻与智慧的园地</p>
+    </header>
+
+    <div class="container">
+        <div id="home-page">
+            <div class="category-grid">
+                <div class="category-card" onclick="showSection('laochan-column')">
+                    <h3>老蝉专栏</h3>
+                    <p>深度思考与个人见解</p>
+                </div>
+                <div class="category-card" onclick="showSection('ancient-greek')">
+                    <h3>古希腊哲学</h3>
+                    <p>智慧的源头：苏格拉底、柏拉图、亚里士多德</p>
+                </div>
+                <div class="category-card" onclick="showSection('metaphysics')">
+                    <h3>形而上学</h3>
+                    <p>关于存在、实在与第一原理</p>
+                </div>
+                <div class="category-card" onclick="showSection('ethics')">
+                    <h3>伦理学</h3>
+                    <p>善、正义与道德的探索</p>
+                </div>
+                <div class="category-card" onclick="showSection('epistemology')">
+                    <h3>认识论</h3>
+                    <p>知识的本质、来源与边界</p>
+                </div>
+                <div class="category-card" onclick="showSection('logic')">
+                    <h3>逻辑学</h3>
+                    <p>思维的形式与有效推理</p>
+                </div>
+                <div class="category-card" onclick="showSection('aesthetics')">
+                    <h3>美学</h3>
+                    <p>艺术、感性与审美的思辨</p>
+                </div>
+                <div class="category-card" onclick="showSection('math-science-philosophy')">
+                    <h3>数理、科哲</h3>
+                    <p>科学的基础与数学的逻辑</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-page" class="page">
+            <span class="back-btn" onclick="showHome()">← 返回主页</span>
+            <h2 id="section-title" style="margin-bottom: 2rem; border-bottom: 2px solid #34495e; padding-bottom: 1rem;"></h2>
+            <div id="section-content"></div>
+        </div>
+
+        <div id="article-page" class="page">
+            <span class="back-btn" id="back-to-section">← 返回列表</span>
+            <div id="article-content"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // --- 此部分数据已根据您提供的旧 index.txt 完整合并 ---
+        const articles = {
+            'laochan-column': [
+                { id: 'art_205634', title: '不止是淫乱：爱泼斯坦案背后的“阶级豁免权”与制度性失明', filePath: 'articles/laochan-column/不止是淫乱：爱泼斯坦案背后的“阶级豁免权”与制度性失明.md', date: '2026-02-05' },
+                { id: 'art_173927', title: '陶哲轩：微积分并不难，你只需要用对方法', filePath: 'articles/laochan-column/陶哲轩.md', date: '2025-01-20' },
+                { id: 'art_001', title: '老蝉：我的哲学之路', filePath: 'articles/laochan-column/my-path.md', date: '2024-01-01' },
+            ],
+            'ancient-greek': [
+                { id: 'greek_001', title: '苏格拉底的申辩', filePath: 'articles/ancient-greek/socrates.md', date: '2024-01-05' },
+            ],
+            'metaphysics': [],
+            'ethics': [],
+            'epistemology': [],
+            'logic': [],
+            'aesthetics': [],
+            'math-science-philosophy': []
+        };
+
+        const categoryNames = {
+            'laochan-column': '老蝉专栏',
+            'ancient-greek': '古希腊哲学',
+            'metaphysics': '形而上学',
+            'ethics': '伦理学',
+            'epistemology': '认识论',
+            'logic': '逻辑学',
+            'aesthetics': '美学',
+            'math-science-philosophy': '数理、科哲'
+        };
+
+        // --- 控制逻辑 (包含后退/刷新处理) ---
+
+        function showHome(pushState = true) {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('section-page').style.display = 'none';
+            document.getElementById('article-page').style.display = 'none';
+            if (pushState) history.pushState({ type: 'home' }, "", window.location.pathname);
+        }
+
+        function showSection(sectionId, pushState = true) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('section-page').style.display = 'block';
+            document.getElementById('article-page').style.display = 'none';
+            if (pushState) history.pushState({ type: 'section', id: sectionId }, "", "?section=" + sectionId);
+            renderSection(sectionId);
+        }
+
+        function renderSection(sectionId) {
+            const container = document.getElementById('section-content');
+            document.getElementById('section-title').textContent = categoryNames[sectionId];
+            const list = articles[sectionId];
+            if (list && list.length > 0) {
+                container.innerHTML = list.map(art => `
+                    <div class="article-item" onclick="showArticle('${sectionId}', '${art.id}')">
+                        <div class="article-info">
+                            <span class="article-title">${art.title}</span>
+                            <span class="article-date">${art.date}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<p style="text-align: center; color: #95a5a6; padding: 2rem;">该分类下暂无文章</p>';
+            }
+        }
+
+        function showArticle(category, id, pushState = true) {
+            const article = articles[category].find(a => a.id === id);
+            if (article) {
+                document.getElementById('section-page').style.display = 'none';
+                document.getElementById('article-page').style.display = 'block';
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('back-to-section').onclick = () => showSection(category);
+
+                if (pushState) history.pushState({ type: 'article', category: category, id: id }, "", `?category=${category}&id=${id}`);
+
+                fetch(article.filePath)
+                    .then(response => response.text())
+                    .then(markdown => {
+                        document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                        if (window.MathJax) window.MathJax.typesetPromise();
+                    });
+            }
+        }
+
+        window.onpopstate = function(event) {
+            const params = new URLSearchParams(window.location.search);
+            const section = params.get('section');
+            const category = params.get('category');
+            const id = params.get('id');
+            if (category && id) showArticle(category, id, false);
+            else if (section) showSection(section, false);
+            else showHome(false);
+        };
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('category') && params.get('id')) showArticle(params.get('category'), params.get('id'), false);
+            else if (params.get('section')) showSection(params.get('section'), false);
+        };
+    </script>
+</body>
+</html>

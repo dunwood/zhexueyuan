@@ -1,0 +1,6 @@
+抓取文件代码sync.py的运行路径：
+C:\Users\Admin\AppData\Local\Programs\Python\Python312\python.exe sync.py
+pause
+
+sync.py文件所在的目录：D:\OneDrive\AIGC\zhexueyuan.com网站\哲学园公号文章同步网站    在这个目录栏里，点击空白出再输入cmd，就会出现黑窗口。
+
