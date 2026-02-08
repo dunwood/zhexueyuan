@@ -225,7 +225,8 @@ def batch_sync(links_file=LINKS_FILE):
         # 解析链接和分类
         parts = line.split()
         url = parts[0]
-        category_id = parts[1] if len(parts) > 1 else "1"
+        category_num = parts[1] if len(parts) > 1 else "1"
+        category_id = CAT_MAP.get(category_num, "laochan-column")
         
         # 下载文章
         if download_article(url, category_id):
