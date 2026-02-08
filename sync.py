@@ -53,7 +53,7 @@ def is_git_repo():
 def git_push():
     """自动推送到GitHub"""
     if not is_git_repo():
-        log("⚠️ 当前目录不是Git仓库，跳过推送")
+        log("[警告] 当前目录不是Git仓库，跳过推送")
         return False
     
     try:
@@ -61,31 +61,31 @@ def git_push():
         result = subprocess.run(['git', 'status', '--porcelain'], 
                               capture_output=True, text=True, check=True)
         if not result.stdout.strip():
-            log("📋 没有新的变更需要提交")
+            log("[信息] 没有新的变更需要提交")
             return True
         
         # 添加所有变更
-        log("📦 正在添加文件到Git...")
+        log("[添加] 正在添加文件到Git...")
         subprocess.run(['git', 'add', '.'], check=True)
         
         # 提交
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         commit_msg = f"自动同步文章 - {timestamp}"
-        log(f"💾 正在提交: {commit_msg}")
+        log(f"[保存] 正在提交: {commit_msg}")
         subprocess.run(['git', 'commit', '-m', commit_msg], check=True)
         
         # 推送
-        log("🚀 正在推送到GitHub...")
+        log("[推送] 正在推送到GitHub...")
         subprocess.run(['git', 'push'], check=True)
         
-        log("✅ GitHub推送成功！")
+        log("[成功] GitHub推送成功！")
         return True
         
     except subprocess.CalledProcessError as e:
-        log(f"❌ Git操作失败: {e}")
+        log(f"[错误] Git操作失败: {e}")
         return False
     except Exception as e:
-        log(f"❌ 推送出错: {e}")
+        log(f"[错误] 推送出错: {e}")
         return False
 
 def download_article(url, category_id="laochan-column"):
@@ -93,7 +93,7 @@ def download_article(url, category_id="laochan-column"):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
     
     try:
-        log(f"📥 正在下载: {url}")
+        log(f"[下载] 正在下载: {url}")
         res = requests.get(url, headers=headers, timeout=30)
         res.encoding = 'utf-8'
         soup = BeautifulSoup(res.text, 'html.parser')
@@ -112,7 +112,7 @@ def download_article(url, category_id="laochan-column"):
         # 2. 定位正文
         main_area = soup.find('div', id='js_content')
         if not main_area:
-            log(f"❌ 无法抓取正文: {title}")
+            log(f"[错误] 无法抓取正文: {title}")
             return False
 
         md_content = f"# {title}\n\n---\n\n"
@@ -141,13 +141,13 @@ def download_article(url, category_id="laochan-column"):
                                 md_img_path = f"articles/images/{img_folder_name}/{img_name}"
                                 md_content += f"![图片]({md_img_path})\n\n"
                         except Exception as e:
-                            log(f"⚠️ 图片下载失败: {e}")
+                            log(f"[警告] 图片下载失败: {e}")
                             continue
             
             # B. 处理视频
             html_str = str(element)
             if 'finder_video_card' in html_str or element.find('iframe') or 'video' in html_str:
-                video_note = "【📹 此处原文章有一条视频，因版权限制无法同步，请点击文末'阅读原文'查看】"
+                video_note = "【[视频] 此处原文章有一条视频，因版权限制无法同步，请点击文末'阅读原文'查看】"
                 if video_note not in md_content:
                     md_content += f"\n> {video_note}\n\n"
 
@@ -170,7 +170,7 @@ def download_article(url, category_id="laochan-column"):
             index_content = f.read()
 
         if f"'{title}'" in index_content or f'"{title}"' in index_content:
-            log(f"⚠️ 首页已存在《{title}》，仅更新本地文件。")
+            log(f"[警告] 首页已存在《{title}》，仅更新本地文件。")
         else:
             md_path_for_index = f"articles/{category_id}/{md_file_name}"
             article_id = f"art_{datetime.now().strftime('%H%M%S')}"
@@ -179,13 +179,13 @@ def download_article(url, category_id="laochan-column"):
             index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
             with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                 f.write(index_content)
-            log(f"✅ 首页 index.html 已更新")
+            log(f"[成功] 首页 index.html 已更新")
 
-        log(f"✅ 文章《{title}》处理完成，共{img_count}张图片")
+        log(f"[成功] 文章《{title}》处理完成，共{img_count}张图片")
         return True
 
     except Exception as e:
-        log(f"❌ 处理文章失败 ({url}): {e}")
+        log(f"[错误] 处理文章失败 ({url}): {e}")
         return False
 
 def batch_sync(links_file=LINKS_FILE):
@@ -195,7 +195,7 @@ def batch_sync(links_file=LINKS_FILE):
     log("="*50)
     
     if not os.path.exists(links_file):
-        log(f"❌ 错误：找不到链接文件 {links_file}")
+        log(f"[错误] 错误：找不到链接文件 {links_file}")
         log(f"请创建 {links_file} 文件，每行一个链接，格式：")
         log("  链接 [分类编号]")
         log("例如：")
@@ -211,10 +211,10 @@ def batch_sync(links_file=LINKS_FILE):
         lines = [line.strip() for line in f if line.strip() and not line.startswith('#')]
     
     if not lines:
-        log("⚠️ 链接文件为空")
+        log("[警告] 链接文件为空")
         return
     
-    log(f"📋 共找到 {len(lines)} 个待处理链接")
+    log(f"[信息] 共找到 {len(lines)} 个待处理链接")
     
     success_count = 0
     fail_count = 0
@@ -238,12 +238,12 @@ def batch_sync(links_file=LINKS_FILE):
             time.sleep(2)
     
     log(f"\n{'='*50}")
-    log(f"📊 批量处理完成：成功 {success_count} 篇，失败 {fail_count} 篇")
+    log(f"[统计] 批量处理完成：成功 {success_count} 篇，失败 {fail_count} 篇")
     log(f"{'='*50}\n")
     
     # 自动推送到GitHub
     if success_count > 0:
-        log("🔄 开始推送到GitHub...")
+        log("[推送] 开始推送到GitHub...")
         git_push()
     
     return success_count, fail_count
@@ -253,7 +253,7 @@ def interactive_mode():
     print("=== 哲学园一键同步 (交互模式) ===")
     
     if not os.path.exists(INDEX_FILE):
-        print(f"❌ 错误：在脚本旁边没找到 {INDEX_FILE}")
+        print(f"[错误] 错误：在脚本旁边没找到 {INDEX_FILE}")
         return
 
     url = input("请输入微信文章链接: ").strip()
