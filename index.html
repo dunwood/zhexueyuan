@@ -3,60 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <title>哲学园 - Philosophy Garden</title>
-    <script>window.MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] } };</script>
+    <!-- 配置 MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <!-- 加载 MathJax -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: "Times New Roman", Georgia, serif; background-color: #f5f5f5; color: #2c3e50; line-height: 1.6; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; padding: 3rem 0; background-color: #34495e; color: #ecf0f1; cursor: pointer; }
-        header h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-        .video-container { text-align: center; margin: 2rem 0; background: #000; padding: 10px; border-radius: 8px; }
-        video { width: 100%; max-height: 500px; border-radius: 4px; }
-        /* 8个栏目的网格布局 */
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-        .category-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; cursor: pointer; transition: 0.3s; border: 1px solid #eee; }
-        .category-card:hover { transform: translateY(-5px); border-color: #34495e; }
-        .category-card i { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
-        /* 文章列表 */
-        .page { display: none; }
-        .article-card { background: white; padding: 1.2rem; margin-bottom: 1rem; border-radius: 4px; cursor: pointer; border-left: 5px solid #34495e; transition: 0.2s; }
-        .article-card:hover { background: #fdfdfd; border-left-color: #e67e22; }
-        #article-content { background: white; padding: 3rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        #article-content img { max-width: 100%; height: auto; display: block; margin: 1.5rem auto; border-radius: 4px; }
-        .back-btn { margin-bottom: 1.5rem; padding: 0.6rem 1.2rem; background: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", Georgia, serif;
+            background-color: #f5f5f5;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 2rem;
+            top: 2rem;
+            color: #ecf0f1;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            background-color: rgba(52, 73, 94, 0.9);
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #ecf0f1;
+            color: #34495e;
+        }
+
+        .site-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.2rem;
+            padding: 0 10rem;
+            word-wrap: break-word;
+        }
+
+        .construction-notice {
+            font-size: 1.5rem;
+            color: #bdc3c7;
+            margin-top: 1rem;
+        }
+
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .section-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-description {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .section-content {
+            padding: 2rem;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .article-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .article-list li {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-left: 3px solid #3498db;
+            background-color: #f8f9fa;
+            border-radius: 3px;
+        }
+
+        .article-list a {
+            text-decoration: none;
+            color: #3498db;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+            cursor: pointer;
+        }
+
+        .article-list a:hover {
+            text-decoration: underline;
+        }
+
+        .article-date {
+            color: #95a5a6;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .article-meta {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .article-meta .date {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .site-title {
+                font-size: 1.5rem;
+                padding: 0 5rem;
+            }
+            
+            .sections {
+                grid-template-columns: 1fr;
+            }
+
+            .back-button {
+                left: 1rem;
+                top: 1rem;
+                padding: 0.3rem 0.8rem;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <div id="app">
+        <!-- 主页 -->
+        <div id="home-page">
+            <header>
+                <h1 class="site-title">哲学园</h1>
+                <div class="construction-notice">欢迎光临哲学园，网站建设中，敬请期待</div>
+            </header>
 
-<header onclick="location.reload()">
-    <h1>哲学园</h1>
-    <p>Thoughts, Wisdom, and the Quest for Truth</p>
-</header>
+            <main class="container">
+                <div class="sections">
+                     <div class="section-card" onclick="showSection('laochan-column')">
+                        <h2 class="section-title">老蝉专栏</h2>
+                        <p class="section-description">一些突发奇想。</p>
+                    </div>
 
-<div class="container">
-    <div id="home-page">
-       
-        <div class="category-grid" id="category-menu"></div>
+                    <div class="section-card" onclick="showSection('ancient-greek')">
+                        <h2 class="section-title">古希腊哲学</h2>
+                        <p class="section-description">探索苏格拉底、柏拉图、亚里士多德等古希腊哲学家的思想精髓。</p>
+                    </div>
+
+                    <div class="section-card" onclick="showSection('metaphysics')">
+                        <h2 class="section-title">形而上学</h2>
+                        <p class="section-description">探讨存在、实在、本质等终极哲学问题。</p>
+                    </div>
+
+                    <div class="section-card" onclick="showSection('ethics')">
+                        <h2 class="section-title">伦理学</h2>
+                        <p class="section-description">研究道德、价值观及人类行为的哲学思考。</p>
+                    </div>
+
+                    <div class="section-card" onclick="showSection('epistemology')">
+                        <h2 class="section-title">认识论</h2>
+                        <p class="section-description">探索知识的本质、来源与局限性。</p>
+                    </div>
+
+                    <div class="section-card" onclick="showSection('logic')">
+                        <h2 class="section-title">逻辑学</h2>
+                        <p class="section-description">学习推理方法与思维规律。</p>
+                    </div>
+
+                    <div class="section-card" onclick="showSection('aesthetics')">
+                        <h2 class="section-title">美学</h2>
+                        <p class="section-description">探讨艺术与美的本质。</p>
+                    </div>
+
+                    <div class="section-card" onclick="showSection('math-science-philosophy')">
+                        <h2 class="section-title">数理科哲</h2>
+                        <p class="section-description">数学、科学和哲学从来都是一家人。</p>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <p>&copy; 2024 哲学园 Philosophy Garden. All rights reserved.</p>
+            </footer>
+        </div>
+
+        <!-- 章节页 -->
+        <div id="section-page" style="display: none;">
+            <header>
+                <div class="back-button" onclick="showHome()">← 返回主页</div>
+                <h1 class="site-title" id="section-title"></h1>
+            </header>
+            <main class="container">
+                <div class="section-content" id="section-content"></div>
+            </main>
+            <footer>
+                <p>&copy; 2024 哲学园 Philosophy Garden. All rights reserved.</p>
+            </footer>
+        </div>
+
+        <!-- 文章详情页 -->
+        <div id="article-page" style="display: none;">
+            <header>
+                <div class="back-button" id="back-to-section">← 返回列表</div>
+                <h1 class="site-title" id="article-title"></h1>
+                <div class="article-meta">
+                    <span class="date" id="article-date"></span>
+                </div>
+            </header>
+            <main class="container">
+                <div class="section-content" id="article-content"></div>
+            </main>
+            <footer>
+                <p>&copy; 2024 哲学园 Philosophy Garden. All rights reserved.</p>
+            </footer>
+        </div>
     </div>
 
-    <div id="list-page" class="page">
-        <button class="back-btn" onclick="showHome()">← 返回首页</button>
-        <h2 id="list-title" style="margin-bottom: 1.5rem; border-bottom: 2px solid #34495e;"></h2>
-        <div id="article-items"></div>
-    </div>
-
-    <div id="article-page" class="page">
-        <button class="back-btn" id="back-to-list-btn">← 返回列表</button>
-        <div id="article-content" class="markdown-body"></div>
-    </div>
-</div>
-
-<script>
-    // 【真实数据区】严格对应你截图中的文件名
-    const articles = {
-        'laocan-column': [
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // 文章数据
+        const articles = {
+            'ancient-greek': [
+                {
+                    id: 'socrates',
+                    title: '苏格拉底的智慧',
+                    filePath: 'articles/ancient-greek/苏格拉底的智慧.md',
+                    date: '2024-01-15'
+                },
+                {
+                    id: 'plato',
+                    title: '柏拉图的理念论',
+                    filePath: 'articles/ancient-greek/柏拉图的理念论.md',
+                    date: '2024-01-20'
+                },
+                {
+                    id: 'aristotle',
+                    title: '亚里士多德的哲学体系',
+                    filePath: 'articles/ancient-greek/亚里士多德的哲学体系.md',
+                    date: '2024-01-25'
+                }
+            ],
+            'metaphysics': [
+                {
+                    id: 'existence',
+                    title: '存在的意义',
+                    filePath: 'articles/metaphysics/存在的意义.md',
+                    date: '2024-02-01'
+                },
+                {
+                    id: 'substance',
+                    title: '实体论',
+                    filePath: 'articles/metaphysics/实体论.md',
+                    date: '2024-02-05'
+                },
+                {
+                    id: 'causation',
+                    title: '因果性探究',
+                    filePath: 'articles/metaphysics/因果性探究.md',
+                    date: '2024-02-10'
+                }
+            ],
+            'ethics': [
+                {
+                    id: 'virtue',
+                    title: '美德伦理学',
+                    filePath: 'articles/ethics/美德伦理学.md',
+                    date: '2024-02-15'
+                },
+                {
+                    id: 'duty',
+                    title: '义务论伦理',
+                    filePath: 'articles/ethics/义务论伦理.md',
+                    date: '2024-02-20'
+                },
+                {
+                    id: 'utilitarianism',
+                    title: '功利主义思考',
+                    filePath: 'articles/ethics/功利主义思考.md',
+                    date: '2024-02-25'
+                }
+            ],
+            'epistemology': [
+                {
+                    id: 'knowledge',
+                    title: '知识的本质',
+                    filePath: 'articles/epistemology/知识的本质.md',
+                    date: '2024-03-01'
+                },
+                {
+                    id: 'truth',
+                    title: '真理理论',
+                    filePath: 'articles/epistemology/真理理论.md',
+                    date: '2024-03-05'
+                },
+                {
+                    id: 'skepticism',
+                    title: '怀疑主义的价值',
+                    filePath: 'articles/epistemology/怀疑主义的价值.md',
+                    date: '2024-03-10'
+                }
+            ],
+            'logic': [
+                {
+                    id: 'modal-logic',
+                    title: '模态逻辑的语义考量',
+                    filePath: 'articles/logic/模态逻辑的语义考量.md',
+                    date: '2024-03-15'
+                },
+                {
+                    id: 'predicate-logic',
+                    title: '谓词逻辑基础',
+                    filePath: 'articles/logic/谓词逻辑基础.md',
+                    date: '2024-03-20'
+                },
+                {
+                    id: 'informal-fallacies',
+                    title: '非形式谬误分析',
+                    filePath: 'articles/logic/非形式谬误分析.md',
+                    date: '2024-03-25'
+                }
+            ],
+            'aesthetics': [
+                {
+                    id: 'beauty',
+                    title: '美的本质',
+                    filePath: 'articles/aesthetics/美的本质.md',
+                    date: '2024-04-01'
+                },
+                {
+                    id: 'art-theory',
+                    title: '艺术理论探索',
+                    filePath: 'articles/aesthetics/艺术理论探索.md',
+                    date: '2024-04-05'
+                },
+                {
+                    id: 'aesthetic-experience',
+                    title: '审美经验研究',
+                    filePath: 'articles/aesthetics/审美经验研究.md',
+                    date: '2024-04-10'
+                }
+            ],
+            'math-science-philosophy': [
+                  {
+                    id: 'tao',
+                    title: '陶哲轩：做数学一定要是天才吗？',
+                    filePath: 'articles/math-science-philosophy/陶哲轩：做数学一定要是天才吗？.md',
+                    date: '2025-01-05'
+                },
+                {
+                    id: 'math-foundation',
+                    title: '什么是康托尔连续统问题？',
+                    filePath: 'articles/math-science-philosophy/什么是康托尔连续统问题？.md',
+                    date: '2024-04-15'
+                },
+                {
+                    id: 'quantum-philosophy',
+                    title: '量子力学的哲学思考',
+                    filePath: 'articles/math-science-philosophy/量子力学的哲学思考.md',
+                    date: '2024-04-20'
+                },
+                {
+                    id: 'scientific-method',
+                    title: '科学方法论',
+                    filePath: 'articles/math-science-philosophy/科学方法论.md',
+                    date: '2024-04-25'
+                }
+            ],
+            'laochan-column': [
                 { id: 'art_092446', title: '特朗普“选举国有化”主张引爆美国宪政信任危机', filePath: 'articles/laochan-column/特朗普“选举国有化”主张引爆美国宪政信任危机.md', date: '2026-02-05' },
                 { id: 'art_062357', title: '从黄金大涨到沃什提名：揭秘特朗普政府的“新货币蓝图”', filePath: 'articles/laochan-column/从黄金大涨到沃什提名：揭秘特朗普政府的“新货币蓝图”.md', date: '2026-02-05' },
                 { id: 'art_061937', title: '当我们谈论美国时——“特朗普做对了吗？”的二阶分析', filePath: 'articles/laochan-column/当我们谈论美国时——“特朗普做对了吗？”的二阶分析.md', date: '2026-02-05' },
@@ -128,69 +508,105 @@
                     filePath: 'articles/laochan-column/川普强势回归，开启美国“商人”治国新纪元.md',
                     date: '2024-11-07'
                 }
-        ],
-        'ancient-greek': [], 
-        'modern-phil': [],
-        'metaphysics': [],
-        'ethics': [],
-        'logic': [],
-        'political-phil': [],
-        'images': []
-    };
+            ]
+        };
 
-    // 原始 8 个栏目
-    const sections = [
-        { id: 'laocan-column', title: '老蝉专栏', icon: '✍️' },
-        { id: 'ancient-greek', title: '古希腊', icon: '🏛️' },
-        { id: 'modern-phil', title: '近代哲学', icon: '📜' },
-        { id: 'metaphysics', title: '形而上学', icon: '☁️' },
-        { id: 'ethics', title: '伦理学', icon: '⚖️' },
-        { id: 'logic', title: '逻辑学', icon: '🧩' },
-        { id: 'political-phil', title: '政治哲学', icon: '🏛️' },
-        { id: 'images', title: '哲学图集', icon: '🖼️' }
-    ];
+        // 显示特定章节
+        function showSection(sectionId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('section-page').style.display = 'block';
+            document.getElementById('article-page').style.display = 'none';
 
-    function showHome() {
-        document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-        document.getElementById('home-page').style.display = 'block';
-        const menu = document.getElementById('category-menu');
-        menu.innerHTML = sections.map(s => `
-            <div class="category-card" onclick="showSection('${s.id}')">
-                <i>${s.icon}</i>
-                <h3>${s.title}</h3>
-                <p style="color:#999;font-size:0.8rem;margin-top:5px">${(articles[s.id] || []).length} 篇文章</p>
-            </div>
-        `).join('');
-    }
+            const section = articles[sectionId];
+            if (section) {
+                const titles = {
+                    'ancient-greek': '古希腊哲学',
+                    'metaphysics': '形而上学',
+                    'ethics': '伦理学',
+                    'epistemology': '认识论',
+                    'logic': '逻辑学',
+                    'aesthetics': '美学',
+                    'math-science-philosophy': '数理科哲',
+                    'laochan-column': '老蝉专栏'
+                };
+                
+                document.getElementById('section-title').textContent = titles[sectionId] || '';
+                const content = document.getElementById('section-content');
+                content.innerHTML = `
+                    <h2>文章列表</h2>
+                    <ul class="article-list">
+                        ${section.map(article => `
+                            <li>
+                                <a onclick="showArticle('${sectionId}', '${article.id}')">
+                                    ${article.title}
+                                </a>
+                                <div class="article-date">${article.date || '日期未知'}</div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+        }
 
-    function showSection(sid) {
-        document.getElementById('home-page').style.display = 'none';
-        const listPage = document.getElementById('list-page');
-        listPage.style.display = 'block';
-        document.getElementById('list-title').innerText = sections.find(s => s.id === sid).title;
-        const items = articles[sid] || [];
-        document.getElementById('article-items').innerHTML = items.length > 0 ? 
-            items.map(a => `<div class="article-card" onclick="showArticle('${sid}', '${a.id}')"><h3>${a.title}</h3></div>`).join('') : 
-            '<p style="padding:2rem;color:#999;text-align:center;">该目录下暂无文章，请上传文件并在代码中登记。</p>';
-    }
-
-    function showArticle(cat, id) {
-        const art = articles[cat].find(a => a.id === id);
-        fetch(art.filePath).then(r => {
-            if(!r.ok) throw new Error();
-            return r.text();
-        }).then(md => {
-            document.querySelectorAll('.page, #home-page').forEach(el => el.style.display = 'none');
+        // 显示文章详情
+        function showArticle(sectionId, articleId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('section-page').style.display = 'none';
             document.getElementById('article-page').style.display = 'block';
-            document.getElementById('article-content').innerHTML = marked.parse(md);
-            document.getElementById('back-to-list-btn').onclick = () => showSection(cat);
-            if(window.MathJax) window.MathJax.typesetPromise();
-        }).catch(() => alert("文件未找到，请确认已上传到 GitHub。"));
-    }
 
-    showHome();
-</script>
+            const article = articles[sectionId].find(a => a.id === articleId);
+            if (article) {
+                document.getElementById('article-title').textContent = article.title;
+                document.getElementById('article-date').textContent = `发布日期：${article.date || '日期未知'}`;
+                
+                const backBtn = document.getElementById('back-to-section');
+                backBtn.onclick = function() { showSection(sectionId); };
+                
+                document.getElementById('article-content').innerHTML = `<p style="text-align: center; color: #7f8c8d; padding: 2rem;">加载中...</p>`;
+                
+                fetch(article.filePath)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('文章文件不存在');
+                        }
+                        return response.text();
+                    })
+                    .then(markdown => {
+                        if (!markdown || markdown.trim() === '') {
+                            document.getElementById('article-content').innerHTML = `
+                                <div style="text-align: center; padding: 3rem;">
+                                    <p style="color: #7f8c8d; font-size: 1.2rem; margin-bottom: 1rem;">📝 文章内容为空</p>
+                                    <p style="color: #95a5a6;">该文章尚未撰写完成，敬请期待。</p>
+                                </div>
+                            `;
+                        } else {
+                            document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                            if (window.MathJax) {
+                                window.MathJax.typesetPromise();
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('加载文章失败:', error);
+                        document.getElementById('article-content').innerHTML = `
+                            <div style="text-align: center; padding: 3rem;">
+                                <p style="color: #e74c3c; font-size: 1.2rem; margin-bottom: 1rem;">⚠️ 加载失败</p>
+                                <p style="color: #95a5a6;">无法加载文章内容，请检查文件路径或稍后重试。</p>
+                                <p style="color: #bdc3c7; font-size: 0.9rem; margin-top: 1rem;">错误信息：${error.message}</p>
+                            </div>
+                        `;
+                    });
+            }
+        }
+
+        // 返回主页
+        function showHome() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('section-page').style.display = 'none';
+            document.getElementById('article-page').style.display = 'none';
+        }
+    </script>
 </body>
-
 </html>
+
 
