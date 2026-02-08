@@ -1,15 +1,30 @@
 name: 哲学园全自动更新
 
 on:
+  # 1. 手动触发：带下拉菜单选择分类
   workflow_dispatch:
     inputs:
       article_url:
-        description: '微信文章链接'
+        description: '第一步：粘贴微信文章链接'
         required: true
       category_id:
-        description: '分类(默认laochan-column)'
-        default: 'laochan-column'
+        description: '第二步：选择文章存放的分类'
         required: true
+        default: 'laochan-column'
+        type: choice
+        options:
+          - laochan-column
+          - ancient-greek
+          - metaphysics
+          - ethics
+          - epistemology
+          - logic
+          - aesthetics
+          - math-science-philosophy
+
+  # 2. 定时触发：保持你原来的 5 分钟设置
+  schedule:
+    - cron: '*/5 * * * *'
 
 jobs:
   build:
@@ -23,19 +38,17 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 安装运行环境
-        # 这一步解决了 exit code 2 报错，安装脚本必需的插件
+      - name: 安装运行环境 (requests 和 bs4)
         run: pip install requests beautifulsoup4
 
       - name: 执行抓取脚本
-        # 这里的脚本会读取你在网页上输入的链接并生成文件夹
+        # 这里会将你下拉菜单选中的分类准确传给脚本
         run: python sync.py "${{ github.event.inputs.article_url }}" "${{ github.event.inputs.category_id }}"
 
       - name: 自动保存改动到仓库
-        # 这一步利用你刚刚开启的 Write 权限，把新文章存回 GitHub
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "自动同步新文章" || echo "无变动"
+          git commit -m "自动同步文章: ${{ github.event.inputs.article_url }}" || echo "无变动"
           git push
