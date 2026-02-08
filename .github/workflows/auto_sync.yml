@@ -1,14 +1,14 @@
 name: 哲学园全自动更新
 
 on:
-  # 1. 手动触发：带下拉菜单选择分类
+  # 1. 手动触发配置：增加了下拉菜单选项
   workflow_dispatch:
     inputs:
       article_url:
-        description: '第一步：粘贴微信文章链接'
+        description: '第一步：请在这里粘贴微信文章链接'
         required: true
       category_id:
-        description: '第二步：选择文章存放的分类'
+        description: '第二步：请选择文章分类'
         required: true
         default: 'laochan-column'
         type: choice
@@ -22,7 +22,7 @@ on:
           - aesthetics
           - math-science-philosophy
 
-  # 2. 定时触发：保持你原来的 5 分钟设置
+  # 2. 定时触发配置：保持你原本的 5 分钟设置
   schedule:
     - cron: '*/5 * * * *'
 
@@ -38,14 +38,14 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 安装运行环境 (requests 和 bs4)
+      - name: 安装运行依赖环境
         run: pip install requests beautifulsoup4
 
       - name: 执行抓取脚本
-        # 这里会将你下拉菜单选中的分类准确传给脚本
+        # 脚本将自动读取下拉菜单选中的分类 ID
         run: python sync.py "${{ github.event.inputs.article_url }}" "${{ github.event.inputs.category_id }}"
 
-      - name: 自动保存改动到仓库
+      - name: 自动保存改动并推送
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
