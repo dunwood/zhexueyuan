@@ -14,20 +14,20 @@
         header { text-align: center; padding: 4rem 0; background-color: #34495e; color: #ecf0f1; margin-bottom: 3rem; cursor: pointer; }
         header h1 { font-size: 3.5rem; margin-bottom: 1rem; letter-spacing: 2px; }
         header p { font-style: italic; opacity: 0.8; }
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
-        .category-card { background: white; padding: 2.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; cursor: pointer; transition: transform 0.3s ease; border: 1px solid #eee; }
-        .category-card:hover { transform: translateY(-10px); }
-        .category-card i { font-size: 3rem; color: #34495e; margin-bottom: 1.5rem; display: block; }
-        .category-card h3 { font-size: 1.5rem; color: #2c3e50; }
-        .article-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .article-card { background: white; padding: 1.5rem; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); cursor: pointer; border-left: 4px solid #34495e; }
-        .article-card:hover { background: #fdfdfd; }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .category-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; cursor: pointer; transition: transform 0.3s ease; border: 1px solid #eee; }
+        .category-card:hover { transform: translateY(-5px); }
+        .category-card i { font-size: 2.5rem; color: #34495e; margin-bottom: 1rem; display: block; }
+        .category-card h3 { font-size: 1.2rem; color: #2c3e50; }
+        .article-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+        .article-card { background: white; padding: 1.2rem; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); cursor: pointer; border-left: 4px solid #34495e; }
+        .article-card:hover { background: #fdfdfd; border-left-color: #e67e22; }
         .page { display: none; }
-        #article-content { background: white; padding: 3rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-size: 1.1rem; }
+        #article-content { background: white; padding: 3rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         #article-content img { max-width: 100%; height: auto; display: block; margin: 1.5rem auto; border-radius: 4px; }
         .back-btn { margin-bottom: 2rem; padding: 0.8rem 1.5rem; background: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; }
         .video-container { text-align: center; margin-bottom: 3rem; background: #000; padding: 10px; border-radius: 8px; }
-        video { max-width: 100%; border-radius: 4px; }
+        video { max-width: 100%; max-height: 500px; border-radius: 4px; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -41,9 +41,7 @@
 <div class="container">
     <div id="home-page">
         <div class="video-container">
-            <video src="articles/稳男道宣言.mp4" controls poster="articles/images/poster.jpg">
-                您的浏览器不支持视频播放。
-            </video>
+            <video src="articles/稳男道宣言.mp4" controls>您的浏览器不支持视频播放。</video>
         </div>
         <div class="category-grid" id="category-menu"></div>
     </div>
@@ -61,26 +59,41 @@
 </div>
 
 <script>
-    // 【核心配置区】
-    // 请在这里手动补齐你 ZIP 包里的文章。每增加一篇，网页就会多出一篇。
+    // 【注入真实文章数据】
     const articles = {
         'laocan-column': [
-            { id: '1', title: '老蝉：所谓“稳男”，就是...（测试篇）', filePath: 'articles/laocan-column/article1.md' },
-            { id: '2', title: '哲学园的重生', filePath: 'articles/laocan-column/article2.md' }
+            { id: 'lc18', title: '老蝉：所谓“稳男”，就是敢于在这个时代“逆行”的人', filePath: 'articles/laocan-column/2025-01-20-老蝉-所谓“稳男”.md' },
+            { id: 'lc17', title: '哲学园：2025，我们重新出发', filePath: 'articles/laocan-column/2025-01-21-哲学园.md' },
+            { id: 'lc16', title: '稳男道：一种当下的生存哲学', filePath: 'articles/laocan-column/2025-02-01-稳男道哲学.md' },
+            { id: 'lc15', title: '《稳男道宣言》：哲学园的重生', filePath: 'articles/laocan-column/2025-02-08-稳男道宣言.md' },
+            { id: 'lc14', title: '柏拉图的洞穴与现代人的信息茧房', filePath: 'articles/laocan-column/article-14.md' },
+            { id: 'lc13', title: '尼采：如何在荒谬的世界中找到力量', filePath: 'articles/laocan-column/article-13.md' },
+            { id: 'lc12', title: '海德格尔：诗意地栖居', filePath: 'articles/laocan-column/article-12.md' },
+            { id: 'lc11', title: '斯多葛学派：控制你能控制的', filePath: 'articles/laocan-column/article-11.md' },
+            { id: 'lc10', title: '维特根斯坦的沉默与言说', filePath: 'articles/laocan-column/article-10.md' },
+            { id: 'lc9', title: '萨特：存在先于本质', filePath: 'articles/laocan-column/article-09.md' },
+            { id: 'lc8', title: '康德：仰望星空与内心律令', filePath: 'articles/laocan-column/article-08.md' },
+            { id: 'lc7', title: '休谟的怀疑论与生活的习惯', filePath: 'articles/laocan-column/article-07.md' },
+            { id: 'lc6', title: '斯宾诺莎：理性的自由', filePath: 'articles/laocan-column/article-06.md' },
+            { id: 'lc5', title: '黑格尔的辩证法与历史终结', filePath: 'articles/laocan-column/article-05.md' },
+            { id: 'lc4', title: '亚里士多德：中庸之道', filePath: 'articles/laocan-column/article-04.md' },
+            { id: 'lc3', title: '苏格拉底：我知我无知', filePath: 'articles/laocan-column/article-03.md' },
+            { id: 'lc2', title: '前苏格拉底哲学家：寻找万物的本原', filePath: 'articles/laocan-column/article-02.md' },
+            { id: 'lc1', title: '哲学是什么？为何我们依然需要它', filePath: 'articles/laocan-column/article-01.md' }
         ],
-        'ancient-greek': [
-            // 以后在这里添加：{ id: 'g1', title: '苏格拉底', filePath: 'articles/ancient-greek/xxx.md' }
-        ],
-        'metaphysics': [
-            // 以后在这里添加：{ id: 'm1', title: '存在', filePath: 'articles/metaphysics/xxx.md' }
-        ]
+        'ancient-greek': [], 'modern-phil': [], 'metaphysics': [], 
+        'ethics': [], 'logic': [], 'political-phil': [], 'images': []
     };
 
-    // 首页方块配置
     const sections = [
         { id: 'laocan-column', title: '老蝉专栏', icon: '✍️' },
-        { id: 'ancient-greek', title: '古希腊哲学', icon: '🏛️' },
-        { id: 'metaphysics', title: '形而上学', icon: '☁️' }
+        { id: 'ancient-greek', title: '古希腊', icon: '🏛️' },
+        { id: 'modern-phil', title: '近代哲学', icon: '📜' },
+        { id: 'metaphysics', title: '形而上学', icon: '☁️' },
+        { id: 'ethics', title: '伦理学', icon: '⚖️' },
+        { id: 'logic', title: '逻辑学', icon: '🧩' },
+        { id: 'political-phil', title: '政治哲学', icon: '🏛️' },
+        { id: 'images', title: '哲学图集', icon: '🖼️' }
     ];
 
     function showHome() {
@@ -91,40 +104,32 @@
             <div class="category-card" onclick="showSection('${s.id}')">
                 <i>${s.icon}</i>
                 <h3>${s.title}</h3>
-                <p style="color:#7f8c8d;margin-top:0.5rem">${(articles[s.id] || []).length} 篇文章</p>
+                <p style="color:#7f8c8d;font-size:0.8rem;margin-top:5px">${(articles[s.id] || []).length} 篇文章</p>
             </div>
         `).join('');
-        history.pushState({type:'home'}, "", window.location.pathname);
     }
 
-    function showSection(sid, push = true) {
-        const section = sections.find(s => s.id === sid);
+    function showSection(sid) {
         document.getElementById('home-page').style.display = 'none';
-        document.getElementById('article-page').style.display = 'none';
         const listPage = document.getElementById('list-page');
         listPage.style.display = 'block';
-        document.getElementById('list-title').innerText = section.title;
-        
+        document.getElementById('list-title').innerText = sections.find(s => s.id === sid).title;
         const items = articles[sid] || [];
         document.getElementById('article-items').innerHTML = items.length > 0 ? 
-            items.map(a => `
-                <div class="article-card" onclick="showArticle('${sid}', '${a.id}')">
-                    <h3>${a.title}</h3>
-                    <div style="margin-top:0.5rem; font-size:0.9rem; color:#95a5a6;">
-                        阅读全文 →
-                    </div>
-                </div>`).join('') : 
-            '<p style="text-align:center;padding:2rem;color:#999">该目录下暂无文章，请通过 Upload 上传 .md 文件并在 index 中注册。</p>';
-        
-        if(push) history.pushState({type:'section', id:sid}, "", "?section="+sid);
-        window.scrollTo(0,0);
+            items.map(a => `<div class="article-card" onclick="showArticle('${sid}', '${a.id}')"><h3>${a.title}</h3></div>`).join('') : 
+            '<p style="padding:2rem;color:#999">暂无内容，请上传文件并在代码中注册。</p>';
     }
 
-    function showArticle(cat, id, push = true) {
+    function showArticle(cat, id) {
         const art = articles[cat].find(a => a.id === id);
-        if(!art) return;
-        document.querySelectorAll('.page, #home-page').forEach(el => el.style.display = 'none');
-        document.getElementById('article-page').style.display = 'block';
-        document.getElementById('back-to-section-btn').onclick = () => showSection(cat);
-        
-        fetch
+        fetch(art.filePath).then(r => r.text()).then(md => {
+            document.querySelectorAll('.page, #home-page').forEach(el => el.style.display = 'none');
+            document.getElementById('article-page').style.display = 'block';
+            document.getElementById('article-content').innerHTML = marked.parse(md);
+            if(window.MathJax) window.MathJax.typesetPromise();
+        });
+    }
+    showHome();
+</script>
+</body>
+</html>
