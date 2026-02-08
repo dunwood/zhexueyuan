@@ -4,34 +4,147 @@
     <meta charset="UTF-8">
     <title>哲学园 - Philosophy Garden</title>
     <script>
-        window.MathJax = { tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] } };
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: "Times New Roman", Georgia, serif; background-color: #f5f5f5; color: #2c3e50; line-height: 1.6; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; padding: 4rem 0; background-color: #34495e; color: #ecf0f1; margin-bottom: 3rem; cursor: pointer; }
-        header h1 { font-size: 3.5rem; margin-bottom: 1rem; letter-spacing: 2px; }
-        header p { font-style: italic; opacity: 0.8; }
-        .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
-        .category-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease; cursor: pointer; text-align: center; border: 1px solid #eee; }
-        .category-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        .category-card h3 { margin-bottom: 1rem; color: #2c3e50; font-size: 1.5rem; }
-        .page { display: none; background: white; padding: 3rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); min-height: 600px; }
-        .back-btn { display: inline-block; margin-bottom: 2rem; color: #3498db; text-decoration: none; cursor: pointer; font-weight: bold; }
-        .back-btn:hover { text-decoration: underline; }
-        .article-item { padding: 1.5rem; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s; }
-        .article-item:hover { background-color: #f9f9f9; }
-        .article-info { display: flex; justify-content: space-between; align-items: center; }
-        .article-title { font-size: 1.2rem; font-weight: bold; color: #2c3e50; flex: 1; padding-right: 1rem; }
-        .article-date { color: #95a5a6; font-size: 0.9rem; white-space: nowrap; }
-        #article-content img { max-width: 100%; height: auto; display: block; margin: 2rem auto; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        #article-content h1 { margin-bottom: 2rem; text-align: center; color: #2c3e50; }
-        #article-content p { margin-bottom: 1.2rem; font-size: 1.1rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", Georgia, serif;
+            background-color: #f5f5f5;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: #34495e;
+            color: #ecf0f1;
+            margin-bottom: 3rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .category-card h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .page {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #3498db;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        .article-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .article-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .article-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .article-date {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        #article-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+            border-radius: 4px;
+        }
+
+        #article-content h1 { margin-bottom: 1.5rem; text-align: center; }
+        #article-content p { margin-bottom: 1.2rem; }
     </style>
 </head>
 <body>
+
     <header onclick="showHome()">
         <h1>哲学园</h1>
         <p>Philosophy Garden - 思索、探寻与智慧的园地</p>
@@ -40,14 +153,38 @@
     <div class="container">
         <div id="home-page">
             <div class="category-grid">
-                <div class="category-card" onclick="showSection('laochan-column')"><h3>老蝉专栏</h3><p>深度思考与个人见解</p></div>
-                <div class="category-card" onclick="showSection('ancient-greek')"><h3>古希腊哲学</h3><p>智慧的源头</p></div>
-                <div class="category-card" onclick="showSection('metaphysics')"><h3>形而上学</h3><p>关于存在与实在</p></div>
-                <div class="category-card" onclick="showSection('ethics')"><h3>伦理学</h3><p>善与正义的探索</p></div>
-                <div class="category-card" onclick="showSection('epistemology')"><h3>认识论</h3><p>知识的本质与边界</p></div>
-                <div class="category-card" onclick="showSection('logic')"><h3>逻辑学</h3><p>思维的形式与推理</p></div>
-                <div class="category-card" onclick="showSection('aesthetics')"><h3>美学</h3><p>艺术与审美的思辨</p></div>
-                <div class="category-card" onclick="showSection('math-science-philosophy')"><h3>数理、科哲</h3><p>科学基础与数学哲学</p></div>
+                <div class="category-card" onclick="showSection('laochan-column')">
+                    <h3>老蝉专栏</h3>
+                    <p>深度思考与个人见解</p>
+                </div>
+                <div class="category-card" onclick="showSection('ancient-greek')">
+                    <h3>古希腊哲学</h3>
+                    <p>智慧的源头：苏格拉底、柏拉图、亚里士多德</p>
+                </div>
+                <div class="category-card" onclick="showSection('metaphysics')">
+                    <h3>形而上学</h3>
+                    <p>关于存在、实在与第一原理</p>
+                </div>
+                <div class="category-card" onclick="showSection('ethics')">
+                    <h3>伦理学</h3>
+                    <p>善、正义与道德的探索</p>
+                </div>
+                <div class="category-card" onclick="showSection('epistemology')">
+                    <h3>认识论</h3>
+                    <p>知识的本质、来源与边界</p>
+                </div>
+                <div class="category-card" onclick="showSection('logic')">
+                    <h3>逻辑学</h3>
+                    <p>思维的形式与有效推理</p>
+                </div>
+                <div class="category-card" onclick="showSection('aesthetics')">
+                    <h3>美学</h3>
+                    <p>艺术、感性与审美的思辨</p>
+                </div>
+                <div class="category-card" onclick="showSection('math-science-philosophy')">
+                    <h3>数理、科哲</h3>
+                    <p>科学的基础与数学的逻辑</p>
+                </div>
             </div>
         </div>
 
@@ -58,115 +195,111 @@
         </div>
 
         <div id="article-page" class="page">
-            <span class="back-btn" id="back-to-section-btn">← 返回列表</span>
+            <span class="back-btn" id="back-to-section">← 返回列表</span>
             <div id="article-content"></div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
+        // --- 此部分数据已根据您提供的旧 index.txt 完整合并 ---
         const articles = {
             'laochan-column': [
-                { id: 'art_215100', title: '稳男道 · 宣言', filePath: 'articles/laochan-column/稳男道 · 宣言.md', date: '2026-02-06' },
-                { id: 'art_105911', title: '当达沃斯不再相信理念：世界正在走向一种更冷的秩序', filePath: 'articles/laochan-column/当达沃斯不再相信理念：世界正在走向一种更冷的秩序.md', date: '2026-02-05' },
-                { id: 'art_101659', title: '沃格林：当秩序伪装成历史的终点', filePath: 'articles/laochan-column/沃格林：当秩序伪装成历史的终点.md', date: '2026-02-05' },
-                { id: 'art_092446', title: '特朗普“选举国有化”主张引爆美国宪政信任危机', filePath: 'articles/laochan-column/特朗普“选举国有化”主张引爆美国宪政信任危机.md', date: '2026-02-05' },
-                { id: 'art_062357', title: '从黄金大涨到沃什提名：揭秘特朗普政府的“新货币蓝图”', filePath: 'articles/laochan-column/从黄金大涨到沃什提名：揭秘特朗普政府的“新货币蓝图”.md', date: '2026-02-05' },
-                { id: 'art_061937', title: '当我们谈论美国时——“特朗普做对了吗？”的二阶分析', filePath: 'articles/laochan-column/当我们谈论美国时——“特朗普做对了吗？”的二阶分析.md', date: '2026-02-05' },
-                { id: 'art_053626', title: '为什么“爱泼斯坦名单”这件事，本身就是对正义的误导', filePath: 'articles/laochan-column/为什么“爱泼斯坦名单”这件事，本身就是对正义的误导.md', date: '2026-02-05' },
-                { id: 'art_041804', title: '权力阴影下的深渊：爱泼斯坦案的全面剖析', filePath: 'articles/laochan-column/权力阴影下的深渊：爱泼斯坦案的全面剖析.md', date: '2026-02-05' },
-                { id: 'art_034810', title: '不止是淫乱：爱泼斯坦案背后的“阶级豁免权”与制度性失明', filePath: 'articles/laochan-column/不止是淫乱：爱泼斯坦案背后的“阶级豁免权”与制度性失明.md', date: '2026-02-05' },
-                { id: 'art_103226', title: '老蝉说卷', filePath: 'articles/laochan-column/老蝉说卷.md', date: '2026-02-08' }
+                { id: 'art_205634', title: '不止是淫乱：爱泼斯坦案背后的“阶级豁免权”与制度性失明', filePath: 'articles/laochan-column/不止是淫乱：爱泼斯坦案背后的“阶级豁免权”与制度性失明.md', date: '2026-02-05' },
+                { id: 'art_173927', title: '陶哲轩：微积分并不难，你只需要用对方法', filePath: 'articles/laochan-column/陶哲轩.md', date: '2025-01-20' },
+                { id: 'art_001', title: '老蝉：我的哲学之路', filePath: 'articles/laochan-column/my-path.md', date: '2024-01-01' },
             ],
             'ancient-greek': [
-                { id: 'socrates_ZH', title: '苏格拉底的智慧', filePath: 'articles/ancient-greek/苏格拉底的智慧.md', date: '2024-01-15' },
-                { id: 'plato_LN', title: '柏拉图的理念论', filePath: 'articles/ancient-greek/柏拉图的理念论.md', date: '2024-01-20' },
-                { id: 'aristotle_TX', title: '亚里士多德的哲学体系', filePath: 'articles/ancient-greek/亚里士多德的哲学体系.md', date: '2024-01-25' },
-                { id: 'art_221004_DF', title: '德尔斐的阿波罗神庙：古典世界的精神灯塔', filePath: 'articles/ancient-greek/德尔斐的阿波罗神庙：古典世界的精神灯塔.md', date: '2026-02-04' }
+                { id: 'greek_001', title: '苏格拉底的申辩', filePath: 'articles/ancient-greek/socrates.md', date: '2024-01-05' },
             ],
-            'metaphysics': [
-                { id: 'existence_YY', title: '存在的意义', filePath: 'articles/metaphysics/存在的意义.md', date: '2024-02-01' },
-                { id: 'substance_TL', title: '实体论', filePath: 'articles/metaphysics/实体论.md', date: '2024-02-05' },
-                { id: 'causation_YJ', title: '因果性探究', filePath: 'articles/metaphysics/因果性探究.md', date: '2024-02-10' }
-            ],
-            'ethics': [
-                { id: 'virtue_LL', title: '美德伦理学', filePath: 'articles/ethics/美德伦理学.md', date: '2024-02-15' },
-                { id: 'duty_YW', title: '义务论伦理', filePath: 'articles/ethics/义务论伦理.md', date: '2024-02-20' },
-                { id: 'utilitarianism_GL', title: '功利主义思考', filePath: 'articles/ethics/功利主义思考.md', date: '2024-02-25' }
-            ],
-            'epistemology': [
-                { id: 'knowledge_BZ', title: '知识的本质', filePath: 'articles/epistemology/知识的本质.md', date: '2024-03-01' },
-                { id: 'truth_LL', title: '真理理论', filePath: 'articles/epistemology/真理理论.md', date: '2024-03-05' },
-                { id: 'skepticism_HZ', title: '怀疑主义的价值', filePath: 'articles/epistemology/怀疑主义的价值.md', date: '2024-03-10' }
-            ],
-            'logic': [
-                { id: 'modal-logic_MT', title: '模态逻辑的语义考量', filePath: 'articles/logic/模态逻辑的语义考量.md', date: '2024-03-15' },
-                { id: 'predicate-logic_YC', title: '谓词逻辑基础', filePath: 'articles/logic/谓词逻辑基础.md', date: '2024-03-20' },
-                { id: 'informal-fallacies_XS', title: '非形式谬误分析', filePath: 'articles/logic/非形式谬误分析.md', date: '2024-03-25' }
-            ],
-            'aesthetics': [
-                { id: 'beauty_BZ', title: '美的本质', filePath: 'articles/aesthetics/美的本质.md', date: '2024-04-01' },
-                { id: 'art-theory_YS', title: '艺术理论探索', filePath: 'articles/aesthetics/艺术理论探索.md', date: '2024-04-05' },
-                { id: 'aesthetic-experience_SM', title: '审美经验研究', filePath: 'articles/aesthetics/审美经验研究.md', date: '2024-04-10' }
-            ],
-            'math-science-philosophy': [
-                { id: 'tao_MATH', title: '陶哲轩：做数学一定要是天才吗？', filePath: 'articles/math-science-philosophy/陶哲轩：做数学一定要是天才吗？.md', date: '2025-01-05' },
-                { id: 'math-foundation_KTE', title: '什么是康托尔连续统问题？', filePath: 'articles/math-science-philosophy/什么是康托尔连续统问题？.md', date: '2024-04-15' },
-                { id: 'quantum-philosophy_LZ', title: '量子力学的哲学思考', filePath: 'articles/math-science-philosophy/量子力学的哲学思考.md', date: '2024-04-20' },
-                { id: 'scientific-method_LL', title: '科学方法论', filePath: 'articles/math-science-philosophy/科学方法论.md', date: '2024-04-25' }
-            ]
+            'metaphysics': [],
+            'ethics': [],
+            'epistemology': [],
+            'logic': [],
+            'aesthetics': [],
+            'math-science-philosophy': []
         };
 
         const categoryNames = {
-            'laochan-column': '老蝉专栏', 'ancient-greek': '古希腊哲学', 'metaphysics': '形而上学', 
-            'ethics': '伦理学', 'epistemology': '认识论', 'logic': '逻辑学', 'aesthetics': '美学', 'math-science-philosophy': '数理、科哲'
+            'laochan-column': '老蝉专栏',
+            'ancient-greek': '古希腊哲学',
+            'metaphysics': '形而上学',
+            'ethics': '伦理学',
+            'epistemology': '认识论',
+            'logic': '逻辑学',
+            'aesthetics': '美学',
+            'math-science-philosophy': '数理、科哲'
         };
 
-        function showHome(push = true) {
-            document.querySelectorAll('.page, #home-page').forEach(el => el.style.display = 'none');
+        // --- 控制逻辑 (包含后退/刷新处理) ---
+
+        function showHome(pushState = true) {
             document.getElementById('home-page').style.display = 'block';
-            if(push) history.pushState({type:'home'}, "", window.location.pathname);
-            window.scrollTo(0,0);
+            document.getElementById('section-page').style.display = 'none';
+            document.getElementById('article-page').style.display = 'none';
+            if (pushState) history.pushState({ type: 'home' }, "", window.location.pathname);
         }
 
-        function showSection(sid, push = true) {
-            document.querySelectorAll('.page, #home-page').forEach(el => el.style.display = 'none');
+        function showSection(sectionId, pushState = true) {
+            document.getElementById('home-page').style.display = 'none';
             document.getElementById('section-page').style.display = 'block';
-            document.getElementById('section-title').textContent = categoryNames[sid];
+            document.getElementById('article-page').style.display = 'none';
+            if (pushState) history.pushState({ type: 'section', id: sectionId }, "", "?section=" + sectionId);
+            renderSection(sectionId);
+        }
+
+        function renderSection(sectionId) {
             const container = document.getElementById('section-content');
-            container.innerHTML = articles[sid].length ? articles[sid].map(a => `
-                <div class="article-item" onclick="showArticle('${sid}', '${a.id}')">
-                    <div class="article-info">
-                        <span class="article-title">${a.title}</span>
-                        <span class="article-date">${a.date}</span>
+            document.getElementById('section-title').textContent = categoryNames[sectionId];
+            const list = articles[sectionId];
+            if (list && list.length > 0) {
+                container.innerHTML = list.map(art => `
+                    <div class="article-item" onclick="showArticle('${sectionId}', '${art.id}')">
+                        <div class="article-info">
+                            <span class="article-title">${art.title}</span>
+                            <span class="article-date">${art.date}</span>
+                        </div>
                     </div>
-                </div>`).join('') : '<p style="text-align:center;padding:2rem;color:#999">暂无文章</p>';
-            if(push) history.pushState({type:'section', id:sid}, "", "?section="+sid);
-            window.scrollTo(0,0);
+                `).join('');
+            } else {
+                container.innerHTML = '<p style="text-align: center; color: #95a5a6; padding: 2rem;">该分类下暂无文章</p>';
+            }
         }
 
-        function showArticle(cat, id, push = true) {
-            const art = articles[cat].find(a => a.id === id);
-            if(!art) return;
-            document.querySelectorAll('.page, #home-page').forEach(el => el.style.display = 'none');
-            document.getElementById('article-page').style.display = 'block';
-            document.getElementById('back-to-section-btn').onclick = () => showSection(cat);
-            
-            fetch(art.filePath).then(r => r.text()).then(md => {
-                document.getElementById('article-content').innerHTML = marked.parse(md);
-                if(window.MathJax) window.MathJax.typesetPromise();
-                window.scrollTo(0,0);
-            });
-            if(push) history.pushState({type:'article', cat:cat, id:id}, "", `?category=${cat}&id=${id}`);
+        function showArticle(category, id, pushState = true) {
+            const article = articles[category].find(a => a.id === id);
+            if (article) {
+                document.getElementById('section-page').style.display = 'none';
+                document.getElementById('article-page').style.display = 'block';
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('back-to-section').onclick = () => showSection(category);
+
+                if (pushState) history.pushState({ type: 'article', category: category, id: id }, "", `?category=${category}&id=${id}`);
+
+                fetch(article.filePath)
+                    .then(response => response.text())
+                    .then(markdown => {
+                        document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                        if (window.MathJax) window.MathJax.typesetPromise();
+                    });
+            }
         }
 
-        window.onpopstate = () => {
-            const p = new URLSearchParams(window.location.search);
-            if(p.get('category')) showArticle(p.get('category'), p.get('id'), false);
-            else if(p.get('section')) showSection(p.get('section'), false);
+        window.onpopstate = function(event) {
+            const params = new URLSearchParams(window.location.search);
+            const section = params.get('section');
+            const category = params.get('category');
+            const id = params.get('id');
+            if (category && id) showArticle(category, id, false);
+            else if (section) showSection(section, false);
             else showHome(false);
         };
-        window.onload = () => window.onpopstate();
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('category') && params.get('id')) showArticle(params.get('category'), params.get('id'), false);
+            else if (params.get('section')) showSection(params.get('section'), false);
+        };
     </script>
 </body>
 </html>
