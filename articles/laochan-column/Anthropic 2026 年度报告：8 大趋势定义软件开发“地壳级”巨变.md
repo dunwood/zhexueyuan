@@ -57,7 +57,7 @@
 
 正文
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/1.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/1.jpg)
 
 2026 Agentic Coding Trends Report
 
@@ -127,7 +127,7 @@ How coding agents are reshaping software development
 
 让我们开始深入探讨。
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/2.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/2.jpg)
 
 第一部分
 
@@ -139,7 +139,7 @@ How coding agents are reshaping software development
 软件开发生命周期
 发生剧烈变化
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/3.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/3.jpg)
 
 传统的软件开发生命周期阶段依然存在，但由智能体驱动的实现、自动化测试以及内嵌式文档，使周期时间从数周压缩到数小时。监控结果被直接反馈到快速迭代之中。
 
@@ -176,7 +176,7 @@ How coding agents are reshaping software development
 Augment Code
 是一家构建由人工智能驱动的软件开发工具的初创公司，其产品面向网络平台、数据库和存储基础设施等系统。该公司通过使用 Claude 提供具备上下文理解能力的代码分析，大幅降低了工程师加入新代码库或新项目的学习曲线。其一位企业客户借助由 Claude 驱动的 Augment Code，在仅仅两周内完成了一个项目，而该项目最初被该公司的首席技术官估计需要 4 到 8 个月才能完成。
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/4.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/4.jpg)
 
 第二部分
 
@@ -186,7 +186,7 @@ Augment Code
 
 单一智能体演化为协同团队
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/5.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/5.jpg)
 
 单一智能体的工作流通过一个上下文窗口按顺序处理任务。多智能体架构则使用一个编排者来协调并行工作的专门化智能体——每个智能体都拥有独立的上下文——并将结果综合为统一的输出。
 
@@ -265,7 +265,7 @@ Anthropic 内部研究揭示了一个重要模式：尽管工程师报告称他�
 
 莱戈拉首席执行官马克斯·尤内斯特兰德表示：“我们发现，克劳德在遵循指令以及构建智能体和智能体式工作流方面表现得极为出色。”该公司一方面使用克劳德代码来加速自身的开发进程，另一方面也将智能体能力提供给律师，使他们无需工程背景，就能创建复杂的自动化流程。
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/6.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/6.jpg)
 
 第三部分
 
@@ -328,7 +328,7 @@ Anthropic 如何使用 Claude Code
 
 总体而言，优势将倾向于那些准备充分的组织。那些从一开始就利用智能体工具将安全性“烘焙进系统”的团队，将在面对同样使用这类技术的对手时，拥有更强的防御能力。
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/7.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/7.jpg)
 
 未来一年的优先事项
 
@@ -345,5 +345,5 @@ Anthropic 如何使用 Claude Code
 
 在 2026 年，将智能体编码视为战略优先事项的组织，将定义“什么是可能的”；而那些仅把它当作渐进式生产力工具的组织，则会发现自己正在一场规则已经改变的竞争中追赶他人。成功的关键，在于理解目标并不是将人类移出系统，而是让人类的专业能力在最重要的地方发挥最大价值。
 
-![图片](articles/images/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变/8.jpg)
+![图片](articles/images/Anthropic2026年度报告：8大趋势定义软件开发“地壳级”巨变/8.jpg)
 
