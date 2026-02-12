@@ -21,6 +21,7 @@ on:
           - logic
           - aesthetics
           - math-science-philosophy
+          - translated-work
 
   # 2. 定时触发配置：保持你原本的 5 分钟设置
   schedule:
