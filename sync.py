@@ -113,16 +113,24 @@ def download_and_sync():
             # 匹配 index.html 中的分类位置
             pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)"
             
+        # --- 5. 同步更新 index.html (智能路径兼容版) ---
+            # 这里的 split('/')[0] 是关键：它让脚本学会只看主分类名
+            main_category = category_id.split('/')[0]
+            
+            # 匹配 index.html 中的分类位置（现在只匹配主分类，例如 'translated-work'）
+            pattern = rf"(['\\\"]?{main_category}['\\\"]?\\s*:\\s*\\[)"
+            
             if re.search(pattern, index_content):
+                # 将新条目插入到匹配到的 [ 后面，filePath 依然保留完整的二级路径
                 index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
-                print(f"✅ 首页 index.html 已更新，ID 为: {article_id}")
+                print(f"✅ 成功！已自动将文章归类至 index.html 的: {main_category}")
             else:
-                print(f"❌ 匹配失败：未在 index.html 中找到分类标识 '{category_id}': [")
+                print(f"❌ 错误：在 index.html 中未找到分类标签 '{main_category}'")
 
     except Exception as e:
-        print(f"❌ 运行中发生错误: {e}")
+        print(f"💥 运行出错: {e}")
 
-if __name__ == "__main__":
+if __name__ == \"__main__\":
     download_and_sync()
