@@ -117,11 +117,32 @@ def download_and_sync():
                 # 就在 [ 后面换行插入新内容，这样既不影响老文章，也能填满空括号
                 index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
                 
+                # --- 5. 同步更新 index.html (最稳万能匹配逻辑) ---
+        with open(INDEX_FILE, 'r', encoding='utf-8') as f:
+            index_content = f.read()
+
+        # 核心正则：匹配 '分类名': [
+        # 增加了 \s* 容错处理，并使用 re.IGNORECASE 忽略大小写
+        pattern = rf"(['\"]?\s*{category_id}\s*['\"]?\s*:\s*\[)"
+        
+        if re.search(pattern, index_content, re.IGNORECASE):
+            # 检查是否重复插入
+            if f"'{title}'" in index_content or f'"{title}"' in index_content:
+                print(f"⚠️ 首页列表中已存在《{title}》，跳过插入。")
+            else:
+                # 生成文章唯一 ID
+                article_id = f"art_{datetime.now().strftime('%H%M%S')}{random.randint(100, 999)}"
+                new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_web}', date: '{date_str}' }},"
+                
+                # 在匹配到的 [ 后面直接换行插入新内容
+                index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content, flags=re.IGNORECASE)
+                
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
                 print(f"✅ 成功：文章已同步到 index.html 的 {category_id} 分类。")
-            else:
-                print(f"❌ 匹配失败：未在 index.html 中找到分类标识 '{category_id}': [")
+        else:
+            print(f"❌ 匹配失败：未在 index.html 中找到分类标识 '{category_id}': [")
+            print("请检查 index.html 里的分类 ID 拼写是否与搬运选择的一致。")
 
     except Exception as e:
         print(f"❌ 运行中发生错误: {e}")
