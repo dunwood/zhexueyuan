@@ -113,28 +113,16 @@ def download_and_sync():
             # 匹配 index.html 中的分类位置
             pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)"
             
-  # --- 5. 同步更新 index.html (单引号兼容版) ---
-            # 无论输入的是 translated-work/The-Last-Economy 还是其他
-            # 我们只取第一个名字 'translated-work'
-            target_key = category_id.split('/')[0]
-            
-            # 这里是核心修改：我们去匹配你 index.html 里原汁原味的单引号格式
-           pattern = rf"(['\\\"]{target_key}['\\\"]\s*:\s*\[)"
-            
             if re.search(pattern, index_content):
-                # 插入新行
                 index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
-                print(f"✅ 搞定！文章已自动登记在: {target_key}")
+                print(f"✅ 首页 index.html 已更新，ID 为: {article_id}")
             else:
-                # 如果还是找不到，脚本会把找的内容打印出来，方便我们对齐
-                print(f"❌ 错误：在 index.html 中未找到分类名 '{target_key}'")
+                print(f"❌ 匹配失败：未在 index.html 中找到分类标识 '{category_id}': [")
 
     except Exception as e:
-        print(f"💥 运行出错: {e}")
+        print(f"❌ 运行中发生错误: {e}")
 
 if __name__ == "__main__":
     download_and_sync()
-
-
