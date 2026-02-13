@@ -119,7 +119,7 @@ def download_and_sync():
             target_key = category_id.split('/')[0]
             
             # 这里是核心修改：我们去匹配你 index.html 里原汁原味的单引号格式
-            pattern = rf"('{target_key}'\s*:\s*\[)"
+           pattern = rf"(['\\\"]{target_key}['\\\"]\s*:\s*\[)"
             
             if re.search(pattern, index_content):
                 # 插入新行
@@ -136,4 +136,5 @@ def download_and_sync():
 
 if __name__ == "__main__":
     download_and_sync()
+
 
