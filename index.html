@@ -490,10 +490,24 @@
             renderSection(sectionId);
         }
 
+       // 渲染分类文章列表
         function renderSection(sectionId) {
             const container = document.getElementById('section-content');
             const title = document.getElementById('section-title');
-            title.textContent = categoryNames[sectionId];
+            
+            // 自动翻译 ID 为中文标题
+            const categoryNames = {
+                'laochan-column': '老禅专栏', 'ancient-greek': '古希腊哲学', 'metaphysics': '形而上学',
+                'ethics': '伦理学', 'epistemology': '认识论', 'logic': '逻辑学',
+                'aesthetics': '美学', 'math-science-philosophy': '数理/科学哲学', 'translated-work': '译著专栏',
+                'physics': '物理哲学', 'science': '科学哲学', 'technology': '技术哲学',
+                'ai': '人工智能', 'religion': '宗教哲学', 'economics': '经济哲学',
+                'law': '法律哲学', 'political': '政治哲学', 'social': '社会哲学',
+                'language': '语言哲学', 'existentialism': '存在主义', 'phenomenology': '现象学',
+                'hermeneutics': '解释学', 'mind': '心灵哲学', 'others': '其他'
+            };
+
+            title.textContent = categoryNames[sectionId] || sectionId;
             
             const list = articles[sectionId];
             if (list && list.length > 0) {
@@ -510,9 +524,11 @@
             }
         }
 
-        // 显示具体文章
+        // 显示具体文章内容
         function showArticle(category, id, pushState = true) {
             currentCategory = category;
+            if (!articles[category]) return;
+            
             const article = articles[category].find(a => a.id === id);
             if (article) {
                 document.getElementById('section-page').style.display = 'none';
@@ -532,9 +548,12 @@
                         if (window.MathJax) {
                             window.MathJax.typesetPromise();
                         }
+                        // 切换文章后回到顶部
+                        window.scrollTo(0, 0);
                     })
                     .catch(error => {
                         console.error('加载文章失败:', error);
+                        document.getElementById('article-content').innerHTML = '<p style="text-align: center; color: red;">文章加载失败，请检查文件路径。</p>';
                     });
             }
         }
@@ -562,6 +581,8 @@
                 showArticle(params.get('category'), params.get('id'), false);
             } else if (params.get('section')) {
                 showSection(params.get('section'), false);
+            } else {
+                showHome(false);
             }
         };
     </script>
