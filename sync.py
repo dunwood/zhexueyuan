@@ -113,27 +113,27 @@ def download_and_sync():
             # 匹配 index.html 中的分类位置
             pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)"
             
-    # --- 5. 同步更新 index.html (智能路径兼容版) ---
-            # 关键改进：如果路径是 'translated-work/The-Last-Economy'
-            # 我们只提取最前面的 'translated-work' 去 HTML 里找对应的位置
-            main_category = category_id.split('/')[0]
+   # --- 终极修复：智能路径定位 ---
+            # 无论你输入 translated-work/The-Last-Economy 还是别的
+            # 我们都只取第一个名字 'translated-work' 去 index.html 找位置
+            target_key = category_id.split('/')[0]
             
-            # 匹配 index.html 中的分类名（例如只匹配 'translated-work'）
-            pattern = rf"(['\\\"]?{main_category}['\\\"]?\\s*:\\s*\\[)"
+            # 这里的正则非常温和，只匹配分类名，不会搞乱你的 HTML 格式
+            pattern = rf"(['\\\"]?{target_key}['\\\"]?\\s*:\\s*\\[)"
             
             if re.search(pattern, index_content):
-                # 将新文章信息插入到匹配到的 [ 后面，filePath 依然保留完整的二级路径
+                # 这里的 \n                 是为了对齐你的 HTML 缩进，让代码不乱
                 index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
-                print(f"✅ 搞定！已自动将文章归类至: {main_category}")
+                print(f"✅ 成功！文章已自动登记在: {target_key}")
             else:
-                print(f"❌ 严重错误：在 index.html 中未找到 '{main_category}'，请检查分类名是否写错。")
+                print(f"❌ 错误：在 index.html 里没找到 '{target_key}' 柜台，请检查主页代码。")
 
     except Exception as e:
         print(f"💥 运行出错: {e}")
 
-if __name__ == \"__main__\":
+if __name__ == "__main__":
     download_and_sync()
 
 
