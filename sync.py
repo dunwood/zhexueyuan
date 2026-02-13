@@ -111,15 +111,19 @@ def download_and_sync():
             new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_web}', date: '{date_str}' }},"
             
             # 匹配 index.html 中的分类位置
-            pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)"
+           pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)\s*\]?"
             
             if re.search(pattern, index_content):
+                # 无论原来是 'AI': [] 还是 'AI': [已有文章]
+                # 统一替换为 'AI': [ \n 新文章 \n ...
                 index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
+                
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
                 print(f"✅ 首页 index.html 已更新，ID 为: {article_id}")
+                print(f"📂 已成功将文章归类至: {category_id}")
             else:
-                print(f"❌ 匹配失败：未在 index.html 中找到分类标识 '{category_id}': [")
+                print(f"❌ 匹配失败：请检查 index.html 中是否存在 '{category_id}': []")
 
     except Exception as e:
         print(f"❌ 运行中发生错误: {e}")
