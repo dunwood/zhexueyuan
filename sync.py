@@ -113,27 +113,27 @@ def download_and_sync():
             # 匹配 index.html 中的分类位置
             pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)"
             
-   # --- 终极修复：智能路径定位 ---
-            # 无论你输入 translated-work/The-Last-Economy 还是别的
-            # 我们都只取第一个名字 'translated-work' 去 index.html 找位置
+  # --- 5. 同步更新 index.html (单引号兼容版) ---
+            # 无论输入的是 translated-work/The-Last-Economy 还是其他
+            # 我们只取第一个名字 'translated-work'
             target_key = category_id.split('/')[0]
             
-            # 这里的正则非常温和，只匹配分类名，不会搞乱你的 HTML 格式
-            pattern = rf"(['\\\"]?{target_key}['\\\"]?\\s*:\\s*\\[)"
+            # 这里是核心修改：我们去匹配你 index.html 里原汁原味的单引号格式
+            pattern = rf"('{target_key}'\s*:\s*\[)"
             
             if re.search(pattern, index_content):
-                # 这里的 \n                 是为了对齐你的 HTML 缩进，让代码不乱
+                # 插入新行
                 index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
-                print(f"✅ 成功！文章已自动登记在: {target_key}")
+                print(f"✅ 搞定！文章已自动登记在: {target_key}")
             else:
-                print(f"❌ 错误：在 index.html 里没找到 '{target_key}' 柜台，请检查主页代码。")
+                # 如果还是找不到，脚本会把找的内容打印出来，方便我们对齐
+                print(f"❌ 错误：在 index.html 中未找到分类名 '{target_key}'")
 
     except Exception as e:
         print(f"💥 运行出错: {e}")
 
 if __name__ == "__main__":
     download_and_sync()
-
 
