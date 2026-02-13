@@ -97,7 +97,7 @@ def download_and_sync():
             f.write(md_content)
         print(f"📝 Markdown 已生成: {md_file_path}")
 
-        # --- 5. 同步更新 index.html (精准插入逻辑) ---
+       # --- 5. 同步更新 index.html (精准插入逻辑) ---
         with open(INDEX_FILE, 'r', encoding='utf-8') as f:
             index_content = f.read()
 
@@ -106,24 +106,22 @@ def download_and_sync():
             print(f"⚠️ 首页列表中已存在《{title}》，跳过插入。")
         else:
             md_path_web = f"articles/{category_id}/{safe_title}.md"
-            # 生成唯一 ID：时分秒 + 3位随机数，彻底杜绝重复
+            # 生成唯一 ID
             article_id = f"art_{datetime.now().strftime('%H%M%S')}{random.randint(100, 999)}"
             new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_web}', date: '{date_str}' }},"
             
-            # 匹配 index.html 中的分类位置
-           pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)\s*\]?"
+            # 核心正则表达式：只找 [ 符号
+            pattern = rf"(['\"]?{category_id}['\"]?\s*:\s*\[)"
             
             if re.search(pattern, index_content):
-                # 无论原来是 'AI': [] 还是 'AI': [已有文章]
-                # 统一替换为 'AI': [ \n 新文章 \n ...
+                # 就在 [ 后面换行插入新内容，这样既不影响老文章，也能填满空括号
                 index_content = re.sub(pattern, f"\\1\n                {new_entry}", index_content)
                 
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
-                print(f"✅ 首页 index.html 已更新，ID 为: {article_id}")
-                print(f"📂 已成功将文章归类至: {category_id}")
+                print(f"✅ 成功：文章已同步到 index.html 的 {category_id} 分类。")
             else:
-                print(f"❌ 匹配失败：请检查 index.html 中是否存在 '{category_id}': []")
+                print(f"❌ 匹配失败：未在 index.html 中找到分类标识 '{category_id}': [")
 
     except Exception as e:
         print(f"❌ 运行中发生错误: {e}")
