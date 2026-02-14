@@ -1,12 +1,13 @@
 name: 哲学园全自动更新
+
 on:
   workflow_dispatch:
     inputs:
       article_url:
-        description: 'URL'
+        description: '文章链接'
         required: true
       category_id:
-        description: 'ID'
+        description: '分类 ID'
         required: true
         type: choice
         options:
@@ -36,19 +37,29 @@ on:
           - hermeneutics
           - mind
           - others
+
 jobs:
   sync_job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - run: pip install requests beautifulsoup4
-      - run: python sync.py "${{ github.event.inputs.article_url }}" "${{ github.event.inputs.category_id }}"
-      - run: |
+
+      - name: 安装依赖
+        run: pip install requests beautifulsoup4
+
+      - name: 执行同步
+        # 注意这里：我改用了单引号包裹，防止微信链接里的特殊字符干扰
+        run: python sync.py '${{ github.event.inputs.article_url }}' '${{ github.event.inputs.category_id }}'
+
+      - name: 提交并推送
+        run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "update" || exit 0
+          git commit -m "自动更新: ${{ github.event.inputs.category_id }}" || exit 0
           git push
