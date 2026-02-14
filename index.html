@@ -403,6 +403,9 @@
                 }
             ],
             'translated-work': [],
+            'translated-work/reasoning': [],     // 1. 理商
+            'translated-work/diversity': [],     // 2. 多元化迷思
+            'translated-work/technology': [],    // 3. 技术共和国
             'physics': [],
             'science': [],
             'technology': [],
@@ -468,7 +471,34 @@
         }
 
         // 显示分类列表页
-        function showSection(sectionId, pushState = true) {
+       function showSection(sectionId, pushState = true) {
+            // --- 核心修改：如果是“译著专栏”总入口，则显示二级菜单 ---
+            if (sectionId === 'translated-work') {
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('section-page').style.display = 'block';
+                document.getElementById('article-page').style.display = 'none';
+                
+                const container = document.getElementById('section-content');
+                // 这里渲染二级目录的三个按钮
+                container.innerHTML = `
+                    <div class="subcategory-menu" style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap;">
+                        <button onclick="showSection('translated-work/reasoning')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">1. 理商</button>
+                        <button onclick="showSection('translated-work/diversity')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">2. 多元化迷思</button>
+                        <button onclick="showSection('translated-work/technology')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">3. 技术共和国</button>
+                    </div>
+                    <p style="text-align:center; color: #7f8c8d; font-style: italic;">请选择上方的子目录查看文章</p>
+                `;
+                
+                document.getElementById('section-title').textContent = '译著专栏';
+                
+                if (pushState) {
+                    history.pushState({ type: 'section', id: sectionId }, "", "?section=" + sectionId);
+                }
+                return; // 拦截成功，不再往下执行 renderSection
+            }
+            // --- 拦截结束 ---
+
+            // 以下为你原本的逻辑，用于处理普通分类和具体的二级子分类
             currentCategory = sectionId;
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('section-page').style.display = 'block';
