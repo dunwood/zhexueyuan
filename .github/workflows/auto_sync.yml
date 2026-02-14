@@ -2,6 +2,7 @@ name: 哲学园全自动更新
 
 on:
   # 1. 手动触发配置：增加了下拉菜单选项
+  # 1. 手动触发配置
   workflow_dispatch:
     inputs:
       article_url:
@@ -25,6 +26,11 @@ on:
           - translated-work/The-Rationality-Quotient
           - translated-work/The-Last-Economy
           - translated-work/The-Diversity-Myth
+          # --- 核心修正：统一使用短 ID，确保网页能翻译成中文 ---
+          - translated-work/reasoning
+          - translated-work/diversity
+          - translated-work/technology
+          # -----------------------------------------------
           - physics
           - science
           - technology
@@ -42,6 +48,7 @@ on:
           - others
 
   # 2. 定时触发配置：保持你原本的 5 分钟设置
+  # 2. 定时触发配置
   schedule:
     - cron: '*/5 * * * *'
 
