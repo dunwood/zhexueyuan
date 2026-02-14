@@ -468,7 +468,34 @@
         }
 
         // 显示分类列表页
+       // 显示分类列表页
         function showSection(sectionId, pushState = true) {
+            // --- 核心拦截：处理“译著专栏”的二级菜单显示 ---
+            if (sectionId === 'translated-work') {
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('section-page').style.display = 'block';
+                document.getElementById('article-page').style.display = 'none';
+                
+                const container = document.getElementById('section-content');
+                // 渲染三个子目录按钮
+                container.innerHTML = `
+                    <div class="subcategory-menu" style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap;">
+                        <button onclick="showSection('translated-work/reasoning')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">1. 理商</button>
+                        <button onclick="showSection('translated-work/diversity')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">2. 多元化迷思</button>
+                        <button onclick="showSection('translated-work/technology')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">3. 技术共和国</button>
+                    </div>
+                    <p style="text-align:center; color: #7f8c8d; font-style: italic;">请选择上方的子目录查看文章</p>
+                `;
+                
+                document.getElementById('section-title').textContent = '译著专栏';
+                
+                if (pushState) {
+                    history.pushState({ type: 'section', id: sectionId }, "", "?section=" + sectionId);
+                }
+                return; 
+            }
+
+            // --- 普通逻辑：显示文章列表 ---
             currentCategory = sectionId;
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('section-page').style.display = 'block';
@@ -480,38 +507,61 @@
             renderSection(sectionId);
         }
 
-       // 渲染分类文章列表
+        // 渲染分类文章列表
         function renderSection(sectionId) {
             const container = document.getElementById('section-content');
             const title = document.getElementById('section-title');
             
-            // 自动翻译 ID 为中文标题
+            // 翻译官名单：确保所有子目录都有中文映射
             const categoryNames = {
-                'laochan-column': '老禅专栏', 'ancient-greek': '古希腊哲学', 'metaphysics': '形而上学',
-                'ethics': '伦理学', 'epistemology': '认识论', 'logic': '逻辑学',
-                'aesthetics': '美学', 'math-science-philosophy': '数理/科学哲学', 'translated-work': '译著专栏',
-                'physics': '物理哲学', 'science': '科学哲学', 'technology': '技术哲学',
-                'ai': '人工智能', 'religion': '宗教哲学', 'economics': '经济哲学',
-                'law': '法律哲学', 'political': '政治哲学', 'social': '社会哲学',
-                'language': '语言哲学', 'existentialism': '存在主义', 'phenomenology': '现象学',
-                'hermeneutics': '解释学', 'mind': '心灵哲学', 'others': '其他'
+                'laochan-column': '老禅专栏', 
+                'ancient-greek': '古希腊哲学', 
+                'metaphysics': '形而上学',
+                'ethics': '伦理学', 
+                'epistemology': '认识论', 
+                'logic': '逻辑学',
+                'aesthetics': '美学', 
+                'math-science-philosophy': '数理/科学哲学', 
+                'translated-work': '译著专栏',
+                
+                // 这里是新增的子目录映射
+                'translated-work/reasoning': '译著：理商',
+                'translated-work/diversity': '译著：多元化迷思',
+                'translated-work/technology': '译著：技术共和国',
+                
+                'physics': '物理哲学', 
+                'science': '科学哲学', 
+                'technology': '技术哲学',
+                'ai': '人工智能', 
+                'religion': '宗教哲学', 
+                'economics': '经济哲学',
+                'law': '法律哲学', 
+                'political': '政治哲学', 
+                'social': '社会哲学',
+                'language': '语言哲学', 
+                'existentialism': '存在主义', 
+                'phenomenology': '现象学',
+                'hermeneutics': '解释学', 
+                'mind': '心灵哲学', 
+                'others': '其他'
             };
 
+            // 设置页面标题
             title.textContent = categoryNames[sectionId] || sectionId;
-            
-            const list = articles[sectionId];
-            if (list && list.length > 0) {
-                container.innerHTML = list.map(art => `
-                    <div class="article-item" onclick="showArticle('${sectionId}', '${art.id}')">
-                        <div class="article-info">
-                            <span class="article-title">${art.title}</span>
-                            <span class="article-date">${art.date}</span>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                container.innerHTML = '<p style="text-align: center; color: #95a5a6; padding: 2rem;">该分类下暂无文章</p>';
+
+            const categoryArticles = articles[sectionId] || [];
+            if (categoryArticles.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #7f8c8d; margin-top: 2rem;">该分类下暂无文章。</p>';
+                return;
             }
+
+            // 渲染文章列表
+            container.innerHTML = categoryArticles.map(article => `
+                <div class="article-item" onclick="showArticle('${sectionId}', '${article.id}')">
+                    <div class="article-title">${article.title}</div>
+                    <div class="article-date">${article.date}</div>
+                </div>
+            `).join('');
         }
 
         // 显示具体文章内容
