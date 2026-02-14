@@ -68,9 +68,9 @@ jobs:
         run: pip install requests beautifulsoup4
 
       - name: 执行抓取脚本
-        # 脚本将自动读取下拉菜单选中的分类 ID
-        run: python sync.py "${{ github.event.inputs.article_url }}" "${{ github.event.inputs.category_id }}"
-
+        # 核心修正：改用单引号包裹变量，防止微信链接特殊符号和二级目录斜杠导致解析错误
+        run: python sync.py '${{ github.event.inputs.article_url }}' '${{ github.event.inputs.category_id }}'
+      
       - name: 自动保存改动并推送
         run: |
           git config --local user.email "action@github.com"
