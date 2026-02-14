@@ -117,5 +117,6 @@ def download_and_sync():
     except Exception as e:
         print(f"💥 运行出错: {e}")
 
-if __name__ == \"__main__\":
+if __name__ == "__main__":
     download_and_sync()
+
