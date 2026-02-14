@@ -18,6 +18,7 @@ def download_and_sync():
     # 1. 获取参数
     if len(sys.argv) > 1 and sys.argv[1].strip():
         url = sys.argv[1].strip()
+        # 自动去掉分类 ID 前后的空格
         category_id = sys.argv[2].strip() if len(sys.argv) > 2 else "laochan-column"
         print(f"🔗 处理链接: {url}")
         print(f"📂 目标分类: {category_id}")
@@ -53,7 +54,6 @@ def download_and_sync():
                 tag.attrs = {}
 
         # --- 3. 准备文件夹 (支持多级目录) ---
-        # 核心修改：将 ID 中的 / 转换为系统路径斜杠，实现多级目录自动创建
         category_path = category_id.replace('/', os.sep)
         md_file_dir = os.path.join(BASE_DIR, category_path)
         img_dir = os.path.join(md_file_dir, IMAGE_SUBDIR)
@@ -74,7 +74,6 @@ def download_and_sync():
                     img_res = requests.get(src, headers=headers)
                     with open(img_path, 'wb') as f:
                         f.write(img_res.content)
-                    # 网页显示的相对路径：使用正斜杠 /
                     web_img_path = f"{IMAGE_SUBDIR}/{img_name}"
                     img.replace_with(f"\n\n![图片]({web_img_path})\n\n")
                 except:
@@ -94,16 +93,15 @@ def download_and_sync():
         with open(INDEX_FILE, 'r', encoding='utf-8') as f:
             index_content = f.read()
 
-        # 检查是否重复
         if f"'{title}'" in index_content or f'\"{title}\"' in index_content:
             print(f"⚠️ 首页列表中已存在《{title}》，跳过插入。")
         else:
-            # 网页访问路径统一用正斜杠
             md_path_web = f"articles/{category_id}/{safe_title}.md"
             article_id = f"art_{datetime.now().strftime('%H%M%S')}{random.randint(100, 999)}"
             new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_web}', date: '{date_str}' }},"
             
-            # 核心修改：使用 re.escape 处理 category_id，使其支持 translated-work/reasoning 中的斜杠
+            # 使用 re.escape(category_id) 确保斜杠被正确识别
+            # 同时也兼容单引号或双引号
             pattern = rf"(['\"]{re.escape(category_id)}['\"]\s*:\s*\[)"
             
             if re.search(pattern, index_content):
@@ -112,10 +110,14 @@ def download_and_sync():
                     f.write(index_content)
                 print(f"✅ 已将《{title}》成功同步至 index.html 的 {category_id} 分类")
             else:
-                print(f"❌ 错误：在 index.html 中未找到分类标识 '{category_id}'，请检查 ID 是否完全一致")
+                print(f"❌ 错误：在 index.html 中未找到分类标识 '{category_id}'")
+                # 打印出当前尝试寻找的标识，方便排查
+                print(f"🔍 脚本刚才在寻找: '{category_id}': [")
+                sys.exit(1) # 强制报错，让 Action 变红，方便查看日志
 
     except Exception as e:
         print(f"💥 运行出错: {e}")
+        sys.exit(1)
 
-if __name__ == \"__main__\":
+if __name__ == "__main__":
     download_and_sync()
