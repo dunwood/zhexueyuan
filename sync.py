@@ -15,10 +15,8 @@ INDEX_FILE = "index.html"
 def download_and_sync():
     print("=== 哲学园全自动更新：终极兼容版 ===")
     
-    # 1. 获取参数
     if len(sys.argv) > 1 and sys.argv[1].strip():
         url = sys.argv[1].strip()
-        # 自动去掉分类 ID 前后的空格
         category_id = sys.argv[2].strip() if len(sys.argv) > 2 else "laochan-column"
         print(f"🔗 处理链接: {url}")
         print(f"📂 目标分类: {category_id}")
@@ -35,10 +33,9 @@ def download_and_sync():
         res.encoding = 'utf-8'
         soup = BeautifulSoup(res.text, 'html.parser')
 
-        # --- 2. 解析内容 ---
         title_tag = soup.find('h1', class_='rich_media_title')
         if not title_tag:
-            print("❌ 无法解析文章标题，请检查链接是否为标准的微信文章")
+            print("❌ 无法解析文章标题")
             return
         title = title_tag.get_text(strip=True)
         date_str = datetime.now().strftime('%Y-%m-%d')
@@ -48,21 +45,19 @@ def download_and_sync():
             print("❌ 无法获取文章正文内容")
             return
 
-        # 清理无用样式
         for tag in content_area.find_all(True):
             if tag.name not in ['img', 'video', 'iframe']:
                 tag.attrs = {}
 
-        # --- 3. 准备文件夹 (支持多级目录) ---
+        # --- 准备文件夹 ---
         category_path = category_id.replace('/', os.sep)
         md_file_dir = os.path.join(BASE_DIR, category_path)
         img_dir = os.path.join(md_file_dir, IMAGE_SUBDIR)
         
         if not os.path.exists(img_dir):
             os.makedirs(img_dir, exist_ok=True)
-            print(f"📂 已创建目录: {img_dir}")
 
-        # --- 4. 处理图片并生成 Markdown ---
+        # --- 处理图片 ---
         img_count = 0
         for img in content_area.find_all('img'):
             src = img.get('data-src') or img.get('src')
@@ -79,41 +74,35 @@ def download_and_sync():
                 except:
                     print(f"⚠️ 图片 {src} 下载失败")
 
-        md_content = f"# {title}\n\n"
-        md_content += f"> 发布日期: {date_str}\n\n"
-        md_content += content_area.get_text(separator="\n\n")
+        md_content = f"# {title}\n\n> 发布日期: {date_str}\n\n" + content_area.get_text(separator="\n\n")
 
         safe_title = re.sub(r'[\\/:*?"<>|]', '_', title)
         md_file_path = os.path.join(md_file_dir, f"{safe_title}.md")
         with open(md_file_path, 'w', encoding='utf-8') as f:
             f.write(md_content)
-        print(f"📝 Markdown 已生成: {md_file_path}")
 
-        # --- 5. 同步更新 index.html (精准插入逻辑) ---
+        # --- 核心修改：同步 index.html ---
         with open(INDEX_FILE, 'r', encoding='utf-8') as f:
             index_content = f.read()
 
-        if f"'{title}'" in index_content or f'\"{title}\"' in index_content:
-            print(f"⚠️ 首页列表中已存在《{title}》，跳过插入。")
+        if f"'{title}'" in index_content or f'"{title}"' in index_content:
+            print(f"⚠️ 列表已存在《{title}》，跳过。")
         else:
             md_path_web = f"articles/{category_id}/{safe_title}.md"
             article_id = f"art_{datetime.now().strftime('%H%M%S')}{random.randint(100, 999)}"
             new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_web}', date: '{date_str}' }},"
             
-            # 使用 re.escape(category_id) 确保斜杠被正确识别
-            # 同时也兼容单引号或双引号
+            # 使用 re.escape 保证路径中的 / 能被正则识别
             pattern = rf"(['\"]{re.escape(category_id)}['\"]\s*:\s*\[)"
             
             if re.search(pattern, index_content):
-                index_content = re.sub(pattern, rf"\1\n            {new_entry}", index_content)
+                index_content = re.sub(pattern, rf"\1\n                {new_entry}", index_content)
                 with open(INDEX_FILE, 'w', encoding='utf-8') as f:
                     f.write(index_content)
-                print(f"✅ 已将《{title}》成功同步至 index.html 的 {category_id} 分类")
+                print(f"✅ 成功同步至 {category_id}")
             else:
                 print(f"❌ 错误：在 index.html 中未找到分类标识 '{category_id}'")
-                # 打印出当前尝试寻找的标识，方便排查
-                print(f"🔍 脚本刚才在寻找: '{category_id}': [")
-                sys.exit(1) # 强制报错，让 Action 变红，方便查看日志
+                sys.exit(1) # 只有这里报错，Action 才会变红
 
     except Exception as e:
         print(f"💥 运行出错: {e}")
