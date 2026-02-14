@@ -193,7 +193,7 @@
                     <h3>认识论</h3>
                     <p>知识的本质、来源与边界</p>
                 </div>
-
+                
                 <div class="category-card" onclick="showSection('aesthetics')">
                     <h3>美学</h3>
                     <p>艺术、感性与审美的思辨</p>
@@ -385,7 +385,7 @@
                     filePath: 'articles/logic/模态逻辑的语义考量.md',
                     date: '2024-03-15'
                 },
-
+                
                     ],
             'aesthetics': [],
             'math-science-philosophy': [
@@ -403,9 +403,6 @@
                 }
             ],
             'translated-work': [],
-            'translated-work/reasoning': [],     // 1. 理商
-            'translated-work/diversity': [],     // 2. 多元化迷思
-            'translated-work/technology': [],    // 3. 技术共和国
             'physics': [],
             'science': [],
             'technology': [],
@@ -440,9 +437,6 @@
             'aesthetics': '美学',
             'math-science-philosophy': '数学哲学',
             'translated-work': '译著',
-            'translated-work/reasoning': '译著：理商',
-            'translated-work/diversity': '译著：多元化迷思',
-            'translated-work/technology': '译著：技术共和国',
             'physics': '物理哲学',
             'science': '科学哲学',
             'technology': '技术哲学',
@@ -458,7 +452,7 @@
             'hermeneutics': '诠释学',  
             'mind': '心灵哲学',
             'others': '其他'
-
+            
         };
 
         let currentCategory = '';
@@ -474,39 +468,12 @@
         }
 
         // 显示分类列表页
-       function showSection(sectionId, pushState = true) {
-            // --- 核心修改：如果是“译著专栏”总入口，则显示二级菜单 ---
-            if (sectionId === 'translated-work') {
-                document.getElementById('home-page').style.display = 'none';
-                document.getElementById('section-page').style.display = 'block';
-                document.getElementById('article-page').style.display = 'none';
-
-                const container = document.getElementById('section-content');
-                // 这里渲染二级目录的三个按钮
-                container.innerHTML = `
-                    <div class="subcategory-menu" style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap;">
-                        <button onclick="showSection('translated-work/reasoning')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">1. 理商</button>
-                        <button onclick="showSection('translated-work/diversity')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">2. 多元化迷思</button>
-                        <button onclick="showSection('translated-work/technology')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">3. 技术共和国</button>
-                    </div>
-                    <p style="text-align:center; color: #7f8c8d; font-style: italic;">请选择上方的子目录查看文章</p>
-                `;
-
-                document.getElementById('section-title').textContent = '译著专栏';
-
-                if (pushState) {
-                    history.pushState({ type: 'section', id: sectionId }, "", "?section=" + sectionId);
-                }
-                return; // 拦截成功，不再往下执行 renderSection
-            }
-            // --- 拦截结束 ---
-
-            // 以下为你原本的逻辑，用于处理普通分类和具体的二级子分类
+        function showSection(sectionId, pushState = true) {
             currentCategory = sectionId;
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('section-page').style.display = 'block';
             document.getElementById('article-page').style.display = 'none';
-
+            
             if (pushState) {
                 history.pushState({ type: 'section', id: sectionId }, "", "?section=" + sectionId);
             }
@@ -514,11 +481,10 @@
         }
 
        // 渲染分类文章列表
-      // 渲染分类文章列表
         function renderSection(sectionId) {
             const container = document.getElementById('section-content');
             const title = document.getElementById('section-title');
-
+            
             // 自动翻译 ID 为中文标题
             const categoryNames = {
                 'laochan-column': '老禅专栏', 'ancient-greek': '古希腊哲学', 'metaphysics': '形而上学',
@@ -529,42 +495,10 @@
                 'law': '法律哲学', 'political': '政治哲学', 'social': '社会哲学',
                 'language': '语言哲学', 'existentialism': '存在主义', 'phenomenology': '现象学',
                 'hermeneutics': '解释学', 'mind': '心灵哲学', 'others': '其他'
-                'laochan-column': '老禅专栏', 
-                'ancient-greek': '古希腊哲学', 
-                'metaphysics': '形而上学',
-                'ethics': '伦理学', 
-                'epistemology': '认识论', 
-                'logic': '逻辑学',
-                'aesthetics': '美学', 
-                'math-science-philosophy': '数理/科学哲学', 
-                'translated-work': '译著专栏',
-                
-                // --- 这里是新增的二级分类中文映射 ---
-                'translated-work/reasoning': '译著：理商',
-                'translated-work/diversity': '译著：多元化迷思',
-                'translated-work/technology': '译著：技术共和国',
-                // ----------------------------------
-                
-                'physics': '物理哲学', 
-                'science': '科学哲学', 
-                'technology': '技术哲学',
-                'ai': '人工智能', 
-                'religion': '宗教哲学', 
-                'economics': '经济哲学',
-                'law': '法律哲学', 
-                'political': '政治哲学', 
-                'social': '社会哲学',
-                'language': '语言哲学', 
-                'existentialism': '存在主义', 
-                'phenomenology': '现象学',
-                'hermeneutics': '解释学', 
-                'mind': '心灵哲学', 
-                'others': '其他'
             };
 
-            // 如果在映射表里找到了就显示中文，找不到则显示原始 ID
             title.textContent = categoryNames[sectionId] || sectionId;
-
+            
             const list = articles[sectionId];
             if (list && list.length > 0) {
                 container.innerHTML = list.map(art => `
@@ -584,13 +518,13 @@
         function showArticle(category, id, pushState = true) {
             currentCategory = category;
             if (!articles[category]) return;
-
+            
             const article = articles[category].find(a => a.id === id);
             if (article) {
                 document.getElementById('section-page').style.display = 'none';
                 document.getElementById('article-page').style.display = 'block';
                 document.getElementById('home-page').style.display = 'none';
-
+                
                 document.getElementById('back-to-section').onclick = () => showSection(category);
 
                 if (pushState) {
