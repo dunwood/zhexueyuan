@@ -513,23 +513,47 @@
             renderSection(sectionId);
         }
 
-       // 渲染分类文章列表
+      // 渲染分类文章列表
         function renderSection(sectionId) {
             const container = document.getElementById('section-content');
             const title = document.getElementById('section-title');
             
             // 自动翻译 ID 为中文标题
             const categoryNames = {
-                'laochan-column': '老禅专栏', 'ancient-greek': '古希腊哲学', 'metaphysics': '形而上学',
-                'ethics': '伦理学', 'epistemology': '认识论', 'logic': '逻辑学',
-                'aesthetics': '美学', 'math-science-philosophy': '数理/科学哲学', 'translated-work': '译著专栏',
-                'physics': '物理哲学', 'science': '科学哲学', 'technology': '技术哲学',
-                'ai': '人工智能', 'religion': '宗教哲学', 'economics': '经济哲学',
-                'law': '法律哲学', 'political': '政治哲学', 'social': '社会哲学',
-                'language': '语言哲学', 'existentialism': '存在主义', 'phenomenology': '现象学',
-                'hermeneutics': '解释学', 'mind': '心灵哲学', 'others': '其他'
+                'laochan-column': '老禅专栏', 
+                'ancient-greek': '古希腊哲学', 
+                'metaphysics': '形而上学',
+                'ethics': '伦理学', 
+                'epistemology': '认识论', 
+                'logic': '逻辑学',
+                'aesthetics': '美学', 
+                'math-science-philosophy': '数理/科学哲学', 
+                'translated-work': '译著专栏',
+                
+                // --- 这里是新增的二级分类中文映射 ---
+                'translated-work/reasoning': '译著：理商',
+                'translated-work/diversity': '译著：多元化迷思',
+                'translated-work/technology': '译著：技术共和国',
+                // ----------------------------------
+                
+                'physics': '物理哲学', 
+                'science': '科学哲学', 
+                'technology': '技术哲学',
+                'ai': '人工智能', 
+                'religion': '宗教哲学', 
+                'economics': '经济哲学',
+                'law': '法律哲学', 
+                'political': '政治哲学', 
+                'social': '社会哲学',
+                'language': '语言哲学', 
+                'existentialism': '存在主义', 
+                'phenomenology': '现象学',
+                'hermeneutics': '解释学', 
+                'mind': '心灵哲学', 
+                'others': '其他'
             };
 
+            // 如果在映射表里找到了就显示中文，找不到则显示原始 ID
             title.textContent = categoryNames[sectionId] || sectionId;
             
             const list = articles[sectionId];
