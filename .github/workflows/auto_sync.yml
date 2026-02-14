@@ -1,15 +1,13 @@
 name: 哲学园全自动更新
 
 on:
-  # 1. 手动触发配置：增加了下拉菜单选项
-  # 1. 手动触发配置
   workflow_dispatch:
     inputs:
       article_url:
-        description: '第一步：请在这里粘贴微信文章链接'
+        description: '第一步：粘贴微信文章链接'
         required: true
       category_id:
-        description: '第二步：请选择文章分类'
+        description: '第二步：选择文章分类'
         required: true
         default: 'laochan-column'
         type: choice
@@ -23,14 +21,9 @@ on:
           - aesthetics
           - math-science-philosophy
           - translated-work
-          - translated-work/The-Rationality-Quotient
-          - translated-work/The-Last-Economy
-          - translated-work/The-Diversity-Myth
-          # --- 核心修正：统一使用短 ID，确保网页能翻译成中文 ---
           - translated-work/reasoning
           - translated-work/diversity
           - translated-work/technology
-          # -----------------------------------------------
           - physics
           - science
           - technology
@@ -46,9 +39,6 @@ on:
           - hermeneutics
           - mind
           - others
-
-  # 2. 定时触发配置：保持你原本的 5 分钟设置
-  # 2. 定时触发配置
   schedule:
     - cron: '*/5 * * * *'
 
@@ -64,17 +54,17 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 安装运行依赖环境
+      - name: 安装运行依赖
         run: pip install requests beautifulsoup4
 
       - name: 执行抓取脚本
-        # 核心修正：改用单引号包裹变量，防止微信链接特殊符号和二级目录斜杠导致解析错误
+        # 核心修正：改用单引号包裹，彻底解决微信链接特殊字符导致的闪退
         run: python sync.py '${{ github.event.inputs.article_url }}' '${{ github.event.inputs.category_id }}'
-      
-      - name: 自动保存改动并推送
+
+      - name: 自动保存并推送
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "自动同步文章: ${{ github.event.inputs.article_url }}" || echo "无变动"
+          git commit -m "自动更新文章" || exit 0
           git push
