@@ -291,8 +291,6 @@
         // 【此部分由 sync.py 自动更新】
         const articles = {
             'laochan-column': [
-                { id: 'art_180643', title: '哥德尔反对强人工智能的核心要点（哥德尔的心灵哲学）', filePath: 'articles/laochan-column/哥德尔反对强人工智能的核心要点（哥德尔的心灵哲学）.md', date: '2026-02-14' },
-                { id: 'art_172835475', title: '为什么物理学需要哲学', filePath: 'articles/laochan-column/为什么物理学需要哲学.md', date: '2026-02-14' },
                 { id: 'art_044316579', title: 'AI：多智能体协作重塑编程范式——从代码编写到智能体编排', filePath: 'articles/laochan-column/AI：多智能体协作重塑编程范式——从代码编写到智能体编排.md', date: '2026-02-14' },
                 { id: 'art_224047404', title: 'Peter Thiel 的末世哲学：敌基督、现代性危机与技术自由主义', filePath: 'articles/laochan-column/Peter Thiel 的末世哲学：敌基督、现代性危机与技术自由主义.md', date: '2026-02-13' },
                 { id: 'art_022739769', title: 'Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变', filePath: 'articles/laochan-column/Anthropic 2026 年度报告：8 大趋势定义软件开发“地壳级”巨变.md', date: '2026-02-11' },
@@ -381,7 +379,6 @@
                 { id: 'art_5431', title: '“好人”与“好公民”：一个政治伦理难题的亚里士多德解', filePath: 'articles/ethics/“好人”与“好公民”：一个政治伦理难题的亚里士多德解.md', date: '2026-02-08' },],
             'epistemology': [],
             'logic': [
-                { id: 'art_175650', title: '你以为逻辑也就是数学？其实数学家这样看待形式逻辑的真实地位', filePath: 'articles/logic/你以为逻辑也就是数学？其实数学家这样看待形式逻辑的真实地位.md', date: '2026-02-14' },
                 {
                     id: 'modal-logic',
                     title: '模态逻辑的语义考量',
@@ -406,10 +403,6 @@
                 }
             ],
             'translated-work': [],
-            'translated-work/reasoning': [
-                { id: 'art_172531324', title: '理商：迈向理性思维测试（1）', filePath: 'articles/translated-work/reasoning/理商：迈向理性思维测试（1）.md', date: '2026-02-14' },],     // 1. 理商
-            'translated-work/diversity': [],     // 2. 多元化迷思
-            'translated-work/technology': [],    // 3. 技术共和国
             'physics': [],
             'science': [],
             'technology': [],
@@ -444,9 +437,6 @@
             'aesthetics': '美学',
             'math-science-philosophy': '数学哲学',
             'translated-work': '译著',
-            'translated-work/reasoning': '译著：理商',
-            'translated-work/diversity': '译著：多元化迷思',
-            'translated-work/technology': '译著：技术共和国',
             'physics': '物理哲学',
             'science': '科学哲学',
             'technology': '技术哲学',
@@ -478,34 +468,7 @@
         }
 
         // 显示分类列表页
-       function showSection(sectionId, pushState = true) {
-            // --- 核心修改：如果是“译著专栏”总入口，则显示二级菜单 ---
-            if (sectionId === 'translated-work') {
-                document.getElementById('home-page').style.display = 'none';
-                document.getElementById('section-page').style.display = 'block';
-                document.getElementById('article-page').style.display = 'none';
-                
-                const container = document.getElementById('section-content');
-                // 这里渲染二级目录的三个按钮
-                container.innerHTML = `
-                    <div class="subcategory-menu" style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap;">
-                        <button onclick="showSection('translated-work/reasoning')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">1. 理商</button>
-                        <button onclick="showSection('translated-work/diversity')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">2. 多元化迷思</button>
-                        <button onclick="showSection('translated-work/technology')" style="padding: 12px 24px; cursor: pointer; border: 1px solid #34495e; background: white; border-radius: 5px; font-family: inherit; transition: all 0.3s;">3. 技术共和国</button>
-                    </div>
-                    <p style="text-align:center; color: #7f8c8d; font-style: italic;">请选择上方的子目录查看文章</p>
-                `;
-                
-                document.getElementById('section-title').textContent = '译著专栏';
-                
-                if (pushState) {
-                    history.pushState({ type: 'section', id: sectionId }, "", "?section=" + sectionId);
-                }
-                return; // 拦截成功，不再往下执行 renderSection
-            }
-            // --- 拦截结束 ---
-
-            // 以下为你原本的逻辑，用于处理普通分类和具体的二级子分类
+        function showSection(sectionId, pushState = true) {
             currentCategory = sectionId;
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('section-page').style.display = 'block';
@@ -517,47 +480,23 @@
             renderSection(sectionId);
         }
 
-      // 渲染分类文章列表
+       // 渲染分类文章列表
         function renderSection(sectionId) {
             const container = document.getElementById('section-content');
             const title = document.getElementById('section-title');
             
             // 自动翻译 ID 为中文标题
             const categoryNames = {
-                'laochan-column': '老禅专栏', 
-                'ancient-greek': '古希腊哲学', 
-                'metaphysics': '形而上学',
-                'ethics': '伦理学', 
-                'epistemology': '认识论', 
-                'logic': '逻辑学',
-                'aesthetics': '美学', 
-                'math-science-philosophy': '数理/科学哲学', 
-                'translated-work': '译著专栏',
-                
-                // --- 这里是新增的二级分类中文映射 ---
-                'translated-work/reasoning': '译著：理商',
-                'translated-work/diversity': '译著：多元化迷思',
-                'translated-work/technology': '译著：技术共和国',
-                // ----------------------------------
-                
-                'physics': '物理哲学', 
-                'science': '科学哲学', 
-                'technology': '技术哲学',
-                'ai': '人工智能', 
-                'religion': '宗教哲学', 
-                'economics': '经济哲学',
-                'law': '法律哲学', 
-                'political': '政治哲学', 
-                'social': '社会哲学',
-                'language': '语言哲学', 
-                'existentialism': '存在主义', 
-                'phenomenology': '现象学',
-                'hermeneutics': '解释学', 
-                'mind': '心灵哲学', 
-                'others': '其他'
+                'laochan-column': '老禅专栏', 'ancient-greek': '古希腊哲学', 'metaphysics': '形而上学',
+                'ethics': '伦理学', 'epistemology': '认识论', 'logic': '逻辑学',
+                'aesthetics': '美学', 'math-science-philosophy': '数理/科学哲学', 'translated-work': '译著专栏',
+                'physics': '物理哲学', 'science': '科学哲学', 'technology': '技术哲学',
+                'ai': '人工智能', 'religion': '宗教哲学', 'economics': '经济哲学',
+                'law': '法律哲学', 'political': '政治哲学', 'social': '社会哲学',
+                'language': '语言哲学', 'existentialism': '存在主义', 'phenomenology': '现象学',
+                'hermeneutics': '解释学', 'mind': '心灵哲学', 'others': '其他'
             };
 
-            // 如果在映射表里找到了就显示中文，找不到则显示原始 ID
             title.textContent = categoryNames[sectionId] || sectionId;
             
             const list = articles[sectionId];
