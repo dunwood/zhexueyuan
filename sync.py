@@ -59,12 +59,22 @@ def download_and_sync():
         if not os.path.exists(md_file_dir):
             os.makedirs(md_file_dir, exist_ok=True)
 
-        # --- 4. 清洗逻辑 ---
+        # --- 4. 清洗逻辑 (深度过滤重复与套娃) ---
         for s in content_area(['script', 'style', 'noscript', 'iframe']):
             s.decompose()
 
         lines = []
-        for elem in content_area.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img', 'section']):
+        # 获取所有目标标签
+        all_elements = content_area.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img', 'section'])
+        
+        for elem in all_elements:
+            # --- 核心拦截：防止嵌套 section 导致的重复抓取 ---
+            # 如果当前是 section，但它肚子里还包含其他段落(p)或子盒子(section)，
+            # 说明它是外层容器，我们跳过它，只抓最里层的实词。
+            if elem.name == 'section' and (elem.find('section') or elem.find('p')):
+                continue
+
+            # A. 处理图片
             if elem.name == 'img':
                 src = elem.get('data-src') or elem.get('src')
                 if src:
@@ -75,25 +85,32 @@ def download_and_sync():
                         img_res = requests.get(src, headers=headers, timeout=10)
                         with open(img_path, 'wb') as f:
                             f.write(img_res.content)
-                        
-                        # 自动处理：把路径指向标题文件夹
                         web_img_path = f"/articles/{IMAGE_SUBDIR}/{safe_title}/{img_name}"
                         lines.append(f"![图片]({web_img_path})")
                     except Exception as e:
                         print(f"⚠️ 图片下载失败: {e}")
                 continue
 
+            # B. 处理黑体字
             for bold in elem.find_all(['strong', 'b']):
                 b_text = bold.get_text(strip=True)
                 if b_text:
                     bold.replace_with(f" **{b_text}** ")
 
-            elem.attrs = {}
+            # C. 处理文本
+            elem.attrs = {}  # 清理样式属性
             text = elem.get_text(strip=True)
             if not text:
                 continue
             
             clean_text = "".join(text.splitlines())
+            
+            # --- 二次拦截：内容级查重 ---
+            # 如果当前抓到的文字去掉格式后，和上一行抓到的内容完全一样，就扔掉
+            if lines and clean_text == lines[-1].strip().lstrip('# ').replace("**", "").strip():
+                continue
+
+            # Markdown 格式分配
             if elem.name.startswith('h'):
                 lines.append(f"### {clean_text}")
             else:
@@ -134,3 +151,4 @@ def download_and_sync():
 
 if __name__ == "__main__":
     download_and_sync()
+
