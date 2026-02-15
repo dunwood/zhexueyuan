@@ -34,7 +34,6 @@ def download_and_sync():
         soup = BeautifulSoup(res.text, 'html.parser')
 
         # --- 2. 解析内容 ---
-        # 尝试多个可能的标题标签
         title_tag = soup.find('h1', class_='rich_media_title') or soup.find('h1', id='activity-name')
         if not title_tag:
             print("❌ 无法解析文章标题，跳过")
@@ -42,18 +41,17 @@ def download_and_sync():
         title = title_tag.get_text(strip=True)
         date_str = datetime.now().strftime('%Y-%m-%d')
         
-        # 核心：兼容多种正文 ID
         content_area = soup.find('div', id='js_content') or soup.find('div', class_='rich_media_content')
         if not content_area:
             print("❌ 无法获取文章正文内容")
             return
 
-      # --- 3. 准备文件夹 (自动识别标题，建立独立宿舍) ---
+        # --- 3. 准备文件夹 (自动识别标题，建立独立宿舍) ---
         safe_title = re.sub(r'[\\/:*?"<>|]', '_', title) 
         category_path = category_id.replace('/', os.sep)
         md_file_dir = os.path.join(BASE_DIR, category_path)
         
-        # 核心修改：图片存放路径现在包含文章标题，防止同名图片冲掉
+        # 图片存放路径：articles/images/文章标题/ (防冲突宿舍)
         img_dir = os.path.join(BASE_DIR, IMAGE_SUBDIR, safe_title)
         
         if not os.path.exists(img_dir):
@@ -61,17 +59,15 @@ def download_and_sync():
         if not os.path.exists(md_file_dir):
             os.makedirs(md_file_dir, exist_ok=True)
 
-        # --- 4. 核心：清洗逻辑 ---
+        # --- 4. 清洗逻辑 ---
         for s in content_area(['script', 'style', 'noscript', 'iframe']):
             s.decompose()
 
         lines = []
         for elem in content_area.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img', 'section']):
-            # A. 处理图片 (自动把标题填进图片路径)
             if elem.name == 'img':
                 src = elem.get('data-src') or elem.get('src')
                 if src:
-                    # 统计这个文件夹里已经存了多少张图
                     img_count = len([f for f in os.listdir(img_dir) if f.startswith('img_')]) + 1
                     img_name = f"img_{img_count}.jpg"
                     img_path = os.path.join(img_dir, img_name)
@@ -80,47 +76,39 @@ def download_and_sync():
                         with open(img_path, 'wb') as f:
                             f.write(img_res.content)
                         
-                        # 核心修改：这里就是你说的“自动处理”，把 safe_title 动态写进路径
+                        # 自动处理：把路径指向标题文件夹
                         web_img_path = f"/articles/{IMAGE_SUBDIR}/{safe_title}/{img_name}"
                         lines.append(f"![图片]({web_img_path})")
                     except Exception as e:
                         print(f"⚠️ 图片下载失败: {e}")
                 continue
 
-            # B. 处理黑体字 (保留 strong/b 并转为 Markdown)
             for bold in elem.find_all(['strong', 'b']):
                 b_text = bold.get_text(strip=True)
                 if b_text:
                     bold.replace_with(f" **{b_text}** ")
 
-            # C. 处理文本
-            # 去掉标签自带的所有样式属性，防止影响显示
             elem.attrs = {}
             text = elem.get_text(strip=True)
             if not text:
                 continue
             
-            # 解决句子断开：抹掉段落内部硬换行
             clean_text = "".join(text.splitlines())
-            
-            # Markdown 格式分配
             if elem.name.startswith('h'):
                 lines.append(f"### {clean_text}")
             else:
                 lines.append(clean_text)
 
-        # 解决连成一片：段落间双换行
         content_body = "\n\n".join(lines)
         md_content = f"# {title}\n\n> 发布日期: {date_str}\n\n{content_body}"
 
         # --- 5. 保存 Markdown ---
-        safe_title = re.sub(r'[\\/:*?"<>|]', '_', title)
         md_file_path = os.path.join(md_file_dir, f"{safe_title}.md")
         with open(md_file_path, 'w', encoding='utf-8') as f:
             f.write(md_content)
         print(f"📝 Markdown 已生成: {md_file_path}")
 
-        # --- 6. 同步更新 index.html ---
+        # --- 6. 同步更新 index.html (接好刚才断掉的逻辑) ---
         with open(INDEX_FILE, 'r', encoding='utf-8') as f:
             index_content = f.read()
 
@@ -146,4 +134,3 @@ def download_and_sync():
 
 if __name__ == "__main__":
     download_and_sync()
-
