@@ -162,10 +162,12 @@
             line-height: 1.4;
         }
 
-        #article-content p { 
-            margin-bottom: 1.2rem; /* 增加段落间的呼吸感 */
-            line-height: 1.8;      /* 增加行间距，长时间阅读不累眼睛 */
-        }
+       #article-content p {
+    margin-bottom: 2.5rem !important; /* 显著加大间距，并强制覆盖 */
+    line-height: 1.8;
+    display: block;                  /* 确保块级显示 */
+    margin-top: 0;                   /* 清除顶部干扰 */
+}
     </style>
 </head>
 <body>
