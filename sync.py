@@ -48,26 +48,30 @@ def download_and_sync():
             print("❌ 无法获取文章正文内容")
             return
 
-        # --- 3. 准备文件夹 ---
+      # --- 3. 准备文件夹 (自动识别标题，建立独立宿舍) ---
+        safe_title = re.sub(r'[\\/:*?"<>|]', '_', title) 
         category_path = category_id.replace('/', os.sep)
         md_file_dir = os.path.join(BASE_DIR, category_path)
-        img_dir = os.path.join(md_file_dir, IMAGE_SUBDIR)
+        
+        # 核心修改：图片存放路径现在包含文章标题，防止同名图片冲掉
+        img_dir = os.path.join(BASE_DIR, IMAGE_SUBDIR, safe_title)
         
         if not os.path.exists(img_dir):
             os.makedirs(img_dir, exist_ok=True)
+        if not os.path.exists(md_file_dir):
+            os.makedirs(md_file_dir, exist_ok=True)
 
         # --- 4. 核心：清洗逻辑 ---
-        # 预处理：删除不需要的干扰
         for s in content_area(['script', 'style', 'noscript', 'iframe']):
             s.decompose()
 
         lines = []
-        # 遍历所有段落、标题和图片
         for elem in content_area.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img', 'section']):
-            # A. 处理图片
+            # A. 处理图片 (自动把标题填进图片路径)
             if elem.name == 'img':
                 src = elem.get('data-src') or elem.get('src')
                 if src:
+                    # 统计这个文件夹里已经存了多少张图
                     img_count = len([f for f in os.listdir(img_dir) if f.startswith('img_')]) + 1
                     img_name = f"img_{img_count}.jpg"
                     img_path = os.path.join(img_dir, img_name)
@@ -75,9 +79,12 @@ def download_and_sync():
                         img_res = requests.get(src, headers=headers, timeout=10)
                         with open(img_path, 'wb') as f:
                             f.write(img_res.content)
-                        lines.append(f"![图片]({IMAGE_SUBDIR}/{img_name})")
-                    except:
-                        pass
+                        
+                        # 核心修改：这里就是你说的“自动处理”，把 safe_title 动态写进路径
+                        web_img_path = f"/articles/{IMAGE_SUBDIR}/{safe_title}/{img_name}"
+                        lines.append(f"![图片]({web_img_path})")
+                    except Exception as e:
+                        print(f"⚠️ 图片下载失败: {e}")
                 continue
 
             # B. 处理黑体字 (保留 strong/b 并转为 Markdown)
@@ -139,3 +146,4 @@ def download_and_sync():
 
 if __name__ == "__main__":
     download_and_sync()
+
