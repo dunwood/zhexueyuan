@@ -137,17 +137,17 @@
             font-size: 0.9rem;
         }
 
-       /* 文章内容样式适配 */
+    /* 文章内容样式适配 */
         #article-content {
             background-color: white;
             padding: 3rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            /* 核心修复：保留源码换行，解决文字挤成一团的问题 */
-            white-space: pre-wrap !important;
+            /* --- 彻底删掉 pre-wrap，回归正常渲染 --- */
             word-wrap: break-word;
         }
 
+        /* 保留：图片居中和间距设置 */
         #article-content img {
             max-width: 100%;
             height: auto;
@@ -156,26 +156,22 @@
             border-radius: 4px;
         }
 
+        /* 保留：文章主标题样式 */
         #article-content h1 { 
             margin-bottom: 2rem; 
             text-align: center; 
             line-height: 1.4;
         }
 
-      #article-content p {
-    /* 1. 核心：先把所有默认边距全部强制清零 */
-    margin: 0 !important; 
-    padding: 0 !important;
-
-    /* 2. 再定义你想要的底部间距 (0.4rem 就会生效了) */
-    margin-bottom: 0.4rem !important; 
-    
-    /* 3. 行高也强制执行 */
-    line-height: 1.6 !important; 
-    
-    /* 4. 确保它是块状显示，否则边距会失效 */
-    display: block !important;
-}
+        /* 核心修复：回归自然段落间距 */
+        #article-content p {
+            margin: 0;
+            padding: 0;
+            /* 1.1rem 是黄金值，如果觉得太紧就调到 1.3，觉得太松就调到 0.9 */
+            margin-bottom: 1.1rem; 
+            line-height: 1.7;
+            display: block;
+        }
     </style>
 </head>
 <body>
