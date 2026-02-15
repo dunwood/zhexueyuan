@@ -162,11 +162,19 @@
             line-height: 1.4;
         }
 
-       #article-content p {
-    margin-bottom: 0.4rem !important; /* 显著加大间距，并强制覆盖 */
-    line-height: 1.8;
-    display: block;                  /* 确保块级显示 */
-    margin-top: 0;                   /* 清除顶部干扰 */
+      #article-content p {
+    /* 1. 核心：先把所有默认边距全部强制清零 */
+    margin: 0 !important; 
+    padding: 0 !important;
+
+    /* 2. 再定义你想要的底部间距 (0.4rem 就会生效了) */
+    margin-bottom: 0.4rem !important; 
+    
+    /* 3. 行高也强制执行 */
+    line-height: 1.6 !important; 
+    
+    /* 4. 确保它是块状显示，否则边距会失效 */
+    display: block !important;
 }
     </style>
 </head>
