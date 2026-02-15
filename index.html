@@ -616,7 +616,7 @@
                 fetch(article.filePath)
                     .then(response => response.text())
                     .then(markdown => {
-                        document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                        document.getElementById('article-content').innerHTML = marked.parse(markdown, { breaks: true, gfm: true });
                         if (window.MathJax) {
                             window.MathJax.typesetPromise();
                         }
