@@ -143,11 +143,12 @@
             padding: 3rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            /* --- 彻底删掉 pre-wrap，回归正常渲染 --- */
+            /* 核心：用 pre-line 强制换行，解决文字挤成一坨的问题 */
+            white-space: pre-line !important; 
             word-wrap: break-word;
         }
 
-        /* 保留：图片居中和间距设置 */
+        /* 必须保留：图片居中，防止图片过大或排版乱掉 */
         #article-content img {
             max-width: 100%;
             height: auto;
@@ -156,19 +157,19 @@
             border-radius: 4px;
         }
 
-        /* 保留：文章主标题样式 */
+        /* 必须保留：文章大标题，防止标题挤在顶端 */
         #article-content h1 { 
             margin-bottom: 2rem; 
             text-align: center; 
             line-height: 1.4;
         }
 
-        /* 核心修复：回归自然段落间距 */
+        /* 核心微调：因为开启了 pre-line，正常文章会产生额外的空行高度，
+           我们将 margin-bottom 缩小到 0.4rem 来抵消它，实现视觉平衡。 */
         #article-content p {
             margin: 0;
             padding: 0;
-            /* 1.1rem 是黄金值，如果觉得太紧就调到 1.3，觉得太松就调到 0.9 */
-            margin-bottom: 1.1rem; 
+            margin-bottom: 0.4rem !important; 
             line-height: 1.7;
             display: block;
         }
@@ -616,7 +617,7 @@
                 fetch(article.filePath)
                     .then(response => response.text())
                     .then(markdown => {
-                        document.getElementById('article-content').innerHTML = marked.parse(markdown, { breaks: true, gfm: true });
+                       document.getElementById('article-content').innerHTML = marked.parse(markdown);
                         if (window.MathJax) {
                             window.MathJax.typesetPromise();
                         }
