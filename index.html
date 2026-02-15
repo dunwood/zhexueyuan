@@ -299,6 +299,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
+        /* --- A. 在这里插入配置 (手动添加) --- */
+        marked.setOptions({
+            breaks: true, 
+            gfm: true
+        });
+
+        /* --- B. 接着是你原来的数据 (不动它) --- */
+        // 【此部分由 sync.py 自动更新】
         // 【此部分由 sync.py 自动更新】
         const articles = {
             'laochan-column': [
