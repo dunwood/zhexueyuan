@@ -137,18 +137,17 @@
             font-size: 0.9rem;
         }
 
-    /* 文章内容样式适配 */
+       /* 文章内容样式适配 */
         #article-content {
             background-color: white;
             padding: 3rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            /* 核心：用 pre-line 强制换行，解决文字挤成一坨的问题 */
-            white-space: pre-line !important; 
+            /* 核心修复：保留源码换行，解决文字挤成一团的问题 */
+            white-space: pre-wrap !important;
             word-wrap: break-word;
         }
 
-        /* 必须保留：图片居中，防止图片过大或排版乱掉 */
         #article-content img {
             max-width: 100%;
             height: auto;
@@ -157,21 +156,15 @@
             border-radius: 4px;
         }
 
-        /* 必须保留：文章大标题，防止标题挤在顶端 */
         #article-content h1 { 
             margin-bottom: 2rem; 
             text-align: center; 
             line-height: 1.4;
         }
 
-        /* 核心微调：因为开启了 pre-line，正常文章会产生额外的空行高度，
-           我们将 margin-bottom 缩小到 0.4rem 来抵消它，实现视觉平衡。 */
-        #article-content p {
-            margin: 0;
-            padding: 0;
-            margin-bottom: 0.4rem !important; 
-            line-height: 1.7;
-            display: block;
+        #article-content p { 
+            margin-bottom: 1.5rem; /* 增加段落间的呼吸感 */
+            line-height: 1.8;      /* 增加行间距，长时间阅读不累眼睛 */
         }
     </style>
 </head>
@@ -300,19 +293,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        /* --- A. 在这里插入配置 (手动添加) --- */
-        marked.setOptions({
-            breaks: true, 
-            gfm: true
-        });
-
-        /* --- B. 接着是你原来的数据 (不动它) --- */
-        // 【此部分由 sync.py 自动更新】
         // 【此部分由 sync.py 自动更新】
         const articles = {
             'laochan-column': [
-            { id: 'art_172142170', title: '伯林认为，传统启蒙运动最大的陷阱在于……', filePath: 'articles/laochan-column/伯林认为，传统启蒙运动最大的陷阱在于…….md', date: '2026-02-15' },
-            { id: 'art_153948223', title: '卢比奥慕安会煽情：美国永远是“欧洲的孩子”！', filePath: 'articles/laochan-column/卢比奥慕安会煽情：美国永远是“欧洲的孩子”！.md', date: '2026-02-15' },
             { id: 'art_213114534', title: '以色列与伊朗开战：波斯与犹太的千年恩怨', filePath: 'articles/laochan-column/以色列与伊朗开战：波斯与犹太的千年恩怨.md', date: '2026-02-14' },
             { id: 'art_212712592', title: '新月照进现实：当流血的德黑兰，再次撞上那朵永不凋谢的波斯蔷薇', filePath: 'articles/laochan-column/新月照进现实：当流血的德黑兰，再次撞上那朵永不凋谢的波斯蔷薇.md', date: '2026-02-14' },
                 { id: 'art_044316579', title: 'AI：多智能体协作重塑编程范式——从代码编写到智能体编排', filePath: 'articles/laochan-column/AI：多智能体协作重塑编程范式——从代码编写到智能体编排.md', date: '2026-02-14' },
@@ -439,8 +422,7 @@
             'science': [],
             'technology': [],
             'ai': [],  
-            'religion': [
-            { id: 'art_172353259', title: '美国宗教的三大板块：主流新教、福音派与基要主义——谁才是“美国的上帝”的代言人？', filePath: 'articles/religion/美国宗教的三大板块：主流新教、福音派与基要主义——谁才是“美国的上帝”的代言人？.md', date: '2026-02-15' },],
+            'religion': [],
             'economics': [
                 { id: 'art_031532622', title: '最全: 24年诺贝尔经济学奖获得者学术贡献, 个人情况, 学术研究演化全方位总结 (视频+文章)', filePath: 'articles/economics/最全 24年诺贝尔经济学奖获得者学术贡献, 个人情况, 学术研究演化全方位总结 (视频+文章).md', date: '2026-02-14' },
                 { id: 'art_031028356', title: '新晋经济学诺奖作品：国家为什么会失败？', filePath: 'articles/economics/新晋经济学诺奖作品：国家为什么会失败？.md', date: '2026-02-14' },
@@ -449,7 +431,7 @@
             'law': [
                 { id: 'art_054218728', title: '邓晓芒｜黑格尔和康德对待法哲学的两种态度（在“首届人大德国古典哲学高端论坛”上的发言）', filePath: 'articles/law/邓晓芒｜黑格尔和康德对待法哲学的两种态度（在“首届人大德国古典哲学高端论坛”上的发言）.md', date: '2026-02-14' },],
             'political': [
-            { id: 'art_193652646', title: '斯坦福哲学百科全书词条：洛克的政治哲学', filePath: 'articles/political/斯坦福哲学百科全书词条：洛克的政治哲学.md', date: '2026-02-15' },
+                { id: 'art_055121225', title: '斯坦福哲学百科全书词条：洛克的政治哲学', filePath: 'articles/political/斯坦福哲学百科全书词条：洛克的政治哲学.md', date: '2026-02-14' },
                 { id: 'art_055037725', title: '施特劳斯如何思考自然科学与政治哲学的关系（骆耕 译）', filePath: 'articles/political/施特劳斯如何思考自然科学与政治哲学的关系（骆耕 译）.md', date: '2026-02-14' },],
             'social': [],
             'language': [],
@@ -617,7 +599,7 @@
                 fetch(article.filePath)
                     .then(response => response.text())
                     .then(markdown => {
-                       document.getElementById('article-content').innerHTML = marked.parse(markdown);
+                        document.getElementById('article-content').innerHTML = marked.parse(markdown);
                         if (window.MathJax) {
                             window.MathJax.typesetPromise();
                         }
