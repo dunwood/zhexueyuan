@@ -137,14 +137,14 @@
             font-size: 0.9rem;
         }
 
-       /* 文章内容样式适配 */
+      /* 文章内容样式适配 */
         #article-content {
             background-color: white;
             padding: 3rem;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            /* 核心修复：保留源码换行，解决文字挤成一团的问题 */
-            white-space: pre-wrap !important;
+            /* --- 核心修改：删掉 pre-wrap，改回 normal。这是图片正常显示的关键 --- */
+            white-space: normal; 
             word-wrap: break-word;
         }
 
@@ -163,8 +163,8 @@
         }
 
         #article-content p { 
-            margin-bottom: 1.5rem; /* 增加段落间的呼吸感 */
-            line-height: 1.8;      /* 增加行间距，长时间阅读不累眼睛 */
+            margin-bottom: 1.5rem; 
+            line-height: 1.8;      
         }
     </style>
 </head>
