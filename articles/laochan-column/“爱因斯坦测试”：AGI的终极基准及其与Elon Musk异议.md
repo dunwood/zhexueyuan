@@ -2,7 +2,7 @@
 
 > 发布日期: 2026-02-24
 
-![图片](/articles/images/“爱因斯坦测试”：AGI的终极基准及其与Elon Musk异议/img_1.jpg)
+![图片](/articles/images/爱因斯坦测试：AGI的终极基准及其与Elon Musk异议/img_1.jpg)
 
 ### 引言
 
