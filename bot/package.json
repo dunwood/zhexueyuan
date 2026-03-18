@@ -1,0 +1,10 @@
+{
+  "name": "zhexueyuan-bot",
+  "version": "1.0.0",
+  "description": "哲学园公号文章自动监控发布 Skill for OpenClaw",
+  "main": "index.ts",
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
