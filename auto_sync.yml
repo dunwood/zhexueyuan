@@ -70,4 +70,5 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "自动同步文章: ${{ github.event.inputs.article_url }}" || echo "无变动"
+          git pull --rebase origin main
           git push
