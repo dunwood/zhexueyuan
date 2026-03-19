@@ -1,5 +1,4 @@
 name: 哲学园全自动更新
-
 on:
   # 1. 手动触发配置：增加了下拉菜单选项
   workflow_dispatch:
@@ -40,10 +39,14 @@ on:
           - hermeneutics
           - mind
           - others
-
   # 2. 定时触发配置：保持你原本的 5 分钟设置
   schedule:
     - cron: '*/5 * * * *'
+
+# 同一时间只允许一个 job 运行，其余排队等候
+concurrency:
+  group: zhexueyuan-sync
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -51,19 +54,15 @@ jobs:
     steps:
       - name: 检出代码
         uses: actions/checkout@v3
-
       - name: 设置 Python 环境
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-
       - name: 安装运行依赖环境
         run: pip install requests beautifulsoup4
-
       - name: 执行抓取脚本
         # 脚本将自动读取下拉菜单选中的分类 ID
         run: python sync.py "${{ github.event.inputs.article_url }}" "${{ github.event.inputs.category_id }}"
-
       - name: 自动保存改动并推送
         run: |
           git config --local user.email "action@github.com"
