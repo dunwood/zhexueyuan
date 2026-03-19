@@ -46,35 +46,26 @@ def download_and_sync():
             print("❌ 无法获取文章正文内容")
             return
 
-        # --- 3. 准备文件夹 (自动识别标题，建立独立宿舍) ---
+        # --- 3. 准备文件夹 ---
         safe_title = re.sub(r'[\\/:*?"<>|]', '_', title) 
         category_path = category_id.replace('/', os.sep)
         md_file_dir = os.path.join(BASE_DIR, category_path)
-        
-        # 图片存放路径：articles/images/文章标题/ (防冲突宿舍)
         img_dir = os.path.join(BASE_DIR, IMAGE_SUBDIR, safe_title)
         
-        if not os.path.exists(img_dir):
-            os.makedirs(img_dir, exist_ok=True)
-        if not os.path.exists(md_file_dir):
-            os.makedirs(md_file_dir, exist_ok=True)
+        os.makedirs(img_dir, exist_ok=True)
+        os.makedirs(md_file_dir, exist_ok=True)
 
-        # --- 4. 清洗逻辑 (深度过滤重复与套娃) ---
+        # --- 4. 清洗逻辑 ---
         for s in content_area(['script', 'style', 'noscript', 'iframe']):
             s.decompose()
 
         lines = []
-        # 获取所有目标标签
         all_elements = content_area.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img', 'section'])
         
         for elem in all_elements:
-            # --- 核心拦截：防止嵌套 section 导致的重复抓取 ---
-            # 如果当前是 section，但它肚子里还包含其他段落(p)或子盒子(section)，
-            # 说明它是外层容器，我们跳过它，只抓最里层的实词。
             if elem.name == 'section' and (elem.find('section') or elem.find('p')):
                 continue
 
-            # A. 处理图片
             if elem.name == 'img':
                 src = elem.get('data-src') or elem.get('src')
                 if src:
@@ -91,26 +82,21 @@ def download_and_sync():
                         print(f"⚠️ 图片下载失败: {e}")
                 continue
 
-            # B. 处理黑体字
             for bold in elem.find_all(['strong', 'b']):
                 b_text = bold.get_text(strip=True)
                 if b_text:
                     bold.replace_with(f" **{b_text}** ")
 
-            # C. 处理文本
-            elem.attrs = {}  # 清理样式属性
+            elem.attrs = {}
             text = elem.get_text(strip=True)
             if not text:
                 continue
             
             clean_text = "".join(text.splitlines())
             
-            # --- 二次拦截：内容级查重 ---
-            # 如果当前抓到的文字去掉格式后，和上一行抓到的内容完全一样，就扔掉
             if lines and clean_text == lines[-1].strip().lstrip('# ').replace("**", "").strip():
                 continue
 
-            # Markdown 格式分配
             if elem.name.startswith('h'):
                 lines.append(f"### {clean_text}")
             else:
@@ -125,30 +111,25 @@ def download_and_sync():
             f.write(md_content)
         print(f"📝 Markdown 已生成: {md_file_path}")
 
-        # --- 6. 同步更新 index.html (接好刚才断掉的逻辑) ---
+        # --- 6. 更新 index.html（不查重，直接插入）---
         with open(INDEX_FILE, 'r', encoding='utf-8') as f:
             index_content = f.read()
 
-        # 查重逻辑
-        if f"'{title}'" in index_content or f'"{title}"' in index_content:
-            print(f"⚠️ 首页列表中已存在该文章，跳过插入。")
+        md_path_web = f"articles/{category_id}/{safe_title}.md"
+        article_id = f"art_{datetime.now().strftime('%H%M%S')}{random.randint(100, 999)}"
+        new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_web}', date: '{date_str}' }},"
+        
+        pattern = rf"(['\"]{re.escape(category_id)}['\"]\s*:\s*\[)"
+        if re.search(pattern, index_content):
+            index_content = re.sub(pattern, rf"\1\n            {new_entry}", index_content)
+            with open(INDEX_FILE, 'w', encoding='utf-8') as f:
+                f.write(index_content)
+            print(f"✅ 已成功同步至 index.html")
         else:
-            md_path_web = f"articles/{category_id}/{safe_title}.md"
-            article_id = f"art_{datetime.now().strftime('%H%M%S')}{random.randint(100, 999)}"
-            new_entry = f"{{ id: '{article_id}', title: '{title}', filePath: '{md_path_web}', date: '{date_str}' }},"
-            
-            pattern = rf"(['\"]{re.escape(category_id)}['\"]\s*:\s*\[)"
-            if re.search(pattern, index_content):
-                index_content = re.sub(pattern, rf"\1\n            {new_entry}", index_content)
-                with open(INDEX_FILE, 'w', encoding='utf-8') as f:
-                    f.write(index_content)
-                print(f"✅ 已成功同步至 index.html")
-            else:
-                print(f"❌ 错误：在 index.html 中未找到分类标识 '{category_id}'")
+            print(f"❌ 错误：在 index.html 中未找到分类标识 '{category_id}'")
 
     except Exception as e:
         print(f"💥 运行出错: {e}")
 
 if __name__ == "__main__":
     download_and_sync()
-
