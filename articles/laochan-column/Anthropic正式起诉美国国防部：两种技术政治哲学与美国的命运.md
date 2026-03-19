@@ -8,7 +8,7 @@
 
 2026年3月 | 分析文章
 
-![图片](/articles/images/Anthropic正式起诉美国国防部：两种技术政治哲学与美国的命运/img_4.jpg)
+![图片](/articles/images/Anthropic正式起诉美国国防部：两种技术政治哲学与美国的命运/img_5.jpg)
 
 引言：一场诉讼背后的哲学战争
 
