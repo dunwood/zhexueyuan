@@ -2,7 +2,7 @@
 
 > 发布日期: 2026-06-27
 
-![图片](/articles/images/硅基列传(1)：Meta · 羊驼的两张脸/img_1.jpg)
+![图片](/articles/images/硅基列传(1)：Meta · 羊驼的两张脸/img_2.jpg)
 
 AI圈最具哲学思想十大牛人（终结篇）：一个有污点的先知
 
