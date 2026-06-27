@@ -2,7 +2,7 @@
 
 > 发布日期: 2026-06-27
 
-![图片](/articles/images/原来我早就在使用 Loop Engineering 了，Claude 帮我总结了这些实战干货/img_1.jpg)
+![图片](/articles/images/原来我早就在使用 Loop Engineering 了，Claude 帮我总结了这些实战干货/img_2.jpg)
 
 **老蝉问：**你知道Loop Engineering吧？
 
