@@ -14,7 +14,7 @@
 
 ### 转自《经济学人》
 
-![图片](/articles/images/为什么大型 AI 实验室正在招聘这么多哲学家/img_1.jpg)
+![图片](/articles/images/为什么大型 AI 实验室正在招聘这么多哲学家/img_2.jpg)
 
 分享插画：古希腊哲学家在断壁残垣间教导一群身穿长袍的机器人。插画：Simon Bailly
 
