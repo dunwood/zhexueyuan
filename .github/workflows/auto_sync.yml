@@ -39,8 +39,6 @@ on:
           - hermeneutics
           - mind
           - others
-  schedule:
-    - cron: '*/5 * * * *'
 
 jobs:
   build:
